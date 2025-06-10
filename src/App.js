@@ -1,20 +1,21 @@
 // --- START OF FILE App.js ---
 
 import React, { useState, useEffect } from 'react';
-import './App.css';
+import './App.css'; // Assuming App.css is in the same directory or src/
 import Marquee from 'react-fast-marquee';
-import grids from './Frame 41.png'; // Assuming this is your correct SVG file
-import lines from './Frame 15 (1).svg'; // Assuming this is your correct SVG file
-import logo1 from './viali.png';
-import logo2 from './tanvi.png';
-import logo3 from './mih.png';
-import logo4 from './grind time rides.png';
-import logo5 from './riMLand.png';
-import logo6 from './yourbest.png';
-import logo7 from './gro vnr.png';
-import logo8 from './nasa.png';
-import logo9 from './innogeeks.png';
-import logo10 from './acm.png';
+import grids from './assets/Frame 41.png'; // Assuming this is your correct SVG file
+import lines from './assets/Frame 15.1.svg'; // Assuming this is your correct SVG file
+import logo1 from './assets/viali.png';
+import logo2 from './assets/tanvi.png';
+import logo3 from './assets/mih.png';
+import logo4 from './assets/grind time rides.png';
+import logo5 from './assets/riMLand.png';
+import logo6 from './assets/yourbest.png';
+import logo7 from './assets/gro vnr.png';
+import logo8 from './assets/nasa.png';
+import logo9 from './assets/innogeeks.png';
+import logo10 from './assets/acm.png';
+import bgvideo from './assets/bgvideo.mp4';
 
 const clientLogos = [
   logo1,
@@ -68,6 +69,11 @@ const Switcher12 = ({ isChecked, onChange }) => {
   );
 };
 
+const openCalendarPopup = () => {
+    const calendarUrl = 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ0iZ6GBUpEp6xEXcYQ0wZLryUc6bprkId2iHVJjJF88E3JTJGM917FiwtH6mwtuwUuyOVr2Whwm?gv=true'; // <-- IMPORTANT: REPLACE THIS URL
+    const popupFeatures = 'width=1000,height=700,scrollbars=yes,resizable=yes';
+    window.open(calendarUrl, 'googleCalendarPopup', popupFeatures);
+  };
 
 function App() {
   const [isDark, setIsDark] = useState(true);
@@ -75,79 +81,106 @@ function App() {
   useEffect(() => {
     if (isDark) {
       document.body.classList.add('dark');
+      document.documentElement.classList.add('dark'); // For Tailwind 'class' strategy
     } else {
       document.body.classList.remove('dark');
+      document.documentElement.classList.remove('dark'); // For Tailwind 'class' strategy
     }
   }, [isDark]);
 
   return (
-    <div className={isDark ? 'dark' : ''}>
+    // Tailwind dark mode is often applied to <html>, so ensure documentElement gets the class.
+    <div>
       <div className="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white transition-colors duration-300">
         {/* Hero Section */}
         <section className="relative flex flex-col min-h-screen p-6"> {/* Parent with position: relative */}
           {/* Top Bar */}
           <div className="top-nav">
             <span className="brand-logo-text">Pyrosynergy</span>
-            <Switcher12 
+            <Switcher12
               isChecked={isDark}
               onChange={setIsDark}
             />
           </div>
 
           {/* Centered Content */}
-          <div
-            className="flex flex-col items-center justify-center flex-1"
-            style={{ minHeight: '40vh', paddingTop: '130px', paddingBottom: '40px' }}
-          >
-            <h1 className="hero-heading leading-snug">
-              <div>Let's make your business</div>
-              <div className="highlighted">AI-ready.</div>
-            </h1>
-            <p className="hero-desc">
-              From strategy to scale, we rebuild and redesign your brand into its most{' '}
-              <span className="desc-highlight">efficient, effective, and elegant</span> form—
-              empowering you to <span className="desc-italic">outgrow</span> your competitors in
-              sales and success.
-            </p>
-            <button className="hero-button mx-auto">
-              schedule a <span className="free-highlight">FREE</span> strategy call
-            </button>
+        <div className="content-video-wrapper">
+
+  {/* Video Background: now uses a CSS class */}
+  <video
+    autoPlay
+    loop
+    muted
+    playsInline
+    className="content-video-bg" // Class for video styling
+  >
+    <source src={bgvideo} type="video/mp4" /> {/* Ensure path is correct */}
+    Your browser does not support the video tag.
+  </video>
+
+  {/* Overlay for fading: now uses a CSS class */}
+  <div className="content-video-fade-overlay"></div>
+
+  {/* Inner content div: existing classes + new class for layering + remaining layout styles */}
+  <div
+    className="flex flex-col items-center justify-center flex-1 content-on-top" // Added 'content-on-top'
+    style={{
+      // position & zIndex are now handled by 'content-on-top' class
+      minHeight: '40vh',    // Specific layout style for this content block
+      paddingTop: '130px',  // Specific layout style for this content block
+      paddingBottom: '40px' // Specific layout style for this content block
+    }}
+  >
+    <h1 className="hero-heading leading-snug">
+      <div>Let's make your business</div>
+      <div className="highlighted">AI-ready.</div>
+    </h1>
+    <p className="hero-desc">
+      From strategy to scale, we rebuild and redesign your brand into its most{' '}
+      <span className="desc-highlight">efficient, effective, and elegant</span> form —
+      empowering you to <span className="desc-italic">outgrow</span> your competitors in
+      sales and success.
+    </p>
+
+    <button className="hero-button mx-auto mb-8 md:mb-12" onClick={openCalendarPopup}>
+      schedule a <span className="free-highlight">FREE</span> strategy call
+    </button>
+          </div> 
+
+            {/* Marquee Logos - Now after the button */}
+            <div className="w-full max-w-4xl py-2"> {/* Removed top margin as button now has bottom margin */}
+              <Marquee speed={40} pauseOnHover gradient={false}>
+                {clientLogos.map((logo, idx) => (
+                  <img
+                    key={idx}
+                    src={logo}
+                    alt={`client-${idx}`}
+                    style={{
+                      height: '35px',
+                      marginLeft: '2.5rem',
+                      marginRight: '2.5rem',
+                    }}
+                  />
+                ))}
+              </Marquee>
+            </div>
           </div>
 
-          {/* Decorative SVG - Positioned behind Marquee */}
-          <div 
-            className="absolute bottom-4 w-full" 
-            style={{ zIndex: 10 }} // Lower z-index
+          {/* Decorative SVG - Remains at the bottom of the section */}
+          <div
+            className="absolute bottom-4 w-full"
+            style={{ zIndex: 1 }}
           >
-            <img
+            {/* <img
               src={lines}
-              alt="Decorative SVG"
+              alt="Decorative lines"
               className="h-16 object-cover block mx-auto"
               style={{ width: '1900px', maxWidth: '100%' }}
-            />
-          </div>
-
-          {/* Marquee Logos - Positioned to overlap SVG */}
-          <div 
-            className="absolute bottom-6 w-full py-2" // Positioned to overlap
-            style={{ zIndex: 20 }} // Higher z-index
-          > 
-            <Marquee speed={40} pauseOnHover gradient={false}>
-              {clientLogos.map((logo, idx) => (
-                <img
-                  key={idx}
-                  src={logo}
-                  alt={`client-${idx}`}
-                  style={{
-                    height: '35px',
-                    marginLeft: '2.5rem',
-                    marginRight: '2.5rem',
-                  }}
-                />
-              ))}
-            </Marquee>
+            /> */}
           </div>
         </section> {/* End of Hero Section */}
+
+        <div className="hero-bottom-gradient-band"></div>
 
         <section className="form-section" style={{ position: 'relative', overflow: 'hidden' }}>
           <div>
@@ -170,10 +203,9 @@ function App() {
               </div>
             </form>
           </div>
-          {/* SVG at the bottom of the form-section */}
           <img
             src={grids}
-            alt="Decorative SVG"
+            alt="Decorative grids"
             style={{
               position: 'absolute',
               left: '50%',
@@ -181,23 +213,22 @@ function App() {
               transform: 'translateX(-50%)',
               width: '1000px',
               height: '200px',
-              zIndex: 1,
+              zIndex: 0,
               pointerEvents: 'none',
               userSelect: 'none'
             }}
           />
         </section>
 
-
-
-
-
         {/* Footer */}
         <footer className="footer">
-          <span className="brand-logo-text">Pyrosynergy</span>
+          <div className="footer-names">
+            <span className="brand-logo-text">Pyrosynergy</span>
+            <span className="brand-copyright-text"> &copy; Copyright 2025 Pyrosynergy AI Labs. All rights reserved.</span>
+          </div>
           <div className="social-icons">
-            <a href="#"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" /></a>
-            <a href="#"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn" /></a>
+            <a href="#" aria-label="Instagram"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" /></a>
+            <a href="#" aria-label="LinkedIn"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn" /></a>
           </div>
         </footer>
       </div>

@@ -1,4 +1,4 @@
-/* Root Container */
+/* === GLOBAL STYLES & DARK MODE === */
 #root {
   max-width: 100%;
   margin: 0 auto;
@@ -6,137 +6,18 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Top Navigation Bar - Maximized spacing */
-.top-nav {
-  position: absolute;
-  margin-top: 20px;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  max-width: 1500px;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 30px;
-  box-sizing: border-box;
-  z-index: 10; /* Note: This z-index is for the top-nav itself, separate from hero content */
-}
-
-/* Brand Logo Text */
-.brand-logo-text {
-  color: #FFF;
-  font-family: 'Bricolage Grotesque', sans-serif;
-  font-size: 36px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  margin: 0;
-}
-
-
-/* Hero Section */
-.hero-heading {
-  color: #FFF;
-  text-align: center;
-  font-family: "Albert Sans", sans-serif;
-  font-size: 80px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: -2.4px;
-  margin-bottom: 1rem;
-}
-
-@media (min-width: 640px) {
-  .hero-heading {
-    font-size: 70px;
-  }
-}
-
-.highlighted {
-  background: linear-gradient(90deg, #d904ff 42.35%, #003CFF 56.08%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-size: 70px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-}
-
-/* CTA Button */
-.hero-button {
-  color: #FFF;
-  text-align: center;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  border-radius: 31px;
-  border: 1px solid #3D72FF;
-  background: linear-gradient(90deg, #0046FF 0%, #002A99 100%);
-  padding: 0.75rem 1.5rem;
-  cursor: pointer;
-  margin-top: 1rem;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.hero-button:hover {
-  background: linear-gradient(90deg, #002A99 0%, #001A66 100%);
-}
-
-.hero-button .free-highlight {
-  color: #FFF;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-}
-
-/* Footer */
-.footer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  border-top: 1px solid #ccc;
-  max-width: 1500px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.footer img {
-  height: 2rem;
-}
-
-.social-icons a img {
-  height: 1.25rem;
-  margin-left: 1rem;
-  transition: transform 0.3s ease;
-  filter: brightness(0) invert(1);
-  /* This makes SVG icons appear white regardless of their original color */
-}
-
-.social-icons a:hover img {
-  transform: scale(1.2);
-}
-
-/* Dark Mode */
 .dark {
   background-color: #0D0B02 !important;
   color: white;
 }
 
+.dark .brand-logo-text {
+  color: #FFF;
+}
+
+.dark .themeSwitcherTwo .label {
+  color: #FFF;
+}
 
 .dark .hero-button {
   background: linear-gradient(90deg, #0046FF 0%, #002A99 100%);
@@ -152,34 +33,37 @@
   border-top: 1px solid #374151;
 }
 
-/* Hero Description */
-.hero-desc {
-  width: 700px;
-  max-width: 100%;
-  color: #CCC;
-  text-align: center;
-  font-family: 'Albert Sans', sans-serif;
-  font-size: 22px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 33px;
-  letter-spacing: -1px;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+/* === TOP NAVIGATION === */
+.top-nav {
+  position: absolute;
+  margin-top: 20px;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-width: 1500px;
   margin-left: auto;
   margin-right: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px;
+  box-sizing: border-box;
+  z-index: 10;
 }
 
-.hero-desc .desc-highlight {
-  font-weight: 500;
+.brand-logo-text {
+  color: #FFF; /* Default light mode color, overridden by .dark .brand-logo-text */
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 36px;
+  margin-bottom: 16px; /* This might be unintentional if margin: 0 is also set */
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0; /* This overrides the margin-bottom above */
 }
 
-.hero-desc .desc-italic {
-  font-style: italic;
-  font-weight: 500;
-}
-
-/* Styles for Switcher12 */
+/* === THEME SWITCHER (Switcher12) === */
 .themeSwitcherTwo {
   position: relative;
   display: inline-flex;
@@ -208,15 +92,7 @@
   align-items: center;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #000;
-}
-
-.dark .themeSwitcherTwo .label {
-  color: #FFF;
-}
-
-.dark .brand-logo-text {
-  color: #FFF; 
+  color: #000; /* Default light mode color, overridden by .dark .themeSwitcherTwo .label */
 }
 
 .themeSwitcherTwo .slider {
@@ -233,6 +109,7 @@
   transition-duration: 200ms;
 }
 
+/* Tailwind equivalent classes, kept for clarity if they are specifically for the switcher */
 .bg-\[\#CCCCCE\] {
   background-color: #CCCCCE;
 }
@@ -255,29 +132,231 @@
   transform: translateX(28px);
 }
 
-/* Center the section */
+/* === HERO SECTION === */
+.hero-heading {
+  color: #FFF;
+  text-align: center;
+  font-family: "Albert Sans", sans-serif;
+  font-size: 80px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -2.4px;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .hero-heading {
+    font-size: 70px;
+  }
+
+  .hero-button {
+    margin-bottom: 3rem;
+  }
+}
+
+.highlighted { /* Used in Hero Heading */
+  background: linear-gradient(90deg, #d904ff 42.35%, #003CFF 56.08%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-size: 70px; /* This might conflict with hero-heading font size, review context */
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.hero-desc {
+  width: 700px;
+  max-width: 100%;
+  color: #CCC;
+  text-align: center;
+  font-family: 'Albert Sans', sans-serif;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 33px;
+  letter-spacing: -1px;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-desc .desc-highlight {
+  font-weight: 500;
+}
+
+.hero-desc .desc-italic {
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* In App.css */
+
+/* === HERO SECTION === */
+/* ... other hero styles ... */
+
+.hero-button {
+  color: #FFF; /* Default light mode, overridden by .dark .hero-button */
+  text-align: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border-radius: 31px;
+  border: 1px solid #3D72FF; /* Default light mode, overridden by .dark .hero-button */
+  background: linear-gradient(90deg, #0046FF 0%, #002A99 100%); /* Default light mode, overridden by .dark .hero-button */
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  margin-top: 1rem; /* This might be overridden by mb-8 md:mb-12 in App.js */
+  display: block;
+  margin-left: auto; /* These are for centering if mx-auto from Tailwind is removed */
+  margin-right: auto; /* These are for centering if mx-auto from Tailwind is removed */
+  /* margin-bottom: 2rem; /* This was added in a previous step, ensure it's here or handled by Tailwind */
+}
+
+/* @media (min-width: 768px) {
+  .hero-button {
+    margin-bottom: 3rem; /* This was added in a previous step */
+  */
+ */
+
+.hero-button:hover {
+  background: linear-gradient(90deg, #002A99 0%, #001A66 100%); /* Default light mode, overridden by .dark .hero-button:hover */
+}
+
+.hero-button .free-highlight {
+  color: #FFF;
+  font-family: 'Space Grotesk', sans-serif; /* Inherits, but good to be explicit if needed */
+  font-size: 24px; /* Larger than button text */
+  font-style: normal;
+  font-weight: 700; /* Bolder */
+  line-height: normal;
+}
+
+/* Dark mode overrides from your App.css */
+.dark .hero-button {
+  background: linear-gradient(90deg, #0046FF 0%, #002A99 100%);
+  color: white;
+  border: 1px solid #3D72FF;
+}
+
+.dark .hero-button:hover {
+  background: linear-gradient(90deg, #002A99 0%, #001A66 100%);
+}
+
+
+/* In App.css */
+
+.content-video-wrapper {
+  position: relative;
+  overflow: hidden; /* Contains the absolutely positioned video and overlay */
+}
+
+.content-video-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;    /* Ensures video covers the container */
+  filter: blur(12px);   /* Adjust blur amount as needed (e.g., 8px, 10px, 15px) */
+  z-index: 0;           /* Sits behind the overlay and content */
+}
+
+.content-video-fade-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Adjust gradient colors/stops to match your dark theme (rgb(17, 24, 39) is Tailwind's gray-900) */
+  background: linear-gradient(
+    to bottom,
+    rgba(17, 24, 39, 0) 0%,    /* Transparent at the top */
+    rgba(17, 24, 39, 0) 75%,   /* Transparent until 50% down */
+    /*rgba(17, 24, 39, 0.8) 85%, Start becoming more opaque */
+    rgb(17, 24, 39) 93%       /* Fully opaque with your dark theme's background color */
+  );
+  z-index: 1;           /* Sits above the video, but below the main content */
+  pointer-events: none; /* Allows clicks to pass through to content behind (if any were meant to be interactive) */
+}
+
+.content-on-top {
+  position: relative; /* Necessary for z-index to take effect */
+  z-index: 2;         /* Ensures this content is rendered above the video and overlay */
+}
+
+.hero-bottom-gradient-band {
+  position: absolute;
+  bottom: 0; /* Sits at the very bottom of its container (.content-video-wrapper) */
+  left: 0;
+  width: 100%;
+  height: 4rem; /* Similar height to h-16, adjust as needed */
+  background: linear-gradient(to bottom, #111827, #0d0b02);
+  z-index: 3;   /* Above the video, below the main fade overlay and content */
+  pointer-events: none; /* It's purely decorative */
+}
+
+/* === FORM SECTION === */
 .form-section {
   display: flex;
+  /* These styles are for centering the content within the form section */
   justify-content: center;
   align-items: center;
   min-height: 90vh;
+  position: 'relative';
+  overflow: 'hidden';
+  background-color: #0D0B02;
+  /* position: relative; and overflow: hidden; are applied inline in App.js, consider moving here if consistent */
 }
 
-/* Form container styling */
+.form-intro {
+  width: 700px;
+  height: 80px; /* Consider using min-height or letting content define height */
+  color: #FFF;
+  text-align: center;
+  font-family: "Albert Sans", sans-serif;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal; /* Or specify a value like 1.2 for better control */
+  letter-spacing: -1.2px;
+}
+
+.personalized-highlight { /* Used in Form Intro */
+  font-weight: 500;
+}
+
+.form-desc { /* This is for the text below the form intro */
+  width: 700px;
+  color: #A5A5A5;
+  text-align: center;
+  font-family: "Albert Sans";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal; /* Or specify a value */
+  letter-spacing: -0.6px;
+}
+
 .form-container {
-  padding-left: 140px;
+  padding-left: 140px; /* This creates an asymmetric padding, ensure this is intended */
   width: 100%;
-  max-width: 500px;
+  max-width: 500px; /* This will constrain the form itself */
 }
 
-/* Title */
+/* General form title - not used in current HTML structure but present in CSS */
 h2 {
   text-align: center;
   margin-bottom: 20px;
 }
 
-/* Label styling */
-.form label {
+.form label { /* General label styling, currently not used with explicit <label> tags in the form */
   display: block;
   margin-bottom: 15px;
   color: #ffffff;
@@ -288,8 +367,8 @@ h2 {
   line-height: 125%; /* 17.5px */
 }
 
-/* Input field styling */
-.form input {
+.form input, /* General input, but specific .email-field input is also defined */
+.form textarea {
   width: 100%;
   padding: 10px;
   margin-top: 5px;
@@ -298,22 +377,26 @@ h2 {
   background: #373737;
   color: #ffffff;
   font-family: 'Inter', sans-serif;
+  font-size: 14px; /* Note: placeholder has 16px, this might be inconsistent */
   box-sizing: border-box;
 }
 
-/* Horizontal alignment group for email + button */
-.horizontal-group {
+.form textarea {
+  resize: vertical;
+}
+
+.horizontal-group { /* For email input and submit button */
   display: flex;
-  align-items: flex-end;
+  align-items: flex-end; /* Aligns items to the bottom of the container */
   gap: 20px;
   margin-top: 10px;
 }
 
-/* Email field container */
 .email-field {
-  flex: 1;
+  flex: 1; /* Allows email field to take available space */
 }
 
+/* These styles for label inside email-field are not used as there's no explicit label tag there */
 .email-field label {
   display: block;
   margin-bottom: 5px;
@@ -325,7 +408,7 @@ h2 {
   line-height: 125%;
 }
 
-.email-field input {
+.email-field input { /* Specific styling for the email input */
   width: 100%;
   padding: 10px;
   border-radius: 10px;
@@ -334,40 +417,7 @@ h2 {
   color: white;
   font-family: 'Inter', sans-serif;
   box-sizing: border-box;
-}
-
-/* Button styling */
-.form button {
-  height: 36.67px;
-  padding: 0 20px;
-  background-color: #F126F7;
-  color: white;
-  border: none;
-  font-size: 16px;
-  font-family: 'Inter', sans-serif;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-
-
-.form button:hover {
-  background-color: #a900ae;
-}
-
-
-.form textarea {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border-radius: 10px;
-  border: 1px solid #979797;
-  background: #373737;
-  color: #ffffff;
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  box-sizing: border-box;
-  resize: vertical;
+  /* font-size is inherited or default, placeholder is 16px */
 }
 
 .form input::placeholder,
@@ -381,34 +431,58 @@ h2 {
   line-height: 125%; /* 20px */
 }
 
-.form-intro {
-  width: 700px;
-  height: 80px;
-  color: #FFF;
-  text-align: center;
-  font-family: "Albert Sans", sans-serif;
-  font-size: 40px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: -1.2px;
-  
+.form button { /* Submit button */
+  height: 36.67px; /* Specific height */
+  padding: 0 20px;
+  background-color: #F126F7;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.form button:hover {
+  background-color: #a900ae;
 }
 
 
-
-.personalized-highlight {
-  font-weight: 500;
+/* === FOOTER === */
+.footer {
+  display: flex;
+  flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  border-top: 1px solid #ccc; /* Default light mode, overridden by .dark .footer */
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.form-desc {
-  width: 700px;
-  color: #A5A5A5;
-  text-align: center;
+.footer-names { /* Container for brand logo and copyright in footer */
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-copyright-text { /* Specifically for copyright text in footer */
   font-family: "Albert Sans";
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: -0.6px;
+  font-size: 16px;
+}
+
+/* General img styling within footer, not used as social icons have specific img styling */
+.footer img {
+  height: 2rem;
+}
+
+.social-icons a img { /* For social media icons in footer */
+  height: 1.25rem;
+  margin-left: 1rem;
+  transition: transform 0.3s ease;
+  filter: brightness(0) invert(1); /* Makes SVG icons white */
+}
+
+.social-icons a:hover img {
+  transform: scale(1.2);
 }
