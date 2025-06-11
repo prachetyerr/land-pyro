@@ -1,46 +1,75 @@
-/* === GLOBAL STYLES & DARK MODE === */
+/*
+========================================
+  STYLESHEET ORGANIZATION
+========================================
+1.  GLOBAL & ROOT STYLES
+2.  HELPER & UTILITY CLASSES
+3.  LAYOUT & MAJOR SECTIONS
+    - Top Navigation
+    - Content & Video Wrapper
+    - Form Section
+    - Decorative Grid
+    - Footer
+4.  COMPONENTS
+    - Logo
+    - Navigation Links & Menus
+    - Buttons & Forms
+    - Social Icons
+5.  RESPONSIVE MEDIA QUERIES
+    - 640px Breakpoint (Mobile Phones)
+    - 768px Breakpoint (Tablet & Up)
+    - 1024px Breakpoint (Desktop & Up)
+========================================
+*/
+
+
+/* 
+========================================
+1. GLOBAL & ROOT STYLES 
+========================================
+*/
 #root {
   max-width: 100%;
   margin: 0 auto;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body, html {
-    background-color: #0D0B02;
-}
-
-.dark {
-  background-color: #0D0B02 !important;
+body,
+html {
+  background-color: #0d0b02;
   color: white;
 }
 
-.dark .brand-logo-text {
-  color: #FFF;
+html {
+  scroll-behavior: smooth;
 }
 
-.dark .themeSwitcherTwo .label {
-  color: #FFF;
+
+/* 
+========================================
+2. HELPER & UTILITY CLASSES 
+========================================
+*/
+.invisible-section {
+  display: block;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
 }
 
-.dark .hero-button {
-  background: linear-gradient(90deg, #0046FF 0%, #002A99 100%);
-  color: white;
-  border: 1px solid #3D72FF;
-}
 
-.dark .hero-button:hover {
-  background: linear-gradient(90deg, #002A99 0%, #001A66 100%);
-}
+/* 
+========================================
+3. LAYOUT & MAJOR SECTIONS 
+========================================
+*/
 
-.dark .footer {
-  border-top: 1px solid #374151;
-}
-
-/* === TOP NAVIGATION === */
+/* --- Top Navigation Container --- */
 .top-nav {
   position: absolute;
-  margin-top: 20px;
+  margin-top: 4px;
   top: 0;
   left: 0;
   right: 0;
@@ -53,168 +82,27 @@ body, html {
   align-items: center;
   padding: 30px;
   box-sizing: border-box;
-  z-index: 10;
+  z-index: 50;
 }
-
-.brand-logo-text {
-  color: #FFF;
-  font-family: 'Bricolage Grotesque', sans-serif;
-  font-size: 36px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  margin: 0;
-}
-
-/* === THEME SWITCHER (Switcher12) === */
-.themeSwitcherTwo {
-  position: relative;
-  display: inline-flex;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  align-items: center;
-}
-
-.themeSwitcherTwo .sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-.themeSwitcherTwo .label {
-  display: flex;
-  align-items: center;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #000;
-}
-
-.themeSwitcherTwo .slider {
-  margin-left: 1rem;
-  margin-right: 1rem;
-  display: flex;
-  height: 2rem;
-  width: 60px;
-  align-items: center;
-  border-radius: 9999px;
-  padding: 0.25rem;
-  transition-property: background-color, transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 200ms;
-}
-
-.bg-\[\#CCCCCE\] {
-  background-color: #CCCCCE;
-}
-
-.bg-\[\#212b36\] {
-  background-color: #212b36;
-}
-
-.themeSwitcherTwo .dot {
-  height: 1.5rem;
-  width: 1.5rem;
-  border-radius: 9999px;
-  background-color: white;
-  transition-property: transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 200ms;
-}
-
-.translate-x-\[28px\] {
-  transform: translateX(28px);
-}
-
-/* === HERO SECTION === */
-.hero-heading {
-  color: #FFF;
-  text-align: center;
-  font-family: "Albert Sans", sans-serif;
-  font-size: 48px; /* Adjusted for mobile */
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1.1;
-  letter-spacing: -2px;
-  margin-bottom: 1rem;
-}
-
-.highlighted {
-  background: linear-gradient(90deg, #d904ff 42.35%, #003CFF 56.08%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-size: inherit; /* Inherit size from hero-heading */
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-}
-
-.hero-desc {
+.hero-marquee {
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 700px;
-  color: #CCC;
-  text-align: center;
-  font-family: 'Albert Sans', sans-serif;
-  font-size: 18px; /* Adjusted for mobile */
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1.5;
-  letter-spacing: -0.5px;
-  margin: 1.5rem auto;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(13, 11, 2, 0) 0%,
+    rgba(13, 11, 2, 0) 50%,
+    rgba(13, 11, 2, 0.8) 85%,
+    rgb(13, 11, 2) 98%
+  );
 }
-
-.hero-desc .desc-highlight {
-  font-weight: 500;
+.client-logo {
+  height: 30px;
+  margin-left: 2.5rem;
+  margin-right: 2.5rem;
 }
-
-.hero-desc .desc-italic {
-  font-style: italic;
-  font-weight: 500;
-}
-
-.hero-button {
-  color: #FFF;
-  text-align: center;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  border-radius: 31px;
-  border: 1px solid #3D72FF;
-  background: linear-gradient(90deg, #0046FF 0%, #002A99 100%);
-  padding: 0.75rem 1.5rem;
-  cursor: pointer;
-  margin-top: 1rem;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.hero-button:hover {
-  background: linear-gradient(90deg, #002A99 0%, #001A66 100%);
-}
-
-.hero-button .free-highlight {
-  color: #FFF;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-}
-
+/* --- Hero & Video Containers --- */
 .content-video-wrapper {
   position: relative;
   overflow: hidden;
@@ -253,25 +141,15 @@ body, html {
   z-index: 2;
 }
 
-@media (min-width: 768px) {
-  .hero-heading {
-    font-size: 70px;
-    letter-spacing: -2.4px;
-  }
-  .hero-desc {
-    font-size: 22px;
-  }
-}
-
-/* === FORM SECTION === */
+/* --- Form Section Container --- */
 .form-section {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 2rem;
-  padding: 0rem 1.5rem 4rem;
-  background-color: #0D0B02;
+  padding: 4rem 1.5rem;
+  background-color: #0d0b02;
 }
 
 .form-text-wrapper,
@@ -282,130 +160,26 @@ body, html {
   text-align: center;
 }
 
-.form-intro {
-  color: #FFF;
-  font-family: "Albert Sans", sans-serif;
-  font-size: 2rem;
-  font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: -1.2px;
-  margin-bottom: 1rem;
-}
-
-.personalized-highlight {
-  font-weight: 500;
-}
-
-.form-desc {
-  color: #A5A5A5;
-  font-family: "Albert Sans";
-  font-size: 1.125rem;
-  font-weight: 400;
-  line-height: 1.5;
-  letter-spacing: -0.6px;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.form input,
-.form textarea {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #979797;
-  background: #373737;
-  color: #ffffff;
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
-  box-sizing: border-box;
-}
-
-.form textarea {
-  resize: vertical;
-  min-height: 100px;
-}
-
 .horizontal-group {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.email-field {
-  flex: 1;
-}
-
-.form input::placeholder,
-.form textarea::placeholder {
-  color: #B8B8B8;
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-}
-
-.form button {
-  width: 100%;
-  padding: 12px 20px;
-  background-color: #F126F7;
-  color: white;
-  border: none;
-  font-size: 16px;
-  font-family: 'Inter', sans-serif;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.form button:hover {
-  background-color: #a900ae;
-}
-
-@media (min-width: 1024px) {
-  .form-section {
-    flex-direction: row;
-    align-items: center;
-    gap: 4rem;
-    padding: 6rem 2rem 4rem; /* Reduced bottom padding */
-  }
-  
-  .form-text-wrapper {
-      max-width: 700px;
-      text-align: left;
-  }
-  .form-container{
-    max-width: 500px;
-  }
-
-  .form-intro { font-size: 40px; }
-  .form-desc { font-size: 20px; }
-
-  .horizontal-group {
-    flex-direction: row;
-    align-items: center;
-    gap: 20px;
-  }
-
-  .form button { width: auto; }
-}
-
-/* --- CHANGE: New styles for the separated decorative grid image --- */
+/* --- Decorative Grid Container --- */
 .decorative-grid-container {
-  background-color: #0D0B02;
+  background-color: #0d0b02;
 }
 
 .decorative-grid-image {
   display: block;
   width: 100%;
   max-width: 1000px;
-  height: auto; /* Maintains aspect ratio */
-  margin: 0 auto; /* Centers the image */
+  height: auto;
+  margin: 0 auto;
 }
 
-/* === FOOTER === */
+/* --- Footer Layout --- */
 .footer {
   display: flex;
   flex-direction: column;
@@ -413,8 +187,8 @@ body, html {
   align-items: center;
   gap: 1rem;
   padding: 2rem 1.5rem;
-  border-top: 1px solid #374151; /* Dark mode border color */
-  background-color: #0D0B02;
+  border-top: 1px solid #374151;
+  background-color: #0d0b02;
   max-width: 1500px;
   margin-left: auto;
   margin-right: auto;
@@ -427,34 +201,388 @@ body, html {
   text-align: center;
 }
 
+
+/* 
+========================================
+4. COMPONENTS 
+========================================
+*/
+
+/* --- Brand Logo --- */
+.brand-logo-text {
+  color: #fff;
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0;
+  text-decoration: none;
+}
+
+/* --- Navigation & Menus --- */
+.nav-links {
+  display: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 2.5rem;
+}
+.nav-links a {
+  color: #ccc;
+  text-decoration: none;
+  font-family: "Albert Sans", sans-serif;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+.nav-links a:hover {
+  color: #fff;
+}
+
+.hamburger-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 1rem;
+  height: 1.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0px 10px 0px 0px;
+  z-index: 60;
+}
+.hamburger-menu .bar {
+  width: 2rem;
+  height: 2px;
+  background-color: #fff;
+  border-radius: 10px;
+  transition: all 0.3s linear;
+}
+
+.mobile-nav {
+  position: absolute;
+  top: 90px;
+  right: 30px;
+  width: 200px;
+  background: rgba(25, 25, 28, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 12px;
+  list-style: none;
+  padding: 1rem;
+  margin: 0;
+  z-index: 55;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}
+.mobile-nav.is-active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.mobile-nav li {
+  padding: 0;
+}
+.mobile-nav a {
+  display: block;
+  padding: 0.75rem 0.5rem;
+  color: #fff;
+  text-decoration: none;
+  font-family: "Albert Sans", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+.mobile-nav a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* --- Typography & Text Styles --- */
+.hero-heading {
+  color: #fff;
+  text-align: center;
+  font-family: "Albert Sans", sans-serif;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -2px;
+  margin-bottom: 1rem;
+}
+.highlighted {
+  background: linear-gradient(90deg, #d904ff 42.35%, #003cff 56.08%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-size: inherit;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.hero-desc {
+  width: 95%;
+  max-width: 700px;
+  color: #ccc;
+  text-align: center;
+  font-family: "Albert Sans", sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.5px;
+  margin: 2rem auto;
+  padding: 2px;
+}
+.hero-desc .desc-highlight {
+  font-weight: 500;
+}
+.hero-desc .desc-italic {
+  font-style: italic;
+  font-weight: 500;
+}
+
+.form-intro {
+  color: #fff;
+  font-family: "Albert Sans", sans-serif;
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -1.2px;
+  margin-bottom: 1rem;
+}
+.personalized-highlight {
+  font-weight: 500;
+}
+.form-desc {
+  color: #a5a5a5;
+  font-family: "Albert Sans";
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.6px;
+}
 .brand-copyright-text {
   font-family: "Albert Sans";
   font-size: 16px;
   margin-top: 0.5rem;
 }
 
+
+/* --- Buttons --- */
+.hero-button {
+  color: #fff;
+  text-align: center;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border-radius: 31px;
+  border: 1px solid #3d72ff;
+  background: linear-gradient(90deg, #0046ff 0%, #002a99 100%);
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  margin: 2.5rem 2rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero-button:hover {
+  background: linear-gradient(90deg, #002a99 0%, #001a66 100%);
+}
+.hero-button .free-highlight {
+  color: #fff;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+/* --- Form Fields & Elements --- */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.form input,
+.form textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #979797;
+  background: #373737;
+  color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+.form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+.email-field {
+  flex: 1;
+}
+.form input::placeholder,
+.form textarea::placeholder {
+  color: #b8b8b8;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+}
+.form button {
+  width: 100%;
+  padding: 12px 20px;
+  background-color: #f126f7;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-family: "Inter", sans-serif;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.form button:hover {
+  background-color: #a900ae;
+}
+
+/* --- Social Icons --- */
 .social-icons {
   display: flex;
   gap: 1.5rem;
 }
-
 .social-icons a img {
   height: 1.5rem;
   transition: transform 0.3s ease;
   filter: brightness(0) invert(1);
 }
-
 .social-icons a:hover img {
   transform: scale(1.2);
 }
 
-@media (min-width: 768px) {
-    .footer {
-        flex-direction: row;
-        justify-content: space-between;
-        padding: 1.5rem 2rem;
-    }
-    .footer-names{
-        align-items: flex-start;
-    }
+
+/* 
+========================================
+5. RESPONSIVE MEDIA QUERIES 
+========================================
+*/
+
+/* --- 640px Breakpoint (Mobile Phones & Smaller) --- */
+@media (max-width: 640px) {
+  /* Adjust navigation bar for smaller screens */
+  .top-nav {
+    padding: 20px;
+  }
+  .mobile-nav {
+    right: 20px; /* Align dropdown with new padding */
+  }
+  .client-logo{
+    margin-left: 2rem;
+    margin-right: 2rem;
+  }
+  /* Reduce logo size to prevent crowding */
+  .brand-logo-text {
+    font-size: 30px;
+  }
+
+  /* Reduce heading and text sizes for readability */
+  .hero-heading {
+    font-size: 38px;
+    letter-spacing: -1.5px;
+  }
+  .form-intro {
+    font-size: 1.75rem; /* ~28px */
+    letter-spacing: -1px;
+  }
+  .brand-copyright-text {
+    font-size: 14px;
+  }
+  .hamburger-menu .bar {
+  width: 1.5rem;
+  height: 2px;
+  background-color: #fff;
+  border-radius: 10px;
+  transition: all 0.3s linear;
 }
+.hero-button{
+  font-size: 15px;
+}
+.hero-button .free-highlight{
+  font-size: 18px;
+}
+}
+
+
+/* --- 768px Breakpoint (Tablet & Up) --- */
+@media (min-width: 768px) {
+  /* Navigation */
+  .nav-links {
+    display: flex;
+  }
+  .hamburger-menu {
+    display: none;
+  }
+  .mobile-nav {
+    display: none;
+  }
+
+  /* Hero Section */
+  .hero-heading {
+    font-size: 70px;
+    letter-spacing: -2.4px;
+  }
+  .hero-desc {
+    font-size: 22px;
+    padding: 0 1rem;
+  }
+
+  /* Footer */
+  .footer {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+  }
+  .footer-names {
+    align-items: flex-start;
+  }
+}
+
+
+/* --- 1024px Breakpoint (Desktop & Up) --- */
+@media (min-width: 1024px) {
+  /* Form Section */
+  .form-section {
+    flex-direction: row;
+    align-items: center;
+    gap: 4rem;
+    padding: 6rem 2rem 4rem;
+  }
+  .form-text-wrapper {
+    max-width: 700px;
+    text-align: left;
+  }
+  .form-container {
+    max-width: 500px;
+  }
+  .form-intro {
+    font-size: 40px;
+  }
+  .form-desc {
+    font-size: 20px;
+  }
+  .horizontal-group {
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+  }
+  .form button {
+    width: auto;
+  }
+}
+
