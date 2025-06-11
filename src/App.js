@@ -81,74 +81,61 @@ function App() {
   useEffect(() => {
     if (isDark) {
       document.body.classList.add('dark');
-      document.documentElement.classList.add('dark'); // For Tailwind 'class' strategy
+      document.documentElement.classList.add('dark');
     } else {
       document.body.classList.remove('dark');
-      document.documentElement.classList.remove('dark'); // For Tailwind 'class' strategy
+      document.documentElement.classList.remove('dark');
     }
   }, [isDark]);
 
   return (
-    // Tailwind dark mode is often applied to <html>, so ensure documentElement gets the class.
     <div>
-      <div className="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white transition-colors duration-300">
-        {/* Hero Section */}
-        <section className="relative flex flex-col min-h-screen p-6"> {/* Parent with position: relative */}
-          {/* Top Bar */}
+      <div className="bg-white dark:bg-gray-900 text-black dark:text-white transition-colors duration-300">
+        <section className="relative flex flex-col">
           <div className="top-nav">
             <span className="brand-logo-text">Pyrosynergy</span>
-            <Switcher12
-              isChecked={isDark}
-              onChange={setIsDark}
-            />
+            <Switcher12 isChecked={isDark} onChange={setIsDark} />
           </div>
 
-          {/* Centered Content */}
-        <div className="content-video-wrapper">
+          <div className="content-video-wrapper">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="content-video-bg"
+            >
+              <source src={bgvideo} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
 
-  {/* Video Background: now uses a CSS class */}
-  <video
-    autoPlay
-    loop
-    muted
-    playsInline
-    className="content-video-bg" // Class for video styling
-  >
-    <source src={bgvideo} type="video/mp4" /> {/* Ensure path is correct */}
-    Your browser does not support the video tag.
-  </video>
+            <div className="content-video-fade-overlay"></div>
 
-  {/* Overlay for fading: now uses a CSS class */}
-  <div className="content-video-fade-overlay"></div>
+            <div
+              className="flex flex-col items-center justify-center flex-1 content-on-top"
+              style={{
+                minHeight: '40vh',
+                paddingTop: '130px',
+                paddingBottom: '40px',
+              }}
+            >
+              <h1 className="hero-heading leading-snug">
+                <div>Let's make your business</div>
+                <div className="highlighted">AI-ready.</div>
+              </h1>
+              <p className="hero-desc">
+                From strategy to scale, we rebuild and redesign your brand into its most{' '}
+                <span className="desc-highlight">efficient, effective, and elegant</span> form —
+                empowering you to <span className="desc-italic">outgrow</span> your competitors in
+                sales and success.
+              </p>
 
-  {/* Inner content div: existing classes + new class for layering + remaining layout styles */}
-  <div
-    className="flex flex-col items-center justify-center flex-1 content-on-top" // Added 'content-on-top'
-    style={{
-      // position & zIndex are now handled by 'content-on-top' class
-      minHeight: '40vh',    // Specific layout style for this content block
-      paddingTop: '130px',  // Specific layout style for this content block
-      paddingBottom: '40px' // Specific layout style for this content block
-    }}
-  >
-    <h1 className="hero-heading leading-snug">
-      <div>Let's make your business</div>
-      <div className="highlighted">AI-ready.</div>
-    </h1>
-    <p className="hero-desc">
-      From strategy to scale, we rebuild and redesign your brand into its most{' '}
-      <span className="desc-highlight">efficient, effective, and elegant</span> form —
-      empowering you to <span className="desc-italic">outgrow</span> your competitors in
-      sales and success.
-    </p>
-
-    <button className="hero-button mx-auto mb-8 md:mb-12" onClick={openCalendarPopup}>
-      schedule a <span className="free-highlight">FREE</span> strategy call
-    </button>
-          </div> 
-
-            {/* Marquee Logos - Now after the button */}
-            <div className="w-full max-w-4xl py-2"> {/* Removed top margin as button now has bottom margin */}
+              <button className="hero-button mx-auto mb-8 md:mb-12" onClick={openCalendarPopup}>
+                schedule a <span className="free-highlight">FREE</span> strategy call
+              </button>
+            </div>
+            
+            <div className="w-full max-w-7xl mx-auto py-8">
               <Marquee speed={40} pauseOnHover gradient={false}>
                 {clientLogos.map((logo, idx) => (
                   <img
@@ -157,33 +144,18 @@ function App() {
                     alt={`client-${idx}`}
                     style={{
                       height: '35px',
-                      marginLeft: '2.5rem',
-                      marginRight: '2.5rem',
+                      marginLeft: '1.5rem',
+                      marginRight: '1.5rem',
                     }}
                   />
                 ))}
               </Marquee>
             </div>
           </div>
+        </section>
 
-          {/* Decorative SVG - Remains at the bottom of the section */}
-          <div
-            className="absolute bottom-4 w-full"
-            style={{ zIndex: 1 }}
-          >
-            {/* <img
-              src={lines}
-              alt="Decorative lines"
-              className="h-16 object-cover block mx-auto"
-              style={{ width: '1900px', maxWidth: '100%' }}
-            /> */}
-          </div>
-        </section> {/* End of Hero Section */}
-
-        <div className="hero-bottom-gradient-band"></div>
-
-        <section className="form-section" style={{ position: 'relative', overflow: 'hidden' }}>
-          <div>
+        <section className="form-section">
+          <div className="form-text-wrapper">
             <p className="form-intro">
               Let’s be clear and honest: Your business NEEDS a{" "}
               <span className="personalized-highlight">personalized</span> solution.
@@ -203,28 +175,21 @@ function App() {
               </div>
             </form>
           </div>
+        </section>
+
+        {/* --- CHANGE: Grid image moved outside the form into its own container --- */}
+        <div className="decorative-grid-container">
           <img
             src={grids}
             alt="Decorative grids"
-            style={{
-              position: 'absolute',
-              left: '50%',
-              bottom: 0,
-              transform: 'translateX(-50%)',
-              width: '1000px',
-              height: '200px',
-              zIndex: 0,
-              pointerEvents: 'none',
-              userSelect: 'none'
-            }}
+            className="decorative-grid-image"
           />
-        </section>
-
-        {/* Footer */}
+        </div>
+        
         <footer className="footer">
           <div className="footer-names">
             <span className="brand-logo-text">Pyrosynergy</span>
-            <span className="brand-copyright-text"> &copy; Copyright 2025 Pyrosynergy AI Labs. All rights reserved.</span>
+            <span className="brand-copyright-text"> © Copyright 2025 Pyrosynergy AI Labs. All rights reserved.</span>
           </div>
           <div className="social-icons">
             <a href="#" aria-label="Instagram"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" /></a>
@@ -237,5 +202,4 @@ function App() {
 }
 
 export default App;
-
 // --- END OF FILE App.js ---
