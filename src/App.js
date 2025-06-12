@@ -15,16 +15,7 @@ import logo10 from "./assets/acm.png";
 import bgvideo from "./assets/bgvideo.mp4";
 
 const clientLogos = [
-  logo1,
-  logo2,
-  logo3,
-  logo4,
-  logo5,
-  logo6,
-  logo7,
-  logo8,
-  logo9,
-  logo10,
+  logo1, logo2, logo3, logo4, logo5, logo6, logo7, logo8, logo9, logo10,
 ];
 
 const openCalendarPopup = () => {
@@ -36,7 +27,8 @@ const openCalendarPopup = () => {
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuRef = useRef(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const navRef = useRef(null);
 
   const handleLinkClick = () => {
     setIsMenuOpen(false);
@@ -44,7 +36,7 @@ function App() {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
+      if (navRef.current && !navRef.current.contains(event.target)) {
         setIsMenuOpen(false);
       }
     };
@@ -52,59 +44,55 @@ function App() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [menuRef]);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <div>
-      {/* --- CHANGE: Moved mobile menu inside the header element --- */}
-      <header className="top-nav" ref={menuRef}>
+      <header className="top-nav">
         <a href="#home" className="brand-logo-text" onClick={handleLinkClick}>
           Pyrosynergy
         </a>
-        <nav>
+        
+        <nav ref={navRef} className={`main-navigation ${isScrolled ? "fixed-nav" : ""}`}>
           <ul className="nav-links">
-            <li>
-              <a href="#home">Home</a>
-            </li>
-            <li>
-              <a href="#services">Services</a>
-            </li>
-            {/* <!-- <li><a href="#testimonials">Testimonials</a></li> --> */}
-            <li>
-              <a href="#contact">Contact</a>
-            </li>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
           </ul>
-          <button
-            className="hamburger-menu"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            <div className="bar"></div>
-            <div className="bar"></div>
-            <div className="bar"></div>
-          </button>
-        </nav>
-        {/* Mobile Dropdown Menu is now a child of the header */}
-        <ul className={`mobile-nav ${isMenuOpen ? "is-active" : ""}`}>
-          <li>
-            <a href="#home" onClick={handleLinkClick}>
-              Home
-            </a>
-          </li>
-          <li>
-            <a href="#services" onClick={handleLinkClick}>
-              Services
-            </a>
-          </li>
-          {/* <!-- <li><a href="#testimonials" onClick={handleLinkClick}>Testimonials</a></li> --> */}
-          <li>
-            <a href="#contact" onClick={handleLinkClick}>
-              Contact
-            </a>
-          </li>
-        </ul>
-      </header>
 
-      {/* --- Page Content Starts Here (Unchanged) --- */}
+          <div className="mobile-nav-wrapper">
+            <button
+              className="hamburger-menu"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-expanded={isMenuOpen}
+              aria-label="Toggle navigation menu"
+            >
+              <div className="bar"></div>
+              <div className="bar"></div>
+              <div className="bar"></div>
+            </button>
+            <ul className={`mobile-nav ${isMenuOpen ? "is-active" : ""}`}>
+              <li><a href="#home" onClick={handleLinkClick}>Home</a></li>
+              <li><a href="#services" onClick={handleLinkClick}>Services</a></li>
+              <li><a href="#contact" onClick={handleLinkClick}>Contact</a></li>
+            </ul>
+          </div>
+        </nav>
+      </header>
 
       <section id="home" className="relative flex flex-col">
         <div className="content-video-wrapper">
@@ -114,11 +102,7 @@ function App() {
           <div className="content-video-fade-overlay"></div>
           <div
             className="flex flex-col items-center justify-center flex-1 content-on-top"
-            style={{
-              minHeight: "40vh",
-              paddingTop: "130px",
-              paddingBottom: "40px",
-            }}
+            style={{ minHeight: "40vh", paddingTop: "130px", paddingBottom: "40px" }}
           >
             <h1 className="hero-heading leading-snug">
               <div>Let's make your business</div>
@@ -127,9 +111,7 @@ function App() {
             <p className="hero-desc">
               From strategy to scale, we rebuild and redesign your brand into
               its most{" "}
-              <span className="desc-highlight">
-                efficient, effective, and elegant
-              </span>{" "}
+              <span className="desc-highlight">efficient, effective, and elegant</span>{" "}
               form — empowering you to{" "}
               <span className="desc-italic">outgrow</span> your competitors in
               sales and success.
@@ -142,18 +124,11 @@ function App() {
               call
             </button>
           </div>
-          <div className="height">
-
-          </div>
+          <div className="height"></div>
           <div className="w-full max-w-7xl mx-auto py-8 flex justify-center items-center hero-marquee">
             <Marquee speed={40} pauseOnHover gradient={false}>
               {clientLogos.map((logo, idx) => (
-                <img
-                  key={idx}
-                  src={logo}
-                  alt={`client-${idx}`}
-                  className="client-logo"
-                />
+                <img key={idx} src={logo} alt={`client-${idx}`} className="client-logo" />
               ))}
             </Marquee>
           </div>
@@ -161,7 +136,6 @@ function App() {
       </section>
 
       <section id="services" className="invisible-section"></section>
-      {/* <!-- <section id="testimonials" className="invisible-section"></section> --> */}
 
       <section id="contact" className="form-section">
         <div className="form-text-wrapper">
@@ -177,53 +151,36 @@ function App() {
         </div>
         <div className="form-container">
           <form className="form">
-            <textarea
-              name="message"
-              placeholder="Enter your message"
-              rows="4"
-            />
+            <div className="input-wrapper">
+              <textarea name="message" placeholder="Enter your message" rows="4" />
+            </div>
             <div className="horizontal-group">
-              <div className="email-field">
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Enter your email"
-                />
+              <div className="input-wrapper email-field">
+                <input type="email" name="email" placeholder="Enter your email" />
               </div>
-              <button type="submit ">Submit</button>
+              <button type="submit" className="form-submit-button">Submit</button>
             </div>
           </form>
         </div>
       </section>
 
       <div className="decorative-grid-container">
-        <img
-          src={grids}
-          alt="Decorative grids"
-          className="decorative-grid-image"
-        />
+        <img src={grids} alt="Decorative grids" className="decorative-grid-image" />
       </div>
 
       <footer className="footer">
         <div className="footer-names">
           <span className="brand-logo-text">Pyrosynergy</span>
           <span className="brand-copyright-text">
-            {" "}
             © Copyright 2025 Pyrosynergy AI Labs. All rights reserved.
           </span>
         </div>
         <div className="social-icons">
           <a href="#" aria-label="Instagram">
-            <img
-              src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg"
-              alt="Instagram"
-            />
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" />
           </a>
           <a href="#" aria-label="LinkedIn">
-            <img
-              src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg"
-              alt="LinkedIn"
-            />
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn" />
           </a>
         </div>
       </footer>

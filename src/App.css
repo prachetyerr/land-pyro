@@ -69,7 +69,6 @@ html {
 /* --- Top Navigation Container --- */
 .top-nav {
   position: absolute;
-  margin-top: 4px;
   top: 0;
   left: 0;
   right: 0;
@@ -82,8 +81,32 @@ html {
   align-items: center;
   padding: 30px;
   box-sizing: border-box;
-  z-index: 50;
+  z-index: 1001; /* Must be higher than the fixed-nav's z-index content */
 }
+
+.main-navigation {
+  display: flex;
+  align-items: center;
+}
+
+.main-navigation.fixed-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 18px 30px;
+  background-color: rgba(13, 11, 2, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 1000; /* Lower z-index than the content on top of it */
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(151, 151, 151, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
 .hero-marquee {
   top: 0;
   left: 0;
@@ -102,7 +125,7 @@ html {
   margin-left: 2.5rem;
   margin-right: 2.5rem;
 }
-/* --- Hero & Video Containers --- */
+
 .content-video-wrapper {
   position: relative;
   overflow: hidden;
@@ -141,7 +164,6 @@ html {
   z-index: 2;
 }
 
-/* --- Form Section Container --- */
 .form-section {
   display: flex;
   flex-direction: column;
@@ -166,7 +188,6 @@ html {
   gap: 1rem;
 }
 
-/* --- Decorative Grid Container --- */
 .decorative-grid-container {
   background-color: #0d0b02;
 }
@@ -179,7 +200,6 @@ html {
   margin: 0 auto;
 }
 
-/* --- Footer Layout --- */
 .footer {
   display: flex;
   flex-direction: column;
@@ -220,7 +240,7 @@ html {
   text-decoration: none;
 }
 
-/* --- Navigation & Menus --- */
+/* --- Desktop Navigation Links --- */
 .nav-links {
   display: none;
   list-style: none;
@@ -239,20 +259,24 @@ html {
   color: #fff;
 }
 
+/* --- Mobile Navigation Components --- */
+.mobile-nav-wrapper {
+  position: relative;
+  z-index: 1002; /* Ensures mobile menu is above fixed nav background */
+}
 .hamburger-menu {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  width: 1rem;
+  width: 2rem;
   height: 1.5rem;
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 0px 10px 0px 0px;
-  z-index: 60;
+  padding: 0;
 }
 .hamburger-menu .bar {
-  width: 2rem;
+  width: 100%;
   height: 2px;
   background-color: #fff;
   border-radius: 10px;
@@ -261,8 +285,8 @@ html {
 
 .mobile-nav {
   position: absolute;
-  top: 90px;
-  right: 30px;
+  top: calc(100% + 15px);
+  right: 0;
   width: 200px;
   background: rgba(25, 25, 28, 0.9);
   backdrop-filter: blur(10px);
@@ -271,7 +295,6 @@ html {
   list-style: none;
   padding: 1rem;
   margin: 0;
-  z-index: 55;
   opacity: 0;
   transform: translateY(-10px);
   pointer-events: none;
@@ -345,7 +368,6 @@ html {
   font-style: italic;
   font-weight: 500;
 }
-
 .form-intro {
   color: #fff;
   font-family: "Albert Sans", sans-serif;
@@ -372,8 +394,7 @@ html {
   margin-top: 0.5rem;
 }
 
-
-/* --- Buttons --- */
+/* --- Buttons & Forms --- */
 .hero-button {
   color: #fff;
   text-align: center;
@@ -404,52 +425,88 @@ html {
   line-height: normal;
 }
 
-/* --- Form Fields & Elements --- */
 .form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
+.input-wrapper {
+  position: relative;
+  border-radius: 12px;
+  padding: 1px;
+  background: linear-gradient(120deg, #3d72ff, #d904ff);
+  transition: all 0.3s ease;
+}
 .form input,
 .form textarea {
   width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #979797;
-  background: #373737;
+  padding: 12px 14px;
+  border-radius: 11px;
+  border: none;
+  background: #0D0B02;
   color: #ffffff;
   font-family: "Inter", sans-serif;
   font-size: 16px;
   box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
 }
 .form textarea {
   resize: vertical;
   min-height: 100px;
 }
-.email-field {
-  flex: 1;
-}
 .form input::placeholder,
 .form textarea::placeholder {
-  color: #b8b8b8;
+  color: #8a8a8a;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-size: 16px;
   font-weight: 400;
 }
-.form button {
+.input-wrapper:focus-within {
+  background: linear-gradient(120deg, #0046ff, #f126f7);
+  box-shadow: 0 0 12px 0px #3d72ff66;
+}
+.email-field {
+  flex: 1;
+}
+.form-submit-button {
+  position: relative;
+  overflow: hidden;
   width: 100%;
-  padding: 12px 20px;
-  background-color: #f126f7;
+  padding: 13px 20px;
   color: white;
   border: none;
   font-size: 16px;
+  font-weight: 500;
   font-family: "Inter", sans-serif;
   border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  background: linear-gradient(90deg, #d904ff 0%, #a200a5 100%);
+  transition: all 0.3s ease;
 }
-.form button:hover {
-  background-color: #a900ae;
+.form-submit-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(217, 4, 255, 0.4);
+}
+.form-submit-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    110deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 80%
+  );
+  transition: left 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.form-submit-button:hover::after {
+  left: 150%;
 }
 
 /* --- Social Icons --- */
@@ -473,66 +530,44 @@ html {
 ========================================
 */
 
-/* --- 640px Breakpoint (Mobile Phones & Smaller) --- */
 @media (max-width: 640px) {
-  /* Adjust navigation bar for smaller screens */
   .top-nav {
     padding: 20px;
   }
-  .mobile-nav {
-    right: 20px; /* Align dropdown with new padding */
+  .main-navigation.fixed-nav {
+    padding: 15px 20px;
   }
-  .client-logo{
-    margin-left: 2rem;
-    margin-right: 2rem;
-  }
-  /* Reduce logo size to prevent crowding */
   .brand-logo-text {
     font-size: 30px;
   }
-
-  /* Reduce heading and text sizes for readability */
+  .hamburger-menu {
+    width: 1.8rem;
+  }
   .hero-heading {
     font-size: 38px;
     letter-spacing: -1.5px;
   }
   .form-intro {
-    font-size: 1.75rem; /* ~28px */
-    letter-spacing: -1px;
+    font-size: 1.75rem;
   }
   .brand-copyright-text {
     font-size: 14px;
   }
-  .hamburger-menu .bar {
-  width: 1.5rem;
-  height: 2px;
-  background-color: #fff;
-  border-radius: 10px;
-  transition: all 0.3s linear;
-}
-.hero-button{
-  font-size: 15px;
-}
-.hero-button .free-highlight{
-  font-size: 18px;
-}
+  .hero-button{
+    font-size: 15px;
+  }
+  .hero-button .free-highlight{
+    font-size: 18px;
+  }
 }
 
-
-/* --- 768px Breakpoint (Tablet & Up) --- */
 @media (min-width: 768px) {
-  /* Navigation */
   .nav-links {
     display: flex;
   }
-  .hamburger-menu {
+  .mobile-nav-wrapper {
     display: none;
   }
-  .mobile-nav {
-    display: none;
-  }
-
-  /* Hero Section */
   .hero-heading {
     font-size: 70px;
     letter-spacing: -2.4px;
@@ -541,8 +576,6 @@ html {
     font-size: 22px;
     padding: 0 1rem;
   }
-
-  /* Footer */
   .footer {
     flex-direction: row;
     justify-content: space-between;
@@ -553,10 +586,7 @@ html {
   }
 }
 
-
-/* --- 1024px Breakpoint (Desktop & Up) --- */
 @media (min-width: 1024px) {
-  /* Form Section */
   .form-section {
     flex-direction: row;
     align-items: center;
@@ -579,10 +609,9 @@ html {
   .horizontal-group {
     flex-direction: row;
     align-items: center;
-    gap: 20px;
+    gap: 1rem;
   }
-  .form button {
+  .form-submit-button {
     width: auto;
   }
 }
-
