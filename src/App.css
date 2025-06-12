@@ -570,6 +570,15 @@ html {
   .hero-button .free-highlight{
     font-size: 18px;
   }
+  .hero-desc {
+  max-width: 90%;
+  margin: 0 auto;
+  padding: 0 1rem;
+  font-size: 15px;
+  color: #dcdcdc;
+  text-align: center;
+}
+
 }
 
 @media (min-width: 768px) {
@@ -586,6 +595,7 @@ html {
   .hero-desc {
     font-size: 22px;
     padding: 0 1rem;
+    
   }
   .footer {
     flex-direction: row;
