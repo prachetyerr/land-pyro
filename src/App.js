@@ -1,6 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
+
+// Third-party Libraries
 import Marquee from "react-fast-marquee";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCode,
+  faPalette,
+  faRobot,
+  faTimes,
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+
+// Asset Imports
 import grids from "./assets/Frame 41.png";
 import logo1 from "./assets/viali.png";
 import logo2 from "./assets/tanvi.png";
@@ -13,12 +26,67 @@ import logo8 from "./assets/nasa.png";
 import logo9 from "./assets/innogeeks.png";
 import logo10 from "./assets/acm.png";
 import bgvideo from "./assets/bgvideo.mp4";
-// We no longer need to import from Firebase for this form
-// import { db } from "./firebase";
-// import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+
+// --- Data for Services Section ---
+const servicesData = [
+  {
+    icon: faRobot,
+    title: "AI-Powered Automation",
+    shortDesc:
+      "Streamline workflows, reduce manual tasks, and unlock peak efficiency with custom-trained AI models.",
+    details: {
+      heading: "Bespoke AI for Your Business",
+      points: [
+        "Custom AI model training and seamless integration.",
+        "Intelligent process automation for repetitive tasks.",
+        "Advanced data analysis and predictive insights.",
+      ],
+    },
+  },
+  {
+    icon: faCode,
+    title: "Web & App Development",
+    shortDesc:
+      "From elegant landing pages to complex web applications, we build fast, secure, and beautiful digital experiences.",
+    details: {
+      heading: "Digital Experiences that Perform",
+      points: [
+        "Responsive, high-performance website development.",
+        "Scalable full-stack web application architecture.",
+        "Secure APIs and robust database integration.",
+      ],
+    },
+  },
+  {
+    icon: faPalette,
+    title: "Brand & UI/UX Design",
+    shortDesc:
+      "We craft stunning brand identities and intuitive user interfaces that captivate your audience and drive engagement.",
+    details: {
+      heading: "Design that Drives Connection",
+      points: [
+        "Comprehensive brand identity and strategy.",
+        "User-centric UI/UX research and design.",
+        "Creation of cohesive and memorable visual systems.",
+      ],
+    },
+  },
+];
+
+// Data for the animated hero heading
+const highlightedWords = ["AI-ready.", "future-proof.", "omnichannel."];
 
 const clientLogos = [
-  logo1, logo2, logo3, logo4, logo5, logo6, logo7, logo8, logo9, logo10,
+  logo1,
+  logo2,
+  logo3,
+  logo4,
+  logo5,
+  logo6,
+  logo7,
+  logo8,
+  logo9,
+  logo10,
 ];
 
 const openCalendarPopup = () => {
@@ -29,54 +97,83 @@ const openCalendarPopup = () => {
 };
 
 function App() {
+  // State Management
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const navRef = useRef(null);
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [formStatus, setFormStatus] = useState("");
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState(null);
+  const [highlightedIndex, setHighlightedIndex] = useState(0);
+
+  // Effect to cycle through the highlighted words
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setHighlightedIndex(
+        (prevIndex) => (prevIndex + 1) % highlightedWords.length
+      );
+    }, 2500); // Change word every 2.5 seconds
+    return () => clearInterval(interval);
+  }, []);
+
+  // Modal Handlers
+  const handleOpenModal = (service) => {
+    setSelectedService(service);
+    setIsModalOpen(true);
+    document.body.style.overflow = "hidden";
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedService(null);
+    document.body.style.overflow = "auto";
+  };
+
+  // Carousel Handlers
+  const handleNextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % servicesData.length);
+  };
+  const handlePrevSlide = () => {
+    setCurrentSlide(
+      (prev) => (prev - 1 + servicesData.length) % servicesData.length
+    );
+  };
 
   const handleLinkClick = () => {
     setIsMenuOpen(false);
   };
 
+  // Form Submission Handler
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setFormStatus("Submitting...");
-
     if (!email || !message) {
       setFormStatus("❌ Please fill in both fields.");
       return;
     }
-
     try {
-      // --- UPDATED LOGIC TO SEND DATA TO GOOGLE APPS SCRIPT ---
       await fetch(
-        "https://script.google.com/macros/s/AKfycbxfJZIHACfhDoy9ZtKBdi-vIgO0vFqVGdP3VpmvdSXtHVuJUHYlNDpUYUPzxLSCysVyHA/exec", // <-- IMPORTANT: Replace this!
+        "https://script.google.com/macros/s/AKfycbxfJZIHACfhDoy9ZtKBdi-vIgO0vFqVGdP3VpmvdSXtHVuJUHYlNDpUYUPzxLSCysVyHA/exec",
         {
-          method: 'POST',
+          method: "POST",
           body: JSON.stringify({ email, message }),
-          mode: 'no-cors', // Required for simple Apps Script POST requests from a browser
-          headers: {
-            'Content-Type': 'application/json',
-          }
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
         }
       );
-      // --- END OF UPDATED LOGIC ---
-      
-      // Since we can't read the success/error response in 'no-cors' mode,
-      // we just assume it was successful if the fetch call itself didn't fail.
       setFormStatus("🚀 Message sent! We will get back to you soon.");
       setEmail("");
       setMessage("");
-
     } catch (error) {
-      // This will now only catch network errors (e.g., user is offline)
       console.error("Form submission network error: ", error);
       setFormStatus(`❌ A network error occurred. Please try again.`);
     }
   };
 
+  // General useEffect Hooks
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (navRef.current && !navRef.current.contains(event.target)) {
@@ -84,67 +181,78 @@ function App() {
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Effect to auto-hide the form status message
   useEffect(() => {
     if (formStatus) {
-      const timer = setTimeout(() => {
-        setFormStatus("");
-      }, 5000);
+      const timer = setTimeout(() => setFormStatus(""), 5000);
       return () => clearTimeout(timer);
     }
   }, [formStatus]);
 
+  useEffect(() => {
+    const handleEscKey = (event) => {
+      if (event.key === "Escape") handleCloseModal();
+    };
+    window.addEventListener("keydown", handleEscKey);
+    return () => window.removeEventListener("keydown", handleEscKey);
+  }, []);
+
   return (
     <div>
       <header className={`top-nav ${isScrolled ? "fixed-header" : ""}`}>
-  <a href="#home" className="brand-logo-text" onClick={handleLinkClick}>
-    Pyrosynergy
-  </a>
-
-  {/* Note: The conditional class is removed from the nav element */}
-  <nav ref={navRef} className="main-navigation">
-    <ul className="nav-links">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-
-    <div className="mobile-nav-wrapper">
-      <button
-        className="hamburger-menu"
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-        aria-expanded={isMenuOpen}
-        aria-label="Toggle navigation menu"
-      >
-        <div className="bar"></div>
-        <div className="bar"></div>
-        <div className="bar"></div>
-      </button>
-      <ul className={`mobile-nav ${isMenuOpen ? "is-active" : ""}`}>
-        <li><a href="#home" onClick={handleLinkClick}>Home</a></li>
-        <li><a href="#contact" onClick={handleLinkClick}>Contact</a></li>
-      </ul>
-    </div>
-  </nav>
-</header>
+        <a href="#home" className="brand-logo-text" onClick={handleLinkClick}>
+          Pyrosynergy
+        </a>
+        <nav ref={navRef} className="main-navigation">
+          <ul className="nav-links">
+            <li>
+              <a href="#home">Home</a>
+            </li>
+            <li>
+              <a href="#services">Services</a>
+            </li>
+            <li>
+              <a href="#contact">Contact</a>
+            </li>
+          </ul>
+          <div className="mobile-nav-wrapper">
+            <button
+              className="hamburger-menu"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-expanded={isMenuOpen}
+            >
+              <div className="bar"></div>
+              <div className="bar"></div>
+              <div className="bar"></div>
+            </button>
+            <ul className={`mobile-nav ${isMenuOpen ? "is-active" : ""}`}>
+              <li>
+                <a href="#home" onClick={handleLinkClick}>
+                  Home
+                </a>
+              </li>
+              <li>
+                <a href="#services" onClick={handleLinkClick}>
+                  Services
+                </a>
+              </li>
+              <li>
+                <a href="#contact" onClick={handleLinkClick}>
+                  Contact
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
 
       <section id="home" className="relative flex flex-col">
         <div className="content-video-wrapper">
@@ -154,16 +262,33 @@ function App() {
           <div className="content-video-fade-overlay"></div>
           <div
             className="flex flex-col items-center justify-center flex-1 content-on-top"
-            style={{ minHeight: "40vh", paddingTop: "130px", paddingBottom: "40px" }}
+            style={{
+              minHeight: "40vh",
+              paddingTop: "130px",
+              paddingBottom: "40px",
+            }}
           >
             <h1 className="hero-heading leading-snug">
               <div>Let's make your business</div>
-              <div className="highlighted">AI-ready.</div>
+              <div className="highlighted-container">
+                {highlightedWords.map((word, index) => (
+                  <span
+                    key={index}
+                    className={`highlighted ${
+                      index === highlightedIndex ? "active" : ""
+                    }`}
+                  >
+                    {word}
+                  </span>
+                ))}
+              </div>
             </h1>
             <p className="hero-desc">
               From strategy to scale, we rebuild and redesign your brand into
               its most{" "}
-              <span className="desc-highlight">efficient, effective, and elegant</span>{" "}
+              <span className="desc-highlight">
+                efficient, effective, and elegant
+              </span>{" "}
               form — empowering you to{" "}
               <span className="desc-italic">outgrow</span> your competitors in
               sales and success.
@@ -176,18 +301,91 @@ function App() {
               call
             </button>
           </div>
-          <div className="height"></div>
           <div className="w-full max-w-7xl mx-auto py-8 flex justify-center items-center hero-marquee">
             <Marquee speed={40} pauseOnHover gradient={false}>
               {clientLogos.map((logo, idx) => (
-                <img key={idx} src={logo} alt={`client-${idx}`} className="client-logo" />
+                <img
+                  key={idx}
+                  src={logo}
+                  alt={`client-${idx}`}
+                  className="client-logo"
+                />
               ))}
             </Marquee>
           </div>
         </div>
       </section>
 
-      {/* <section id="services" className="invisible-section"></section> */}
+      <section id="services" className="services-section">
+        <div className="section-heading">
+          <h2 className="services-title">Our Capabilities</h2>
+          <p className="services-subtitle">
+            We turn ambitious ideas into intelligent, scalable, and beautiful
+            digital solutions.
+          </p>
+        </div>
+        <div className="services-container">
+          <div
+            className="services-track"
+            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          >
+            {servicesData.map((service, index) => (
+              <div
+                className={`service-card-wrapper ${
+                  index === currentSlide ? "active" : ""
+                }`}
+                key={index}
+              >
+                <div
+                  className="service-card-border-wrap"
+                  onClick={() => handleOpenModal(service)}
+                >
+                  <div className="service-card">
+                    <div className="service-card-icon-wrapper">
+                      <FontAwesomeIcon
+                        icon={service.icon}
+                        className="service-card-icon"
+                      />
+                    </div>
+                    <h3 className="service-card-title">{service.title}</h3>
+                    <p className="service-card-desc">{service.shortDesc}</p>
+                    <span className="know-more-btn">
+                      Know More <span>→</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="carousel-nav">
+          <button
+            onClick={handlePrevSlide}
+            className="carousel-arrow"
+            aria-label="Previous service"
+          >
+            <FontAwesomeIcon icon={faChevronLeft} />
+          </button>
+          <div className="carousel-dots">
+            {servicesData.map((_, index) => (
+              <span
+                key={index}
+                className={`carousel-dot ${
+                  currentSlide === index ? "active" : ""
+                }`}
+                onClick={() => setCurrentSlide(index)}
+              ></span>
+            ))}
+          </div>
+          <button
+            onClick={handleNextSlide}
+            className="carousel-arrow"
+            aria-label="Next service"
+          >
+            <FontAwesomeIcon icon={faChevronRight} />
+          </button>
+        </div>
+      </section>
 
       <section id="contact" className="form-section">
         <div className="form-text-wrapper">
@@ -222,12 +420,17 @@ function App() {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
-              <button type="submit" className="form-submit-button">Submit</button>
+              <button type="submit" className="form-submit-button">
+                Submit
+              </button>
             </div>
           </form>
-          {/* Status message with conditional styling */}
           {formStatus && (
-            <p className={`form-status-message ${formStatus.startsWith("❌") ? 'error' : 'success'}`}>
+            <p
+              className={`form-status-message ${
+                formStatus.startsWith("❌") ? "error" : "success"
+              }`}
+            >
               {formStatus}
             </p>
           )}
@@ -235,7 +438,11 @@ function App() {
       </section>
 
       <div className="decorative-grid-container">
-        <img src={grids} alt="Decorative grids" className="decorative-grid-image" />
+        <img
+          src={grids}
+          alt="Decorative grids"
+          className="decorative-grid-image"
+        />
       </div>
 
       <footer className="footer">
@@ -246,14 +453,49 @@ function App() {
           </span>
         </div>
         <div className="social-icons">
-          <a href="https://www.instagram.com/pyrosynergy?igsh=Ym1qZ2J2dXMza28z" aria-label="Instagram">
-            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" />
+          <a
+            href="https://www.instagram.com/pyrosynergy?igsh=Ym1qZ2J2dXMza28z"
+            aria-label="Instagram"
+          >
+            <img
+              src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg"
+              alt="Instagram"
+            />
           </a>
-          <a href="https://www.linkedin.com/company/pyrosynergy/" aria-label="LinkedIn">
-            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn" />
+          <a
+            href="https://www.linkedin.com/company/pyrosynergy/"
+            aria-label="LinkedIn"
+          >
+            <img
+              src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg"
+              alt="LinkedIn"
+            />
           </a>
         </div>
       </footer>
+
+      {isModalOpen && selectedService && (
+        <div className="modal-overlay" onClick={handleCloseModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="modal-close-btn"
+              onClick={handleCloseModal}
+              aria-label="Close modal"
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+            <h2 className="modal-title">{selectedService.details.heading}</h2>
+            <ul className="modal-points">
+              {selectedService.details.points.map((point, index) => (
+                <li key={index}>{point}</li>
+              ))}
+            </ul>
+            <button className="modal-cta-btn" onClick={openCalendarPopup}>
+              Book a Discovery Call
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
