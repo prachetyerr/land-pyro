@@ -13,6 +13,9 @@ import logo8 from "./assets/nasa.png";
 import logo9 from "./assets/innogeeks.png";
 import logo10 from "./assets/acm.png";
 import bgvideo from "./assets/bgvideo.mp4";
+// We no longer need to import from Firebase for this form
+// import { db } from "./firebase";
+// import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 const clientLogos = [
   logo1, logo2, logo3, logo4, logo5, logo6, logo7, logo8, logo9, logo10,
@@ -29,9 +32,49 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const navRef = useRef(null);
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [formStatus, setFormStatus] = useState("");
 
   const handleLinkClick = () => {
     setIsMenuOpen(false);
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    setFormStatus("Submitting...");
+
+    if (!email || !message) {
+      setFormStatus("❌ Please fill in both fields.");
+      return;
+    }
+
+    try {
+      // --- UPDATED LOGIC TO SEND DATA TO GOOGLE APPS SCRIPT ---
+      await fetch(
+        "https://script.google.com/macros/s/AKfycbxfJZIHACfhDoy9ZtKBdi-vIgO0vFqVGdP3VpmvdSXtHVuJUHYlNDpUYUPzxLSCysVyHA/exec", // <-- IMPORTANT: Replace this!
+        {
+          method: 'POST',
+          body: JSON.stringify({ email, message }),
+          mode: 'no-cors', // Required for simple Apps Script POST requests from a browser
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+      // --- END OF UPDATED LOGIC ---
+      
+      // Since we can't read the success/error response in 'no-cors' mode,
+      // we just assume it was successful if the fetch call itself didn't fail.
+      setFormStatus("🚀 Message sent! We will get back to you soon.");
+      setEmail("");
+      setMessage("");
+
+    } catch (error) {
+      // This will now only catch network errors (e.g., user is offline)
+      console.error("Form submission network error: ", error);
+      setFormStatus(`❌ A network error occurred. Please try again.`);
+    }
   };
 
   useEffect(() => {
@@ -60,39 +103,48 @@ function App() {
     };
   }, []);
 
+  // Effect to auto-hide the form status message
+  useEffect(() => {
+    if (formStatus) {
+      const timer = setTimeout(() => {
+        setFormStatus("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [formStatus]);
+
   return (
     <div>
-      <header className="top-nav">
-        <a href="#home" className="brand-logo-text" onClick={handleLinkClick}>
-          Pyrosynergy
-        </a>
-        
-        <nav ref={navRef} className={`main-navigation ${isScrolled ? "fixed-nav" : ""}`}>
-          <ul className="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
+      <header className={`top-nav ${isScrolled ? "fixed-header" : ""}`}>
+  <a href="#home" className="brand-logo-text" onClick={handleLinkClick}>
+    Pyrosynergy
+  </a>
 
-          <div className="mobile-nav-wrapper">
-            <button
-              className="hamburger-menu"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-expanded={isMenuOpen}
-              aria-label="Toggle navigation menu"
-            >
-              <div className="bar"></div>
-              <div className="bar"></div>
-              <div className="bar"></div>
-            </button>
-            <ul className={`mobile-nav ${isMenuOpen ? "is-active" : ""}`}>
-              <li><a href="#home" onClick={handleLinkClick}>Home</a></li>
-              <li><a href="#services" onClick={handleLinkClick}>Services</a></li>
-              <li><a href="#contact" onClick={handleLinkClick}>Contact</a></li>
-            </ul>
-          </div>
-        </nav>
-      </header>
+  {/* Note: The conditional class is removed from the nav element */}
+  <nav ref={navRef} className="main-navigation">
+    <ul className="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <div className="mobile-nav-wrapper">
+      <button
+        className="hamburger-menu"
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        aria-expanded={isMenuOpen}
+        aria-label="Toggle navigation menu"
+      >
+        <div className="bar"></div>
+        <div className="bar"></div>
+        <div className="bar"></div>
+      </button>
+      <ul className={`mobile-nav ${isMenuOpen ? "is-active" : ""}`}>
+        <li><a href="#home" onClick={handleLinkClick}>Home</a></li>
+        <li><a href="#contact" onClick={handleLinkClick}>Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
 
       <section id="home" className="relative flex flex-col">
         <div className="content-video-wrapper">
@@ -135,7 +187,7 @@ function App() {
         </div>
       </section>
 
-      <section id="services" className="invisible-section"></section>
+      {/* <section id="services" className="invisible-section"></section> */}
 
       <section id="contact" className="form-section">
         <div className="form-text-wrapper">
@@ -150,17 +202,35 @@ function App() {
           </p>
         </div>
         <div className="form-container">
-          <form className="form">
+          <form className="form" onSubmit={handleFormSubmit}>
             <div className="input-wrapper">
-              <textarea name="message" placeholder="Enter your message" rows="4" />
+              <textarea
+                name="message"
+                placeholder="Enter your message"
+                rows="4"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              />
             </div>
             <div className="horizontal-group">
               <div className="input-wrapper email-field">
-                <input type="email" name="email" placeholder="Enter your email" />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </div>
               <button type="submit" className="form-submit-button">Submit</button>
             </div>
           </form>
+          {/* Status message with conditional styling */}
+          {formStatus && (
+            <p className={`form-status-message ${formStatus.startsWith("❌") ? 'error' : 'success'}`}>
+              {formStatus}
+            </p>
+          )}
         </div>
       </section>
 
@@ -176,10 +246,10 @@ function App() {
           </span>
         </div>
         <div className="social-icons">
-          <a href="#" aria-label="Instagram">
+          <a href="https://www.instagram.com/pyrosynergy?igsh=Ym1qZ2J2dXMza28z" aria-label="Instagram">
             <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" />
           </a>
-          <a href="#" aria-label="LinkedIn">
+          <a href="https://www.linkedin.com/company/pyrosynergy/" aria-label="LinkedIn">
             <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn" />
           </a>
         </div>
