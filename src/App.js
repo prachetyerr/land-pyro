@@ -209,7 +209,7 @@ function App() {
     <div>
       <header className={`top-nav ${isScrolled ? "fixed-header" : ""}`}>
         <a href="#home" className="brand-logo-text" onClick={handleLinkClick}>
-          Pyrosynergy
+          PyroSynergy
         </a>
         <nav ref={navRef} className="main-navigation">
           <ul className="nav-links">
@@ -447,7 +447,7 @@ function App() {
 
       <footer className="footer">
         <div className="footer-names">
-          <span className="brand-logo-text">Pyrosynergy</span>
+          <span className="brand-logo-text">PyroSynergy</span>
           <span className="brand-copyright-text">
             © Copyright 2025 Pyrosynergy AI Labs. All rights reserved.
           </span>
