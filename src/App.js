@@ -216,9 +216,9 @@ function App() {
             <li>
               <a href="#home">Home</a>
             </li>
-            <li>
+            {/* <li>
               <a href="#services">Services</a>
-            </li>
+            </li> */}
             <li>
               <a href="#contact">Contact</a>
             </li>
@@ -239,11 +239,11 @@ function App() {
                   Home
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a href="#services" onClick={handleLinkClick}>
                   Services
                 </a>
-              </li>
+              </li> */}
               <li>
                 <a href="#contact" onClick={handleLinkClick}>
                   Contact
@@ -316,7 +316,7 @@ function App() {
         </div>
       </section>
 
-      <section id="services" className="services-section">
+      {/* <section id="services" className="services-section">
         <div className="section-heading">
           <h2 className="services-title">Our Capabilities</h2>
           <p className="services-subtitle">
@@ -385,7 +385,7 @@ function App() {
             <FontAwesomeIcon icon={faChevronRight} />
           </button>
         </div>
-      </section>
+      </section> */}
 
       <section id="contact" className="form-section">
         <div className="form-text-wrapper">
@@ -454,7 +454,7 @@ function App() {
         </div>
         <div className="social-icons">
           <a
-            href="https://www.instagram.com/pyrosynergy?igsh=Ym1qZ2J2dXMza28z"
+            href="https://www.instagram.com/pyrosynergy/"
             aria-label="Instagram"
           >
             <img
