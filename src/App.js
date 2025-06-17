@@ -16,11 +16,11 @@ import {
 // Asset Imports
 import grids from "./assets/Frame 41.png";
 import logo1 from "./assets/viali.png";
-import logo2 from "./assets/tanvi.png";
+// import logo2 from "./assets/tanvi.png"; // Assuming this was intentionally commented out
 import logo3 from "./assets/mih.png";
-import logo4 from "./assets/grind time rides.png";
+// import logo4 from "./assets/grind time rides.png"; // Assuming this was intentionally commented out
 import logo5 from "./assets/riMLand.png";
-import logo6 from "./assets/yourbest.png";
+// import logo6 from "./assets/yourbest.png"; // Assuming this was intentionally commented out
 import logo7 from "./assets/gro vnr.png";
 import logo8 from "./assets/nasa.png";
 import logo9 from "./assets/innogeeks.png";
@@ -78,11 +78,11 @@ const highlightedWords = ["AI-ready.", "future-proof.", "omnichannel."];
 
 const clientLogos = [
   logo1,
-  logo2,
+  // logo2,
   logo3,
-  logo4,
+  // logo4,
   logo5,
-  logo6,
+  // logo6,
   logo7,
   logo8,
   logo9,
@@ -301,18 +301,22 @@ function App() {
               call
             </button>
           </div>
-          <div className="w-full max-w-7xl mx-auto py-8 flex justify-center items-center hero-marquee">
-            <Marquee speed={40} pauseOnHover gradient={false}>
-              {clientLogos.map((logo, idx) => (
-                <img
-                  key={idx}
-                  src={logo}
-                  alt={`client-${idx}`}
-                  className="client-logo"
-                />
-              ))}
-            </Marquee>
+          {/* MODIFIED MARQUEE SECTION START */}
+          <div className="marquee-outer-padding-container py-8">
+            <div className="marquee-inner-content-container hero-marquee">
+              <Marquee speed={40} pauseOnHover gradient={false}>
+                {clientLogos.map((logo, idx) => (
+                  <img
+                    key={idx}
+                    src={logo}
+                    alt={`client-${idx}`}
+                    className="client-logo"
+                  />
+                ))}
+              </Marquee>
+            </div>
           </div>
+          {/* MODIFIED MARQUEE SECTION END */}
         </div>
       </section>
 

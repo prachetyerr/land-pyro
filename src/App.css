@@ -90,11 +90,11 @@ html {
 }
 
 /* --- Hero, Marquee & Video --- */
-.hero-marquee {
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.hero-marquee { /* This class is now on .marquee-inner-content-container */
+  /* top: 0; Removed, as positioning is handled by flex/grid of its parent now */
+  /* left: 0; Removed */
+  width: 100%; /* Will take width of its parent (.marquee-inner-content-container) */
+  height: 100%; /* Will take height of its parent */
   background: linear-gradient(
     to bottom,
     rgba(13, 11, 2, 0) 0%,
@@ -102,6 +102,8 @@ html {
     rgba(13, 11, 2, 0.8) 85%,
     rgb(13, 11, 2) 98%
   );
+  /* The Marquee component itself might need overflow:hidden if content pokes out, */
+  /* but react-fast-marquee usually handles this. */
 } 
 .content-video-wrapper {
   position: relative;
@@ -137,6 +139,29 @@ html {
   position: relative;
   z-index: 2;
 }
+
+/* New styles for Marquee alignment */
+.marquee-outer-padding-container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  /* Mobile first: Matches .form-section padding */
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  /* py-8 Tailwind class handles vertical padding, so no need for it here */
+}
+
+.marquee-inner-content-container {
+  width: 100%; /* Takes full width of its parent's padded area */
+  /* Mobile first: Matches max-width of .form-text-wrapper / .form-container */
+  max-width: 600px;
+  margin-left: auto; /* Centers this block */
+  margin-right: auto;
+  position: relative; /* For .hero-marquee background if it uses absolute positioning internally */
+  overflow: hidden; /* Recommended to clip the Marquee if it overextends */
+}
+
 
 /* --- Services Section & Modal Layout --- */
 .services-section {
@@ -611,12 +636,6 @@ html {
   /* Hover Animation: Define the transition for a smooth effect */
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
-
-.client-logo:hover {
-  /* The state on hover: slightly larger and fully opaque */
-  transform: scale(1.5); 
-  opacity: 1;
-}
 /* --- END OF FIX --- */
 
 .form-status-message {
@@ -1003,17 +1022,17 @@ html {
   }
   .form-section {
     flex-direction: row;
-    align-items: center;
+    align-items: center; /* Changed from 'center' to 'flex-start' or 'stretch' if needed for vertical alignment */
     gap: 4rem;
     padding: 6rem 2rem 4rem;
   }
   .form-text-wrapper {
-    max-width: 700px;
+    max-width: 700px; /* This defines one side */
     text-align: left;
   }
   .form-container {
-    max-width: 500px;
-    padding-bottom: 0; /* Remove the extra padding on desktop where there's more space */
+    max-width: 500px; /* This defines the other side */
+    padding-bottom: 0; /* Remove the extra padding on desktop */
   }
   .form-status-message {
     bottom: -2.5rem; /* Give it more space below the form on desktop */
@@ -1032,5 +1051,23 @@ html {
   .form-submit-button {
     width: auto;
     font-family: "Albert Sans", sans-serif;
+  }
+
+  /* Marquee alignment for desktop */
+  .marquee-outer-padding-container {
+    padding-left: 2rem;  /* Matches .form-section padding */
+    padding-right: 2rem; /* Matches .form-section padding */
+  }
+
+  .marquee-inner-content-container {
+    /* Matches the combined width of .form-text-wrapper (700px) + gap (4rem=64px) + .form-container (500px) */
+    /* Total: 700px + 64px + 500px = 1264px */
+    max-width: 1264px; 
+    /* If the form-section items are not perfectly aligned or have different internal paddings/margins affecting their perceived width,
+       you might need to fine-tune this value or use a common parent with this max-width for both form and marquee.
+       For now, calc(700px + 4rem + 500px) gives a good starting point based on the form elements' max-widths and gap.
+       Let's use a fixed value to ensure consistency if calc has issues with mixed units in some contexts.
+       1rem is typically 16px, so 4rem = 64px. So 700 + 64 + 500 = 1264px.
+    */
   }
 }
