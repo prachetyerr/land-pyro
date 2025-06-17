@@ -31,6 +31,9 @@
 ========================================
 */
 @import url('https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
+
 #root {
   max-width: 100%;
   margin: 0 auto;
@@ -99,7 +102,7 @@ html {
     rgba(13, 11, 2, 0.8) 85%,
     rgb(13, 11, 2) 98%
   );
-}
+} 
 .content-video-wrapper {
   position: relative;
   overflow: hidden;
@@ -212,6 +215,11 @@ html {
   z-index: 1;
   text-align: center;
 }
+.form-container {
+  position: relative;
+  padding-bottom: 3rem; 
+}
+
 .form-submit-button{
   width: 100%;
   max-width: 200px;
@@ -589,19 +597,41 @@ html {
   color: #a5a5a5;
   letter-spacing: 0.2px;
 }
+
+/* --- FIX: Adjust logo sizing, appearance, and add hover effect --- */
 .client-logo {
   height: 30px;
   margin-left: 2.5rem;
   margin-right: 2.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  width: auto;       /* Let width be determined by aspect ratio */
+  max-width: 150px;  /* Prevent wide logos from getting too big */
+  
+  /* Hover Animation: Define the transition for a smooth effect */
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
+
+.client-logo:hover {
+  /* The state on hover: slightly larger and fully opaque */
+  transform: scale(1.5); 
+  opacity: 1;
+}
+/* --- END OF FIX --- */
+
 .form-status-message {
-  margin-top: 1rem;
+  position: absolute; 
+  bottom: 0; 
+  left: 0;
+  right: 0;
+  margin-top: 0;
   text-align: center;
   font-family: "Albert Sans", sans-serif;
   font-size: 16px;
   font-weight: 500;
   transition: opacity 0.3s ease-in-out;
 }
+
 .form-status-message.success {
   color: #4ade80;
 }
@@ -702,7 +732,7 @@ html {
 .input-wrapper {
   position: relative;
   border-radius: 12px;
-  padding: 0.5px;
+  padding: 1px;
   background: linear-gradient(120deg, #3d72ff, #d904ff);
   transition: all 0.3s ease;
 }
@@ -714,7 +744,7 @@ html {
   border: none;
   background: #0d0b02;
   color: #fff;
-  font-family: Inter, sans-serif;
+  font-family: "Albert Sans", sans-serif;
   font-size: 16px;
   box-sizing: border-box;
   -webkit-appearance: none;
@@ -728,13 +758,24 @@ html {
 .form input::placeholder,
 .form textarea::placeholder {
   color: #8a8a8a;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Albert Sans", sans-serif;
   font-size: 16px;
   font-weight: 400;
 }
 .input-wrapper:focus-within {
   background: linear-gradient(120deg, #0046ff, #f126f7);
   box-shadow: 0 0 15px 5px #3d72ff66;
+}
+.form input:-webkit-autofill,
+.form input:-webkit-autofill:hover, 
+.form input:-webkit-autofill:focus,
+.form textarea:-webkit-autofill,
+.form textarea:-webkit-autofill:hover,
+.form textarea:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #0d0b02 inset;
+  -webkit-text-fill-color: #fff !important;
+  caret-color: #fff;
+  border-radius: 11px;
 }
 .email-field {
   flex: 1;
@@ -771,11 +812,10 @@ html {
     rgba(255, 255, 255, 0.2) 100%
   );
   transform: skewX(-20deg);
-  transition: all 0.3s ease;
+  transition: left 0.75s ease-in-out;
 }
 .form button:hover::before {
   left: 130%;
-  transition: all 0.75s ease-in-out;
 }
 
 /* --- Social Icons --- */
@@ -973,6 +1013,10 @@ html {
   }
   .form-container {
     max-width: 500px;
+    padding-bottom: 0; /* Remove the extra padding on desktop where there's more space */
+  }
+  .form-status-message {
+    bottom: -2.5rem; /* Give it more space below the form on desktop */
   }
   .form-intro {
     font-size: 2.5rem;
