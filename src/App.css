@@ -91,20 +91,10 @@ html {
 
 /* --- Hero, Marquee & Video --- */
 .hero-marquee { /* This class is now on .marquee-inner-content-container */
-  /* top: 0; Removed, as positioning is handled by flex/grid of its parent now */
-  /* left: 0; Removed */
-  width: 100%; /* Will take width of its parent (.marquee-inner-content-container) */
-  height: 100%; /* Will take height of its parent */
-  background: linear-gradient(
-    to bottom,
-    rgba(13, 11, 2, 0) 0%,
-    rgba(13, 11, 2, 0) 50%,
-    rgba(13, 11, 2, 0.8) 85%,
-    rgb(13, 11, 2) 98%
-  );
-  /* The Marquee component itself might need overflow:hidden if content pokes out, */
-  /* but react-fast-marquee usually handles this. */
-} 
+  width: 100%; 
+  height: 100%;
+  /* Removed the redundant vertical background gradient */
+}
 .content-video-wrapper {
   position: relative;
   overflow: hidden;
@@ -161,6 +151,29 @@ html {
   position: relative; /* For .hero-marquee background if it uses absolute positioning internally */
   overflow: hidden; /* Recommended to clip the Marquee if it overextends */
 }
+
+/* START: Added fade effect to the sides of the marquee */
+.marquee-inner-content-container::before,
+.marquee-inner-content-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100px; /* Width of the fade effect */
+    z-index: 2; /* Ensure it's on top of the scrolling logos */
+    pointer-events: none; /* Allows hovering/clicking on the marquee content underneath */
+}
+
+.marquee-inner-content-container::before {
+    left: 0;
+    background: linear-gradient(to right, #0d0b02 20%, rgba(13, 11, 2, 0));
+}
+
+.marquee-inner-content-container::after {
+    right: 0;
+    background: linear-gradient(to left, #0d0b02 20%, rgba(13, 11, 2, 0));
+}
+/* END: Added fade effect */
 
 
 /* --- Services Section & Modal Layout --- */
