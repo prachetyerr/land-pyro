@@ -9,18 +9,15 @@ import {
   faPalette,
   faRobot,
   faTimes,
-  faChevronLeft,
-  faChevronRight,
+  faChevronLeft, // This is no longer used but kept for potential future use
+  faChevronRight, // This is no longer used but kept for potential future use
 } from "@fortawesome/free-solid-svg-icons";
 
 // Asset Imports
 import grids from "./assets/Frame 41.png";
 import logo1 from "./assets/viali.png";
-// import logo2 from "./assets/tanvi.png"; // Assuming this was intentionally commented out
 import logo3 from "./assets/mih.png";
-// import logo4 from "./assets/grind time rides.png"; // Assuming this was intentionally commented out
 import logo5 from "./assets/riMLand.png";
-// import logo6 from "./assets/yourbest.png"; // Assuming this was intentionally commented out
 import logo7 from "./assets/gro vnr.png";
 import logo8 from "./assets/nasa.png";
 import logo9 from "./assets/innogeeks.png";
@@ -76,18 +73,7 @@ const servicesData = [
 // Data for the animated hero heading
 const highlightedWords = ["AI-ready.", "future-proof.", "omnichannel."];
 
-const clientLogos = [
-  logo1,
-  // logo2,
-  logo3,
-  // logo4,
-  logo5,
-  // logo6,
-  logo7,
-  logo8,
-  logo9,
-  logo10,
-];
+const clientLogos = [logo1, logo3, logo5, logo7, logo8, logo9, logo10];
 
 const openCalendarPopup = () => {
   const calendarUrl =
@@ -104,10 +90,10 @@ function App() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [formStatus, setFormStatus] = useState("");
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedService, setSelectedService] = useState(null);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
+
+  // --- NEW STATE FOR INTERACTIVE SERVICES SECTION ---
+  const [expandedCardIndex, setExpandedCardIndex] = useState(null);
 
   // Effect to cycle through the highlighted words
   useEffect(() => {
@@ -115,33 +101,23 @@ function App() {
       setHighlightedIndex(
         (prevIndex) => (prevIndex + 1) % highlightedWords.length
       );
-    }, 2500); // Change word every 2.5 seconds
+    }, 2500);
     return () => clearInterval(interval);
   }, []);
-
-  // Modal Handlers
-  const handleOpenModal = (service) => {
-    setSelectedService(service);
-    setIsModalOpen(true);
-    document.body.style.overflow = "hidden";
+  
+  // --- NEW EVENT HANDLERS FOR INTERACTIVE SERVICES ---
+  const handleCardClick = (index) => {
+    // If a card is already expanded, clicking another will just switch to it.
+    // Clicking the same expanded card does nothing (only close button can close).
+    setExpandedCardIndex(index);
+  };
+  
+  const handleCloseCard = (e) => {
+    e.stopPropagation(); // Prevents the click from bubbling up to the card's onClick
+    setExpandedCardIndex(null);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedService(null);
-    document.body.style.overflow = "auto";
-  };
-
-  // Carousel Handlers
-  const handleNextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % servicesData.length);
-  };
-  const handlePrevSlide = () => {
-    setCurrentSlide(
-      (prev) => (prev - 1 + servicesData.length) % servicesData.length
-    );
-  };
-
+  // Click handler for mobile nav links
   const handleLinkClick = () => {
     setIsMenuOpen(false);
   };
@@ -197,9 +173,12 @@ function App() {
     }
   }, [formStatus]);
 
+  // Handle escape key to close expanded card
   useEffect(() => {
     const handleEscKey = (event) => {
-      if (event.key === "Escape") handleCloseModal();
+      if (event.key === "Escape") {
+        setExpandedCardIndex(null);
+      }
     };
     window.addEventListener("keydown", handleEscKey);
     return () => window.removeEventListener("keydown", handleEscKey);
@@ -213,15 +192,9 @@ function App() {
         </a>
         <nav ref={navRef} className="main-navigation">
           <ul className="nav-links">
-            <li>
-              <a href="#home">Home</a>
-            </li>
-            {/* <li>
-              <a href="#services">Services</a>
-            </li> */}
-            <li>
-              <a href="#contact">Contact</a>
-            </li>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
           </ul>
           <div className="mobile-nav-wrapper">
             <button
@@ -234,21 +207,9 @@ function App() {
               <div className="bar"></div>
             </button>
             <ul className={`mobile-nav ${isMenuOpen ? "is-active" : ""}`}>
-              <li>
-                <a href="#home" onClick={handleLinkClick}>
-                  Home
-                </a>
-              </li>
-              {/* <li>
-                <a href="#services" onClick={handleLinkClick}>
-                  Services
-                </a>
-              </li> */}
-              <li>
-                <a href="#contact" onClick={handleLinkClick}>
-                  Contact
-                </a>
-              </li>
+              <li><a href="#home" onClick={handleLinkClick}>Home</a></li>
+              <li><a href="#services" onClick={handleLinkClick}>Services</a></li>
+              <li><a href="#contact" onClick={handleLinkClick}>Contact</a></li>
             </ul>
           </div>
         </nav>
@@ -301,7 +262,6 @@ function App() {
               call
             </button>
           </div>
-          {/* MODIFIED MARQUEE SECTION START */}
           <div className="marquee-outer-padding-container py-8">
             <div className="marquee-inner-content-container hero-marquee">
               <Marquee speed={40} pauseOnHover gradient={false}>
@@ -316,11 +276,13 @@ function App() {
               </Marquee>
             </div>
           </div>
-          {/* MODIFIED MARQUEE SECTION END */}
         </div>
       </section>
 
-      {/* <section id="services" className="services-section">
+      {/* ========================================================== */}
+      {/* ========== REWRITTEN SERVICES SECTION STARTS HERE ========== */}
+      {/* ========================================================== */}
+      <section id="services" className="services-section">
         <div className="section-heading">
           <h2 className="services-title">Our Capabilities</h2>
           <p className="services-subtitle">
@@ -328,24 +290,24 @@ function App() {
             digital solutions.
           </p>
         </div>
-        <div className="services-container">
-          <div
-            className="services-track"
-            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-          >
-            {servicesData.map((service, index) => (
-              <div
-                className={`service-card-wrapper ${
-                  index === currentSlide ? "active" : ""
-                }`}
-                key={index}
-              >
-                <div
-                  className="service-card-border-wrap"
-                  onClick={() => handleOpenModal(service)}
-                >
-                  <div className="service-card">
-                    <div className="service-card-icon-wrapper">
+
+        <div className="services-interactive-container">
+          {servicesData.map((service, index) => (
+            <div
+              key={index}
+              className={`service-card-interactive ${
+                expandedCardIndex !== null
+                  ? expandedCardIndex === index
+                    ? 'expanded'
+                    : 'overlay'
+                  : ''
+              }`}
+              onClick={() => handleCardClick(index)}
+            >
+              <div className="service-card-interactive-content">
+                {/* --- Content visible when collapsed --- */}
+                <div className="card-content-initial">
+                   <div className="service-card-icon-wrapper">
                       <FontAwesomeIcon
                         icon={service.icon}
                         className="service-card-icon"
@@ -353,43 +315,36 @@ function App() {
                     </div>
                     <h3 className="service-card-title">{service.title}</h3>
                     <p className="service-card-desc">{service.shortDesc}</p>
-                    <span className="know-more-btn">
-                      Know More <span>→</span>
-                    </span>
-                  </div>
+                </div>
+                
+                {/* --- Content visible when expanded --- */}
+                <div className="card-content-expanded">
+                    <h2 className="modal-title">{service.details.heading}</h2>
+                    <ul className="modal-points">
+                      {service.details.points.map((point, i) => (
+                        <li key={i}>{point}</li>
+                      ))}
+                    </ul>
+                    <button className="modal-cta-btn" onClick={openCalendarPopup}>
+                      Book a Discovery Call
+                    </button>
                 </div>
               </div>
-            ))}
-          </div>
+
+              <button
+                className="card-close-btn"
+                onClick={handleCloseCard}
+                aria-label="Close details"
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            </div>
+          ))}
         </div>
-        <div className="carousel-nav">
-          <button
-            onClick={handlePrevSlide}
-            className="carousel-arrow"
-            aria-label="Previous service"
-          >
-            <FontAwesomeIcon icon={faChevronLeft} />
-          </button>
-          <div className="carousel-dots">
-            {servicesData.map((_, index) => (
-              <span
-                key={index}
-                className={`carousel-dot ${
-                  currentSlide === index ? "active" : ""
-                }`}
-                onClick={() => setCurrentSlide(index)}
-              ></span>
-            ))}
-          </div>
-          <button
-            onClick={handleNextSlide}
-            className="carousel-arrow"
-            aria-label="Next service"
-          >
-            <FontAwesomeIcon icon={faChevronRight} />
-          </button>
-        </div>
-      </section> */}
+      </section>
+      {/* ======================================================== */}
+      {/* ========== REWRITTEN SERVICES SECTION ENDS HERE ========== */}
+      {/* ======================================================== */}
 
       <section id="contact" className="form-section">
         <div className="form-text-wrapper">
@@ -478,28 +433,14 @@ function App() {
         </div>
       </footer>
 
+      {/* MODAL IS NO LONGER USED, CAN BE REMOVED OR KEPT FOR OTHER PURPOSES */}
+      {/* 
       {isModalOpen && selectedService && (
         <div className="modal-overlay" onClick={handleCloseModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="modal-close-btn"
-              onClick={handleCloseModal}
-              aria-label="Close modal"
-            >
-              <FontAwesomeIcon icon={faTimes} />
-            </button>
-            <h2 className="modal-title">{selectedService.details.heading}</h2>
-            <ul className="modal-points">
-              {selectedService.details.points.map((point, index) => (
-                <li key={index}>{point}</li>
-              ))}
-            </ul>
-            <button className="modal-cta-btn" onClick={openCalendarPopup}>
-              Book a Discovery Call
-            </button>
-          </div>
+          ...
         </div>
-      )}
+      )} 
+      */}
     </div>
   );
 }
