@@ -192,7 +192,7 @@ html {
   gap: 1.5rem;
   width: 100%;
   max-width: 1200px;
-  min-height: 450px;
+  height: 450px; /* Fixed height to prevent vertical layout shift */
   margin: 0 auto;
 }
 
@@ -201,7 +201,7 @@ html {
   position: relative;
   border-radius: 17px; /* Slightly larger than inner card */
   transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
-  cursor: pointer;
+  cursor: default;
 }
 
 /* The inner card containing all visible content */
@@ -241,6 +241,7 @@ html {
 }
 
 /* States for initial and expanded content */
+
 .card-content-initial,
 .card-content-expanded {
   transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
@@ -986,18 +987,22 @@ html {
     text-align: left;
   }
   
-  /* --- Interactive Services Desktop Layout & Hover Effects --- */
+  /* === START: UPDATED SECTION FOR SMOOTH ANIMATION === */
   .services-interactive-container {
     flex-direction: row;
-    perspective: 1000px; /* Enable 3D transforms for children */
+    perspective: 1000px;
   }
 
   .service-card-wrapper {
-    flex: 1; /* Each card takes equal space initially */
-    padding: 1px; /* Creates space for the gradient border */
+    flex: 1 1 0px;
+    padding: 1px;
+    /* A robust transition for all properties that change */
+    transition: flex-basis 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.4s ease,
+                transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
-  /* The requested 3D hover effect */
+  /* Original slant hover effect */
   .service-card-wrapper:not(.expanded):hover {
     background: linear-gradient(120deg, #3d72ff, #d904ff);
     transform: rotateY(-5deg) rotateX(5deg) scale(1.05);
@@ -1005,37 +1010,34 @@ html {
     z-index: 5;
   }
   
-  /* On hover, make the inner card's border transparent to perfectly show the wrapper's gradient */
   .service-card-wrapper:not(.expanded):hover .service-card-interactive {
     border-color: transparent;
   }
 
-  /* Show the glare effect */
   .service-card-wrapper:not(.expanded):hover .service-card-interactive::before {
     opacity: 1;
   }
   
-  /* Animate the 'Know More' text */
-  .service-card-wrapper:not(.expanded):hover .know-more-text {
-    color: #fff;
-  }
-  .service-card-wrapper:not(.expanded):hover .know-more-text span {
-    transform: translateX(5px);
-  }
-
-  /* Expanded/Overlay states for desktop */
+  /* Expanded state: card grows to full width */
   .service-card-wrapper.expanded {
-    flex: 1.5;
-    height: 450px;
-    z-index: 2;
+    flex-basis: 100%;
+    z-index: 10;
     cursor: default;
+    /* This is the key: It forces the transform to a neutral state,
+       providing a stable starting point for the closing animation. */
+    transform: none; 
   }
 
+  /* Overlay state: other cards shrink to zero width and fade */
   .service-card-wrapper.overlay {
-    flex: 0.8;
-    filter: blur(1px) brightness(0.8);
-    transform: scale(0.95);
+    flex-basis: 0px;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    padding: 0;
+    border: none;
   }
+  /* === END: UPDATED SECTION === */
 }
 
 @media (min-width: 1024px) {
@@ -1082,31 +1084,27 @@ html {
     max-width: 1264px;
   }
 
-  /* Refined overlay effect for larger screens */
   .service-card-wrapper.overlay {
-    flex: 0;
-    padding: 0;
-    border: none;
-    opacity: 0;
-    pointer-events: none;
-    transform: scale(0.9);
+    /* Ensures the overlay card doesn't have any leftover transform */
+    transform: none;
   }
 }
+
 /* === STYLES FOR BUTTONS ON COLLAPSED SERVICE CARDS === */
 
 /* Container for the two buttons at the bottom of the collapsed card */
 .card-buttons-initial {
   display: flex;
-  gap: 1rem; /* Creates space between the two buttons */
+  gap: 1rem;
   width: 100%;
-  margin-top: auto; /* Pushes the buttons to the very bottom of the card */
+  margin-top: auto;
   padding-top: 1rem;
 }
 
 /* Base styles for both buttons */
 .card-cta-initial,
 .know-more-btn {
-  flex: 1; /* Makes both buttons take up equal space */
+  flex: 1;
   padding: 12px 15px;
   border-radius: 8px;
   font-size: 0.9rem;
@@ -1114,21 +1112,46 @@ html {
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 1px solid transparent; /* Reserve space for border on hover */
+  border: 1px solid transparent;
   text-transform: capitalize;
 }
 
 /* --- Style for the PRIMARY button (e.g., "Let's go digital") --- */
 .card-cta-initial {
-  background-color: #e6007e; /* Vibrant pink from your theme */
+  background: linear-gradient(135deg, #ff00cc, #3333ff);
   color: #ffffff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-cta-initial::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: skewX(-25deg);
+  transition: left 0.5s ease;
+}
+
+.card-cta-initial:hover::before {
+  left: 130%;
 }
 
 .card-cta-initial:hover {
-  background-color: #ff1999; /* Brighter pink on hover */
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(230, 0, 126, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 0, 204, 0.4);
 }
+
 
 /* --- Style for the SECONDARY button ("Know More") --- */
 .know-more-btn {
@@ -1139,7 +1162,7 @@ html {
 
 .know-more-btn:hover {
   background-color: #ffffff;
-  color: #1a1a1a; /* Dark text on white background */
+  color: #1a1a1a;
   border-color: #ffffff;
 }
 

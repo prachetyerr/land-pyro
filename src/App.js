@@ -30,7 +30,7 @@ const servicesData = [
     icon: faCode, // Icon for "bring it online"
     title: '"My business is solid. Now I want to bring it online."',
     shortStatement:
-      "Isn't it then time to turn your offline hustle into a digital experience?",
+      "Isn't it the best time to turn your offline hustle into a digital experience?",
     outcome:
       "From a simple landing page to a full e-commerce platform, let's help you get started.",
     ctaText: "Let's go digital",
@@ -53,7 +53,7 @@ const servicesData = [
       "You've figured out the fundamentals. How about streamlining your operations?",
     outcome:
       "We introduce AI tools, automation, and system-level thinking to help you scale efficiency. Let's turn busy into better.",
-    ctaText: "Let's optimize my company game",
+    ctaText: "Let's optimize my   game",
   },
 ];
 
@@ -296,7 +296,6 @@ function App() {
                     : "overlay"
                   : ""
               }`}
-              onClick={() => handleCardClick(index)}
             >
               <div className="service-card-interactive">
                 <div className="service-card-interactive-content">
@@ -318,7 +317,13 @@ function App() {
                       >
                         {service.ctaText}
                       </button>
-                      <button className="know-more-btn">Know More</button>
+                      {/* === CHANGED LINE: Added onClick to this button === */}
+                      <button 
+                        className="know-more-btn"
+                        onClick={(e) => { e.stopPropagation(); handleCardClick(index); }}
+                      >
+                        Know More
+                      </button>
                     </div>
                   </div>
 
