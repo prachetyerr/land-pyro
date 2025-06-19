@@ -24,51 +24,39 @@ import logo9 from "./assets/innogeeks.png";
 import logo10 from "./assets/acm.png";
 import bgvideo from "./assets/bgvideo.mp4";
 
-// --- Data for Services Section ---
+// --- UPDATED Data for Services Section (Based on sketches) ---
 const servicesData = [
   {
-    icon: faRobot,
-    title: "AI-Powered Automation",
-    shortDesc:
-      "Streamline workflows, reduce manual tasks, and unlock peak efficiency with custom-trained AI models.",
-    details: {
-      heading: "Bespoke AI for Your Business",
-      points: [
-        "Custom AI model training and seamless integration.",
-        "Intelligent process automation for repetitive tasks.",
-        "Advanced data analysis and predictive insights.",
-      ],
-    },
+    icon: faCode, // Icon for "bring it online"
+    title: '"My business is solid. Now I want to bring it online."',
+    shortStatement:
+      "Isn't it then time to turn your offline hustle into a digital experience?",
+    outcome:
+      "From a simple landing page to a full e-commerce platform, let's help you get started.",
+    ctaText: "Let's go digital",
   },
   {
-    icon: faCode,
-    title: "Web & App Development",
-    shortDesc:
-      "From elegant landing pages to complex web applications, we build fast, secure, and beautiful digital experiences.",
-    details: {
-      heading: "Digital Experiences that Perform",
-      points: [
-        "Responsive, high-performance website development.",
-        "Scalable full-stack web application architecture.",
-        "Secure APIs and robust database integration.",
-      ],
-    },
+    icon: faPalette, // Icon for "reaching the right audience"
+    title:
+      '"I\'m up and running online, but I\'m not reaching the right audience."',
+    shortStatement:
+      "Your product is great, no doubt. But have you positioned it right?",
+    outcome:
+      "With smart strategy, targeted content, and thoughtful marketing, let's amplify your market visibility.",
+    ctaText: "Let's grow my reach",
   },
   {
-    icon: faPalette,
-    title: "Brand & UI/UX Design",
-    shortDesc:
-      "We craft stunning brand identities and intuitive user interfaces that captivate your audience and drive engagement.",
-    details: {
-      heading: "Design that Drives Connection",
-      points: [
-        "Comprehensive brand identity and strategy.",
-        "User-centric UI/UX research and design.",
-        "Creation of cohesive and memorable visual systems.",
-      ],
-    },
+    icon: faRobot, // Icon for "scale without burnout"
+    title:
+      '"My company is picking up, and I want to scale without the burnout."',
+    shortStatement:
+      "You've figured out the fundamentals. How about streamlining your operations?",
+    outcome:
+      "We introduce AI tools, automation, and system-level thinking to help you scale efficiency. Let's turn busy into better.",
+    ctaText: "Let's optimize my company game",
   },
 ];
+
 
 // Data for the animated hero heading
 const highlightedWords = ["AI-ready.", "future-proof.", "omnichannel."];
@@ -92,7 +80,7 @@ function App() {
   const [formStatus, setFormStatus] = useState("");
   const [highlightedIndex, setHighlightedIndex] = useState(0);
 
-  // --- NEW STATE FOR INTERACTIVE SERVICES SECTION ---
+  // --- STATE FOR INTERACTIVE SERVICES SECTION ---
   const [expandedCardIndex, setExpandedCardIndex] = useState(null);
 
   // Effect to cycle through the highlighted words
@@ -104,14 +92,14 @@ function App() {
     }, 2500);
     return () => clearInterval(interval);
   }, []);
-  
-  // --- NEW EVENT HANDLERS FOR INTERACTIVE SERVICES ---
+
+  // --- EVENT HANDLERS FOR INTERACTIVE SERVICES ---
   const handleCardClick = (index) => {
-    // If a card is already expanded, clicking another will just switch to it.
-    // Clicking the same expanded card does nothing (only close button can close).
-    setExpandedCardIndex(index);
+    if (expandedCardIndex !== index) {
+      setExpandedCardIndex(index);
+    }
   };
-  
+
   const handleCloseCard = (e) => {
     e.stopPropagation(); // Prevents the click from bubbling up to the card's onClick
     setExpandedCardIndex(null);
@@ -183,6 +171,12 @@ function App() {
     window.addEventListener("keydown", handleEscKey);
     return () => window.removeEventListener("keydown", handleEscKey);
   }, []);
+
+  // Handler to stop propagation for calendar button clicks inside the card
+  const handleCalendarButtonClick = (e) => {
+    e.stopPropagation();
+    openCalendarPopup();
+  };
 
   return (
     <div>
@@ -295,49 +289,67 @@ function App() {
           {servicesData.map((service, index) => (
             <div
               key={index}
-              className={`service-card-interactive ${
+              className={`service-card-wrapper ${
                 expandedCardIndex !== null
                   ? expandedCardIndex === index
-                    ? 'expanded'
-                    : 'overlay'
-                  : ''
+                    ? "expanded"
+                    : "overlay"
+                  : ""
               }`}
               onClick={() => handleCardClick(index)}
             >
-              <div className="service-card-interactive-content">
-                {/* --- Content visible when collapsed --- */}
-                <div className="card-content-initial">
-                   <div className="service-card-icon-wrapper">
+              <div className="service-card-interactive">
+                <div className="service-card-interactive-content">
+                  {/* --- Content visible when collapsed (Normal Card) --- */}
+                  <div className="card-content-initial">
+                    <div className="service-card-icon-wrapper transparent">
                       <FontAwesomeIcon
                         icon={service.icon}
                         className="service-card-icon"
                       />
                     </div>
-                    <h3 className="service-card-title">{service.title}</h3>
-                    <p className="service-card-desc">{service.shortDesc}</p>
-                </div>
-                
-                {/* --- Content visible when expanded --- */}
-                <div className="card-content-expanded">
-                    <h2 className="modal-title">{service.details.heading}</h2>
-                    <ul className="modal-points">
-                      {service.details.points.map((point, i) => (
-                        <li key={i}>{point}</li>
-                      ))}
-                    </ul>
-                    <button className="modal-cta-btn" onClick={openCalendarPopup}>
-                      Book a Discovery Call
-                    </button>
-                </div>
-              </div>
+                    <h3 className="service-card-title-quote">
+                      {service.title}
+                    </h3>
+                    <div className="card-buttons-initial">
+                      <button
+                        className="card-cta-initial"
+                        onClick={handleCalendarButtonClick}
+                      >
+                        {service.ctaText}
+                      </button>
+                      <button className="know-more-btn">Know More</button>
+                    </div>
+                  </div>
 
-              <button
-                className="card-close-btn"
-                onClick={handleCloseCard}
-                aria-label="Close details"
-              >
-                <FontAwesomeIcon icon={faTimes} />
-              </button>
+                  {/* --- Content visible when expanded (Full-screen Card) --- */}
+                  <div className="card-content-expanded">
+                    <div className="service-card-icon-wrapper">
+                      <FontAwesomeIcon
+                        icon={service.icon}
+                        className="service-card-icon"
+                      />
+                    </div>
+                    <h2 className="modal-title">{service.title}</h2>
+                    <p className="modal-statement">{service.shortStatement}</p>
+                    <p className="modal-outcome">{service.outcome}</p>
+                    <button
+                      className="modal-cta-btn"
+                      onClick={openCalendarPopup}
+                    >
+                      {service.ctaText}
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  className="card-close-btn"
+                  onClick={handleCloseCard}
+                  aria-label="Close details"
+                >
+                  <FontAwesomeIcon icon={faTimes} />
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -432,15 +444,6 @@ function App() {
           </a>
         </div>
       </footer>
-
-      {/* MODAL IS NO LONGER USED, CAN BE REMOVED OR KEPT FOR OTHER PURPOSES */}
-      {/* 
-      {isModalOpen && selectedService && (
-        <div className="modal-overlay" onClick={handleCloseModal}>
-          ...
-        </div>
-      )} 
-      */}
     </div>
   );
 }

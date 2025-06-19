@@ -177,7 +177,7 @@ html {
   padding: 5rem 1.5rem;
   background-color: #0d0b02;
   text-align: center;
-  overflow: hidden; /* Important for horizontal layout */
+  overflow: hidden;
 }
 
 .section-heading {
@@ -192,20 +192,46 @@ html {
   gap: 1.5rem;
   width: 100%;
   max-width: 1200px;
-  min-height: 450px; /* Give container a minimum height */
+  min-height: 450px;
   margin: 0 auto;
 }
 
+/* The new wrapper for the 3D hover effect and layout */
+.service-card-wrapper {
+  position: relative;
+  border-radius: 17px; /* Slightly larger than inner card */
+  transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+  cursor: pointer;
+}
+
+/* The inner card containing all visible content */
 .service-card-interactive {
   position: relative;
+  width: 100%;
+  height: 100%;
   padding: 2rem;
   background: linear-gradient(145deg, hsl(258, 15%, 8%), #0d0b02 80%);
   border: 1px solid rgba(151, 151, 151, 0.2);
   border-radius: 16px;
   text-align: center;
-  cursor: pointer;
   overflow: hidden;
-  transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+/* The glare pseudo-element for the hover effect */
+.service-card-interactive::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 50%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .service-card-interactive-content {
@@ -235,13 +261,13 @@ html {
 }
 
 /* Show/Hide content based on .expanded class */
-.service-card-interactive.expanded .card-content-initial {
+.service-card-wrapper.expanded .card-content-initial {
   opacity: 0;
   pointer-events: none;
   transform: translateY(-20px);
 }
 
-.service-card-interactive.expanded .card-content-expanded {
+.service-card-wrapper.expanded .card-content-expanded {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
@@ -251,10 +277,6 @@ html {
 /* Close Button Styling */
 .card-close-btn {
   position: absolute;
-
-
-
-
   top: 1rem;
   right: 1rem;
   z-index: 10;
@@ -274,9 +296,30 @@ html {
 }
 
 /* Show close button when expanded */
-.service-card-interactive.expanded .card-close-btn {
+.service-card-wrapper.expanded .card-close-btn {
   opacity: 1;
   pointer-events: auto;
+}
+
+/* "Know More" text styling */
+.know-more-text {
+  margin-top: auto; /* Pushes to the bottom if initial content is flex */
+  padding-top: 1rem;
+  font-family: "Albert Sans", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #8a8a8a;
+  transition: color 0.3s ease;
+}
+.know-more-text span {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.card-content-initial {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 /* =========================================================== */
@@ -500,7 +543,7 @@ html {
 
 .service-card-desc {
   max-width: 400px;
-  margin: 0 auto 1.5rem;
+  margin: 0 auto;
   font-family: "Albert Sans", sans-serif;
   font-size: 1rem;
   line-height: 1.6;
@@ -942,31 +985,56 @@ html {
     align-items: flex-start;
     text-align: left;
   }
-  /* Interactive Services Desktop Layout */
+  
+  /* --- Interactive Services Desktop Layout & Hover Effects --- */
   .services-interactive-container {
     flex-direction: row;
+    perspective: 1000px; /* Enable 3D transforms for children */
   }
-  .service-card-interactive {
-    flex: 1; /* Each card takes equal space initially */
-  }
-  .service-card-interactive:not(.expanded):hover {
-    transform: scale(1.03);
-    border-color: rgba(151, 151, 151, 0.4);
-  }
-  .service-card-interactive.expanded {
-  flex: 1.5;          /* grows in width only */
-  height: 450px;       /* or a fixed value like 200px */
-  z-index: 2;
-  cursor: default;
-}
 
-  .service-card-interactive.overlay {
-    flex: 0;
-    padding: 0;
-    border: none;
-    opacity: 0;
-    pointer-events: none;
-    transform: scale(0.9);
+  .service-card-wrapper {
+    flex: 1; /* Each card takes equal space initially */
+    padding: 1px; /* Creates space for the gradient border */
+  }
+  
+  /* The requested 3D hover effect */
+  .service-card-wrapper:not(.expanded):hover {
+    background: linear-gradient(120deg, #3d72ff, #d904ff);
+    transform: rotateY(-5deg) rotateX(5deg) scale(1.05);
+    box-shadow: 0 10px 40px -10px rgba(61, 114, 255, 0.3);
+    z-index: 5;
+  }
+  
+  /* On hover, make the inner card's border transparent to perfectly show the wrapper's gradient */
+  .service-card-wrapper:not(.expanded):hover .service-card-interactive {
+    border-color: transparent;
+  }
+
+  /* Show the glare effect */
+  .service-card-wrapper:not(.expanded):hover .service-card-interactive::before {
+    opacity: 1;
+  }
+  
+  /* Animate the 'Know More' text */
+  .service-card-wrapper:not(.expanded):hover .know-more-text {
+    color: #fff;
+  }
+  .service-card-wrapper:not(.expanded):hover .know-more-text span {
+    transform: translateX(5px);
+  }
+
+  /* Expanded/Overlay states for desktop */
+  .service-card-wrapper.expanded {
+    flex: 1.5;
+    height: 450px;
+    z-index: 2;
+    cursor: default;
+  }
+
+  .service-card-wrapper.overlay {
+    flex: 0.8;
+    filter: blur(1px) brightness(0.8);
+    transform: scale(0.95);
   }
 }
 
@@ -1013,4 +1081,70 @@ html {
   .marquee-inner-content-container {
     max-width: 1264px;
   }
+
+  /* Refined overlay effect for larger screens */
+  .service-card-wrapper.overlay {
+    flex: 0;
+    padding: 0;
+    border: none;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.9);
+  }
+}
+/* === STYLES FOR BUTTONS ON COLLAPSED SERVICE CARDS === */
+
+/* Container for the two buttons at the bottom of the collapsed card */
+.card-buttons-initial {
+  display: flex;
+  gap: 1rem; /* Creates space between the two buttons */
+  width: 100%;
+  margin-top: auto; /* Pushes the buttons to the very bottom of the card */
+  padding-top: 1rem;
+}
+
+/* Base styles for both buttons */
+.card-cta-initial,
+.know-more-btn {
+  flex: 1; /* Makes both buttons take up equal space */
+  padding: 12px 15px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid transparent; /* Reserve space for border on hover */
+  text-transform: capitalize;
+}
+
+/* --- Style for the PRIMARY button (e.g., "Let's go digital") --- */
+.card-cta-initial {
+  background-color: #e6007e; /* Vibrant pink from your theme */
+  color: #ffffff;
+}
+
+.card-cta-initial:hover {
+  background-color: #ff1999; /* Brighter pink on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(230, 0, 126, 0.4);
+}
+
+/* --- Style for the SECONDARY button ("Know More") --- */
+.know-more-btn {
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.know-more-btn:hover {
+  background-color: #ffffff;
+  color: #1a1a1a; /* Dark text on white background */
+  border-color: #ffffff;
+}
+
+/* Add a class to make the collapsed card icon transparent as per the sketch */
+.service-card-icon-wrapper.transparent {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
