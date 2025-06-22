@@ -9,8 +9,8 @@ import {
   faPalette,
   faRobot,
   faTimes,
-  faChevronLeft, // This is no longer used but kept for potential future use
-  faChevronRight, // This is no longer used but kept for potential future use
+  // faChevronLeft, // This is no longer used but kept for potential future use
+  // faChevronRight, // This is no longer used but kept for potential future use
 } from "@fortawesome/free-solid-svg-icons";
 
 // Asset Imports
@@ -30,9 +30,13 @@ const servicesData = [
     icon: faCode, // Icon for "bring it online"
     title: '"My business is solid. Now I want to bring it online."',
     shortStatement:
-      "Isn't it the best time to turn your offline hustle into a digital experience?",
-    outcome:
-      "From a simple landing page to a full e-commerce platform, let's help you get started.",
+      "Ready to translate your established business success into a powerful digital presence?",
+    outcome: [ // Changed to an array of strings
+      "Establish a professional, engaging online presence.",
+      "Expand your market reach beyond physical limitations.",
+      "Unlock new avenues for growth and customer interaction.",
+      "Build foundational credibility in the digital space.",
+    ],
     ctaText: "Let's go digital",
   },
   {
@@ -40,9 +44,13 @@ const servicesData = [
     title:
       '"I\'m up and running online, but I\'m not reaching the right audience."',
     shortStatement:
-      "Your product is great, no doubt. But have you positioned it right?",
-    outcome:
-      "With smart strategy, targeted content, and thoughtful marketing, let's amplify your market visibility.",
+      "Is your digital presence established, yet struggling to connect with valuable customers?",
+    outcome: [ // Changed to an array of strings
+      "Develop a targeted brand voice and messaging.",
+      "Implement data-driven marketing and content strategies.",
+      "Amplify visibility across relevant digital channels.",
+      "Convert casual visitors into loyal customers.",
+    ],
     ctaText: "Let's grow my reach",
   },
   {
@@ -50,10 +58,14 @@ const servicesData = [
     title:
       '"My company is picking up, and I want to scale without the burnout."',
     shortStatement:
-      "You've figured out the fundamentals. How about streamlining your operations?",
-    outcome:
-      "We introduce AI tools, automation, and system-level thinking to help you scale efficiency. Let's turn busy into better.",
-    ctaText: "Let's optimize my   game",
+      "Experiencing growth pains? It's time to build systems that support expansion, not exhaustion.",
+    outcome: [ // Changed to an array of strings
+      "Automate repetitive tasks to free up valuable time.",
+      "Integrate AI tools for enhanced efficiency and insights.",
+      "Develop robust workflows for sustainable growth.",
+      "Structure your operations for seamless future scaling.",
+    ],
+    ctaText: "Let's optimize for Scale", // Slightly adjusted CTA for clarity
   },
 ];
 
@@ -82,6 +94,10 @@ function App() {
 
   // --- STATE FOR INTERACTIVE SERVICES SECTION ---
   const [expandedCardIndex, setExpandedCardIndex] = useState(null);
+  // New state to track which card is closing instantly
+  const [closingCardIndex, setClosingCardIndex] = useState(null);
+  const closeTimerRef = useRef(null); // To manage the timeout
+
 
   // Effect to cycle through the highlighted words
   useEffect(() => {
@@ -95,15 +111,45 @@ function App() {
 
   // --- EVENT HANDLERS FOR INTERACTIVE SERVICES ---
   const handleCardClick = (index) => {
+     // Clear any pending instant-close state if a new card is clicked
+    if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current);
+        closeTimerRef.current = null;
+    }
+    if (closingCardIndex !== null) {
+        setClosingCardIndex(null); // Explicitly turn off the instant-close state for the previous card
+    }
+
     if (expandedCardIndex !== index) {
       setExpandedCardIndex(index);
     }
+    // If clicking the already expanded card, the click is on the wrapper behind the modal,
+    // which should probably just keep the modal open. The close button handles closing.
   };
 
   const handleCloseCard = (e) => {
     e.stopPropagation(); // Prevents the click from bubbling up to the card's onClick
-    setExpandedCardIndex(null);
+
+    // Only trigger close if a card is actually expanded
+    if (expandedCardIndex !== null) {
+        // Clear any existing timeout before starting a new one
+        if (closeTimerRef.current) {
+            clearTimeout(closeTimerRef.current);
+        }
+
+        // Set the currently expanded card as the one that should close instantly
+        setClosingCardIndex(expandedCardIndex);
+        setExpandedCardIndex(null); // This will remove the 'expanded' class from the card
+
+        // Set a timeout to remove the 'closing-instant' class after a minimal delay
+        // The delay needs to be just enough for React to render the state change
+        closeTimerRef.current = setTimeout(() => {
+            setClosingCardIndex(null); // Remove the closing-instant class
+            closeTimerRef.current = null; // Clean up the ref
+        }, 50); // 50ms should be sufficient for the browser to register the change
+    }
   };
+
 
   // Click handler for mobile nav links
   const handleLinkClick = () => {
@@ -165,12 +211,16 @@ function App() {
   useEffect(() => {
     const handleEscKey = (event) => {
       if (event.key === "Escape") {
-        setExpandedCardIndex(null);
+        if (expandedCardIndex !== null) { // Only close if a card is expanded
+             handleCloseCard(event); // Use the modified handler
+        }
       }
     };
+    // Add expandedCardIndex to dependencies so the effect re-runs if the index changes
+    // Also add handleCloseCard because it's used inside, React hooks lint rule recommendation
     window.addEventListener("keydown", handleEscKey);
     return () => window.removeEventListener("keydown", handleEscKey);
-  }, []);
+  }, [expandedCardIndex, handleCloseCard]);
 
   // Handler to stop propagation for calendar button clicks inside the card
   const handleCalendarButtonClick = (e) => {
@@ -285,17 +335,19 @@ function App() {
           </p>
         </div>
 
+        {/* Remove the ref and the temporary class logic from here */}
         <div className="services-interactive-container">
           {servicesData.map((service, index) => (
             <div
               key={index}
+              // Add the 'closing-instant' class based on closingCardIndex state
               className={`service-card-wrapper ${
                 expandedCardIndex !== null
                   ? expandedCardIndex === index
                     ? "expanded"
                     : "overlay"
                   : ""
-              }`}
+              } ${closingCardIndex === index ? 'closing-instant' : ''}`}
             >
               <div className="service-card-interactive">
                 <div className="service-card-interactive-content">
@@ -317,8 +369,7 @@ function App() {
                       >
                         {service.ctaText}
                       </button>
-                      {/* === CHANGED LINE: Added onClick to this button === */}
-                      <button 
+                      <button
                         className="know-more-btn"
                         onClick={(e) => { e.stopPropagation(); handleCardClick(index); }}
                       >
@@ -329,15 +380,27 @@ function App() {
 
                   {/* --- Content visible when expanded (Full-screen Card) --- */}
                   <div className="card-content-expanded">
-                    <div className="service-card-icon-wrapper">
-                      <FontAwesomeIcon
-                        icon={service.icon}
-                        className="service-card-icon"
-                      />
+                    <div className="expanded-header">
+                      <div className="service-card-icon-wrapper"> {/* No 'transparent' class here */}
+                        <FontAwesomeIcon
+                          icon={service.icon}
+                          className="service-card-icon"
+                        />
+                      </div>
+                      <h2 className="modal-title">{service.title}</h2>
                     </div>
-                    <h2 className="modal-title">{service.title}</h2>
+
                     <p className="modal-statement">{service.shortStatement}</p>
-                    <p className="modal-outcome">{service.outcome}</p>
+
+                    {/* === UPDATED: Render outcome points from the array === */}
+                    <div className="modal-outcome"> {/* Use a div as a container */}
+                      {service.outcome.map((point, idx) => (
+                        // Use paragraph tags for each point
+                        <p key={idx} className="outcome-point">{point}</p>
+                      ))}
+                    </div>
+                     {/* === END UPDATED === */}
+
                     <button
                       className="modal-cta-btn"
                       onClick={openCalendarPopup}
@@ -347,9 +410,10 @@ function App() {
                   </div>
                 </div>
 
+                {/* The close button should always be relative to the service-card-interactive parent */}
                 <button
                   className="card-close-btn"
-                  onClick={handleCloseCard}
+                  onClick={handleCloseCard} // This uses the modified handler
                   aria-label="Close details"
                 >
                   <FontAwesomeIcon icon={faTimes} />

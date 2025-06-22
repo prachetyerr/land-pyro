@@ -200,7 +200,10 @@ html {
 .service-card-wrapper {
   position: relative;
   border-radius: 17px; /* Slightly larger than inner card */
-  transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+  /* Ensure the transition properties are defined here for expansion */
+  transition: flex-basis 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.4s ease,
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: default;
 }
 
@@ -224,27 +227,39 @@ html {
   content: "";
   position: absolute;
   top: 0;
-  left: 0;
-  width: 100%;
+  left: -100%; /* Start off-screen to the left */
+  width: 300%; /* Make it wider than the container */
   height: 100%;
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 50%);
-  opacity: 0;
-  transition: opacity 0.5s ease;
+  /* Diagonal gradient for the shine effect */
+  background: linear-gradient(to right,
+    rgba(255, 255, 255, 0) 0%, /* transparent */
+    rgba(255, 255, 255, 0.2) 30%, /* slight shine */
+    rgba(255, 255, 255, 0.4) 50%, /* peak shine */
+    rgba(255, 255, 255, 0.2) 70%, /* slight shine */
+    rgba(255, 255, 255, 0) 100% /* transparent */
+  );
+  opacity: 0; /* Start invisible */
+  /* Animate both left position and opacity */
+  transition: left 0.8s ease-in-out, opacity 0.4s ease; /* Adjust timing as needed */
   pointer-events: none;
-  z-index: 1;
+  z-index: 1; /* Ensure it's above the card content but below the close button */
 }
+
 
 .service-card-interactive-content {
   position: relative;
   width: 100%;
   height: 100%;
+  /* Default transitions for content inside the card */
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  z-index: 2; /* Ensure content is above the glare */
 }
+
 
 /* States for initial and expanded content */
 
-.card-content-initial,
-.card-content-expanded {
-  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+.card-content-initial {
+   /* Initial content default opacity/transform state */
 }
 
 .card-content-expanded {
@@ -258,8 +273,11 @@ html {
   opacity: 0;
   pointer-events: none;
   transform: translateY(20px);
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  text-align: left; /* Default text alignment for content */
 }
+
 
 /* Show/Hide content based on .expanded class */
 .service-card-wrapper.expanded .card-content-initial {
@@ -280,7 +298,7 @@ html {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  z-index: 10;
+  z-index: 10; /* Ensure close button is highest */
   background: transparent;
   border: none;
   font-size: 1.5rem;
@@ -288,6 +306,7 @@ html {
   cursor: pointer;
   opacity: 0;
   pointer-events: none;
+  /* Default transition for close button */
   transition: opacity 0.5s ease 0.3s, color 0.3s ease, transform 0.3s ease;
 }
 
@@ -302,9 +321,9 @@ html {
   pointer-events: auto;
 }
 
-/* "Know More" text styling */
-.know-more-text {
-  margin-top: auto; /* Pushes to the bottom if initial content is flex */
+/* "Know More" text styling (Note: This seems unused in the current HTML/JS) */
+/* .know-more-text {
+  margin-top: auto;
   padding-top: 1rem;
   font-family: "Albert Sans", sans-serif;
   font-size: 0.9rem;
@@ -315,7 +334,7 @@ html {
 .know-more-text span {
   display: inline-block;
   transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-}
+} */
 
 .card-content-initial {
   display: flex;
@@ -323,9 +342,157 @@ html {
   height: 100%;
 }
 
+/* === Styles for Expanded Card Layout === */
+.expanded-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem; /* Space between icon and title */
+  margin-bottom: 1.5rem; /* Space below the header group */
+}
+
+/* Ensure icon wrapper inside expanded card is styled normally */
+.card-content-expanded .service-card-icon-wrapper {
+  background-color: rgba(0, 0, 0, 0.2); /* Or your desired background */
+  border: 1px solid rgba(151, 151, 151, 0.2);
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+/* Style for the title inside the expanded header */
+.card-content-expanded .modal-title {
+   margin-bottom: 0;
+   font-size: 2rem;
+   line-height: 1.2;
+}
+
+/* Style for the Short Statement text */
+.modal-statement {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-family: "Albert Sans", sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: #ccc;
+  text-align: left;
+}
+
+/* Container for the Outcome paragraphs */
+.modal-outcome {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* Style for each individual Outcome paragraph */
+.outcome-point {
+    position: relative;
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    font-family: "Albert Sans", sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #a5a5a5;
+    text-align: left;
+}
+
+/* Add the custom dash bullet point */
+.outcome-point::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    font-weight: 500;
+    color: #fff;
+    margin-right: 0.5rem;
+    width: 1rem;
+    text-align: center;
+}
+
+
+/* Scrollbar styles for Chrome/Safari */
+.modal-outcome::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-outcome::-webkit-scrollbar-track {
+  background: #0d0b02;
+  border-radius: 10px;
+}
+
+.modal-outcome::-webkit-scrollbar-thumb {
+  background-color: #3d72ff;
+  border-radius: 10px;
+  border: 2px solid #0d0b02;
+}
+
+
+/* Style and position for the CTA button in the expanded card */
+.modal-cta-btn {
+  display: inline-block;
+  margin-top: auto;
+  align-self: flex-end;
+  flex-shrink: 0;
+  /* Inherits most styles from generic button classes, maybe add specific overrides here if needed */
+}
+
+/* === END Styles for Expanded Card Layout === */
+
+
 /* =========================================================== */
 /* ========== END: NEW INTERACTIVE SERVICES SECTION ========== */
 /* =========================================================== */
+
+
+/* ========================================================== */
+/* ========== TEMPORARY CLASS FOR NO TRANSITION ON CLOSE ========== */
+/* ========================================================== */
+
+/* Target the specific card wrapper that has the closing-instant class */
+.service-card-wrapper.closing-instant {
+    /* Disable the main wrapper transitions (flex-basis, transform, opacity) */
+    transition-property: none !important;
+    /* Explicitly reset any transform that might cause flickering during instant close */
+    transform: none !important;
+}
+
+/* Target the content wrappers and close button *inside* the card with the closing-instant class */
+.service-card-wrapper.closing-instant .service-card-interactive-content,
+.service-card-wrapper.closing-instant .card-close-btn,
+.service-card-wrapper.closing-instant .card-content-initial,
+.service-card-wrapper.closing-instant .card-content-expanded
+ {
+  /* Disable transitions for content opacity/transform and close button */
+  transition-property: none !important;
+  /* Ensure correct state is applied immediately */
+  /* Note: Opacity should still transition if you want a fade out, but you asked for instant */
+  /* Leaving these here but commented out if you change your mind later */
+  /* opacity: 0 !important; */
+  transform: none !important; /* Reset transform for instant snap */
+  transition-delay: 0s !important; /* No delay */
+}
+
+/* When closing, the initial content needs to reappear instantly */
+.service-card-wrapper.closing-instant .card-content-initial {
+   opacity: 1 !important; /* Make initial content visible instantly */
+}
+
+/* Add opacity control for instant closing */
+.service-card-wrapper.closing-instant .card-content-expanded {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+.service-card-wrapper.closing-instant .card-close-btn {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+
+/* ========================================================== */
+/* ========== END TEMPORARY CLASS ========== */
+/* ========================================================== */
+
 
 
 /* --- Form, Grid, & Footer Sections --- */
@@ -523,7 +690,7 @@ html {
   align-items: center;
   width: 70px;
   height: 70px;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem; /* Default margin for initial card */
   background-color: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(151, 151, 151, 0.1);
   border-radius: 50%;
@@ -535,21 +702,14 @@ html {
   color: #fff;
 }
 
-.service-card-title {
+/* Used for initial card title */
+.service-card-title-quote {
   margin-bottom: 1rem;
   font-family: "Bricolage Grotesque", sans-serif;
   font-size: 1.5rem;
   color: #fff;
 }
 
-.service-card-desc {
-  max-width: 400px;
-  margin: 0 auto;
-  font-family: "Albert Sans", sans-serif;
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #a5a5a5;
-}
 
 /* --- Typography & Text Styles --- */
 .hero-heading {
@@ -689,38 +849,9 @@ html {
   color: #f87171;
 }
 
-.modal-title {
-  margin-bottom: 1.5rem;
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-size: 2rem;
-  line-height: 1.2;
-  color: #fff;
-}
-
-.modal-points {
-  margin: 0 0 2rem;
-  padding: 0;
-  list-style: none;
-}
-
-.modal-points li {
-  position: relative;
-  margin-bottom: 1rem;
-  padding-left: 2rem;
-  font-family: "Albert Sans", sans-serif;
-  font-size: 1rem;
-  color: #ccc;
-}
-
-.modal-points li::before {
-  content: "✓";
-  position: absolute;
-  left: 0;
-  font-weight: 700;
-  color: #0046ff;
-}
-
 /* --- Buttons & Forms --- */
+
+/* Expanded card CTA button */
 .modal-cta-btn {
   display: inline-block;
   margin: 0;
@@ -954,12 +1085,48 @@ html {
   .hero-button .free-highlight {
     font-size: 18px;
   }
-  .modal-title {
+  .modal-title { /* For expanded card title */
     font-size: 1.75rem;
   }
-  .modal-points li {
-    font-size: 1rem;
+  /* Adjust padding for expanded card on small screens */
+  .card-content-expanded {
+      padding: 1.5rem;
   }
+  /* Adjust spacing for expanded card on small screens */
+  .expanded-header {
+      gap: 1rem;
+      margin-bottom: 1rem;
+  }
+  .service-card-icon-wrapper {
+      width: 60px;
+      height: 60px;
+  }
+   .service-card-icon {
+      font-size: 2rem;
+   }
+   .modal-statement {
+       font-size: 1rem;
+       margin-bottom: 1rem;
+   }
+   .modal-outcome { /* Container */
+       margin-bottom: 1rem;
+   }
+   .outcome-point { /* Individual points */
+       font-size: 0.9rem;
+       margin-bottom: 0.75rem; /* Slightly less space between points on mobile */
+   }
+   .outcome-point::before {
+       width: 0.8rem;
+   }
+   .modal-cta-btn {
+       padding: 0.6rem 1.2rem;
+       font-size: 0.9rem;
+   }
+   .card-close-btn {
+      font-size: 1.2rem;
+      top: 0.75rem;
+      right: 0.75rem;
+   }
 }
 
 @media (min-width: 768px) {
@@ -986,58 +1153,77 @@ html {
     align-items: flex-start;
     text-align: left;
   }
-  
-  /* === START: UPDATED SECTION FOR SMOOTH ANIMATION === */
+
+  /* === START: RESPONSIVE STYLES FOR INTERACTIVE CARDS === */
   .services-interactive-container {
     flex-direction: row;
-    perspective: 1000px;
+    perspective: 1000px; /* Add perspective for 3D transforms */
   }
 
   .service-card-wrapper {
-    flex: 1 1 0px;
-    padding: 1px;
-    /* A robust transition for all properties that change */
-    transition: flex-basis 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-                opacity 0.4s ease,
-                transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  /* Original slant hover effect */
-  .service-card-wrapper:not(.expanded):hover {
-    background: linear-gradient(120deg, #3d72ff, #d904ff);
-    transform: rotateY(-5deg) rotateX(5deg) scale(1.05);
-    box-shadow: 0 10px 40px -10px rgba(61, 114, 255, 0.3);
-    z-index: 5;
-  }
-  
-  .service-card-wrapper:not(.expanded):hover .service-card-interactive {
-    border-color: transparent;
+    flex: 1 1 0px; /* Basis 0 allows it to shrink fully */
+    /* Default transition defined earlier handles expansion */
   }
 
-  .service-card-wrapper:not(.expanded):hover .service-card-interactive::before {
-    opacity: 1;
+  /* Original slant hover effect */
+  /* Apply only when not expanded */
+  .service-card-wrapper:not(.expanded):hover {
+    background: linear-gradient(120deg, #3d72ff, #d904ff); /* Gradient for the wrapper */
+    transform: rotateY(-5deg) rotateX(5deg) scale(1.05);
+    box-shadow: 0 10px 40px -10px rgba(61, 114, 255, 0.3);
+    z-index: 5; /* Bring hovered card to front */
   }
-  
+
+  .service-card-wrapper:not(.expanded):hover .service-card-interactive {
+    border-color: transparent; /* Hide inner border when wrapper has gradient border */
+  }
+
+  /* On hover, move the glare across the card and make it visible */
+  .service-card-wrapper:not(.expanded):hover .service-card-interactive::before {
+    left: 100%; /* Move across to the right */
+    opacity: 0.5; /* Make it partially visible */
+    /* Note: transition is defined on the ::before element itself */
+  }
+
   /* Expanded state: card grows to full width */
   .service-card-wrapper.expanded {
-    flex-basis: 100%;
-    z-index: 10;
+    flex-basis: 100%; /* Take full width */
+    z-index: 10; /* Bring expanded card to front */
     cursor: default;
-    /* This is the key: It forces the transform to a neutral state,
-       providing a stable starting point for the closing animation. */
-    transform: none; 
+    transform: none; /* Ensure no lingering hover transform */
+    background: none; /* Remove wrapper gradient border when expanded */
+    box-shadow: none;
   }
 
   /* Overlay state: other cards shrink to zero width and fade */
   .service-card-wrapper.overlay {
     flex-basis: 0px;
     opacity: 0;
-    overflow: hidden;
-    pointer-events: none;
-    padding: 0;
-    border: none;
+    overflow: hidden; /* Hide content */
+    pointer-events: none; /* Prevent interaction */
+    padding: 0; /* Remove padding */
+    border: none; /* Remove border */
+    transform: none; /* Ensure no lingering hover transform */
   }
-  /* === END: UPDATED SECTION === */
+  /* === END: RESPONSIVE STYLES FOR INTERACTIVE CARDS === */
+
+
+  /* Add a bouncy spring effect when cards return to normal size (when NOT closing-instant) */
+  /* This rule applies when you open a card, then close it using the close button (briefly instant, then normal transition returns),
+     or if the state change happens due to something else that doesn't trigger the instant close. */
+  .service-card-wrapper:not(.expanded):not(.overlay):not(.closing-instant) {
+    transition: flex-basis 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 0.4s ease,
+                transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy effect */
+  }
+
+  /* Special closing animation for close button itself (when NOT closing-instant) */
+   .service-card-wrapper:not(.expanded):not(.closing-instant) .card-close-btn {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.8);
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
 }
 
 @media (min-width: 1024px) {
@@ -1084,10 +1270,33 @@ html {
     max-width: 1264px;
   }
 
-  .service-card-wrapper.overlay {
-    /* Ensures the overlay card doesn't have any leftover transform */
-    transform: none;
-  }
+  /* Adjust expanded card layout on larger screens if needed */
+   .expanded-header {
+      gap: 2rem;
+      margin-bottom: 2rem;
+   }
+   .service-card-icon-wrapper { /* Back to default size */
+      width: 70px;
+      height: 70px;
+   }
+   .service-card-icon { /* Back to default size */
+      font-size: 2.5rem;
+   }
+    .modal-statement {
+       font-size: 1.125rem;
+       margin-bottom: 2rem;
+   }
+   .modal-outcome { /* Container */
+        margin-bottom: 2rem;
+   }
+    .outcome-point { /* Individual points */
+       font-size: 1rem;
+       margin-bottom: 1rem;
+   }
+   .modal-cta-btn {
+       padding: 0.75rem 1.5rem;
+       font-size: 1rem;
+   }
 }
 
 /* === STYLES FOR BUTTONS ON COLLAPSED SERVICE CARDS === */
@@ -1171,3 +1380,40 @@ html {
   background-color: transparent;
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
+
+/* === START: TRANSITION FOR CLOSING ANIMATION (when NOT instant) === */
+
+/* Transition when closing the expanded card */
+/* This applies when the closing-instant class is *not* present */
+.service-card-wrapper:not(.expanded):not(.closing-instant) .card-content-expanded {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px) scale(0.95);
+  /* Keep your desired closing animation transition here */
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0s;
+}
+
+/* Transition for the initial content when closing */
+/* This applies when the closing-instant class is *not* present */
+.service-card-wrapper:not(.expanded):not(.closing-instant) .card-content-initial {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  /* Keep your desired initial content appearing transition here */
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0.2s;
+}
+
+/* The close button itself also has a transition */
+/* This applies when the closing-instant class is *not* present */
+.service-card-wrapper:not(.expanded):not(.closing-instant) .card-close-btn {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.8);
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+
+/* === END: TRANSITION FOR CLOSING ANIMATION === */
