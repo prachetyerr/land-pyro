@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import "./App.css";
 
 // Third-party Libraries
@@ -127,8 +127,9 @@ function App() {
     // which should probably just keep the modal open. The close button handles closing.
   };
 
-  const handleCloseCard = (e) => {
-    e.stopPropagation(); // Prevents the click from bubbling up to the card's onClick
+  // Wrap handleCloseCard in useCallback to maintain reference stability
+  const handleCloseCard = useCallback((e) => {
+    if (e) e.stopPropagation(); // Prevents the click from bubbling up to the card's onClick
 
     // Only trigger close if a card is actually expanded
     if (expandedCardIndex !== null) {
@@ -148,7 +149,26 @@ function App() {
             closeTimerRef.current = null; // Clean up the ref
         }, 50); // 50ms should be sufficient for the browser to register the change
     }
-  };
+  }, [expandedCardIndex]); // Add expandedCardIndex as a dependency
+  
+  // ======================================================================
+  // ========== NEW: EFFECT TO HANDLE BODY SCROLL ON MOBILE MODAL =========
+  // ======================================================================
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    // Lock body scroll when a card is expanded on mobile
+    if (expandedCardIndex !== null && isMobile) {
+      document.body.style.overflow = "hidden";
+    } else {
+      // Otherwise, ensure it's unlocked
+      document.body.style.overflow = "auto";
+    }
+    // Cleanup function to ensure scroll is always restored on component unmount
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [expandedCardIndex]); // This effect runs whenever a card is expanded or closed
+  // ======================================================================
 
 
   // Click handler for mobile nav links
@@ -216,8 +236,7 @@ function App() {
         }
       }
     };
-    // Add expandedCardIndex to dependencies so the effect re-runs if the index changes
-    // Also add handleCloseCard because it's used inside, React hooks lint rule recommendation
+    // The useEffect now has a stable reference to handleCloseCard
     window.addEventListener("keydown", handleEscKey);
     return () => window.removeEventListener("keydown", handleEscKey);
   }, [expandedCardIndex, handleCloseCard]);
@@ -335,12 +354,11 @@ function App() {
           </p>
         </div>
 
-        {/* Remove the ref and the temporary class logic from here */}
+        {/* This container's children will be stacked on mobile and in a row on desktop */}
         <div className="services-interactive-container">
           {servicesData.map((service, index) => (
             <div
               key={index}
-              // Add the 'closing-instant' class based on closingCardIndex state
               className={`service-card-wrapper ${
                 expandedCardIndex !== null
                   ? expandedCardIndex === index
@@ -348,8 +366,10 @@ function App() {
                     : "overlay"
                   : ""
               } ${closingCardIndex === index ? 'closing-instant' : ''}`}
+               // On mobile, the wrapper itself becomes the modal backdrop
+              onClick={() => handleCardClick(index)}
             >
-              <div className="service-card-interactive">
+              <div className="service-card-interactive" onClick={(e) => { if (expandedCardIndex === index) e.stopPropagation() }}>
                 <div className="service-card-interactive-content">
                   {/* --- Content visible when collapsed (Normal Card) --- */}
                   <div className="card-content-initial">
@@ -381,7 +401,7 @@ function App() {
                   {/* --- Content visible when expanded (Full-screen Card) --- */}
                   <div className="card-content-expanded">
                     <div className="expanded-header">
-                      <div className="service-card-icon-wrapper"> {/* No 'transparent' class here */}
+                      <div className="service-card-icon-wrapper">
                         <FontAwesomeIcon
                           icon={service.icon}
                           className="service-card-icon"
@@ -392,14 +412,11 @@ function App() {
 
                     <p className="modal-statement">{service.shortStatement}</p>
 
-                    {/* === UPDATED: Render outcome points from the array === */}
-                    <div className="modal-outcome"> {/* Use a div as a container */}
+                    <div className="modal-outcome">
                       {service.outcome.map((point, idx) => (
-                        // Use paragraph tags for each point
                         <p key={idx} className="outcome-point">{point}</p>
                       ))}
                     </div>
-                     {/* === END UPDATED === */}
 
                     <button
                       className="modal-cta-btn"
@@ -410,10 +427,10 @@ function App() {
                   </div>
                 </div>
 
-                {/* The close button should always be relative to the service-card-interactive parent */}
+                {/* The close button is part of the interactive card */}
                 <button
                   className="card-close-btn"
-                  onClick={handleCloseCard} // This uses the modified handler
+                  onClick={handleCloseCard}
                   aria-label="Close details"
                 >
                   <FontAwesomeIcon icon={faTimes} />
