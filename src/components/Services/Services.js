@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import './Services.css';
+import './Services.css'; // Your CSS file
 
 const Services = ({ 
   servicesData,
@@ -41,10 +41,10 @@ const Services = ({
           >
             <div className="service-card-interactive" onClick={(e) => { if (expandedCardIndex === index) e.stopPropagation() }}>
               <div className="service-card-interactive-content">
-                {/* Content visible when collapsed */}
+                {/* ========== Content for Collapsed Card (Unchanged) ========== */}
                 <div className="card-content-initial">
-                  <div className="service-card-icon-wrapper transparent">
-                    {service.icon}
+                  <div className="card-image-initial">
+                    <img src={service.Image} alt="" />
                   </div>
                   <h3 className="service-card-title-quote">
                     {service.title}
@@ -65,21 +65,26 @@ const Services = ({
                   </div>
                 </div>
 
-                {/* Content visible when expanded */}
+                {/* ========== CORRECTED: Content for Expanded Card ========== */}
                 <div className="card-content-expanded">
-                  <div className="expanded-header">
-                    <div className="service-card-icon-wrapper">
-                      {service.icon}
+                  <h2 className="modal-title">{service.title}</h2>
+                  
+                  {/* New container for the main 2-column content */}
+                  <div className="modal-main-content">
+                    {/* Left Column (Text) */}
+                    <div className="modal-text-content">
+                      <p className="modal-statement">{service.shortStatement}</p>
+                      <div className="modal-outcome">
+                        {service.outcome.map((point, idx) => (
+                          <p key={idx} className="outcome-point">{point}</p>
+                        ))}
+                      </div>
                     </div>
-                    <h2 className="modal-title">{service.title}</h2>
-                  </div>
 
-                  <p className="modal-statement">{service.shortStatement}</p>
-
-                  <div className="modal-outcome">
-                    {service.outcome.map((point, idx) => (
-                      <p key={idx} className="outcome-point">{point}</p>
-                    ))}
+                    {/* Right Column (Image) */}
+                    <div className="modal-image-container">
+                      <img src={service.Image} alt={service.title} className="modal-image" />
+                    </div>
                   </div>
 
                   <button

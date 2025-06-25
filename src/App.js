@@ -24,7 +24,9 @@ import logo7 from "./assets/gro vnr.png";
 import logo8 from "./assets/nasa.png";
 import logo9 from "./assets/innogeeks.png";
 import logo10 from "./assets/acm.png";
-
+import service1 from './assets/Thinking face-rafiki.svg';
+import service3 from './assets/13107135_5143310.svg';
+import service2 from './assets/Kids Studying from Home-rafiki.svg'
 // --- UPDATED Data for Services Section (Based on sketches) ---
 const servicesData = [
   {
@@ -39,6 +41,7 @@ const servicesData = [
       "Build foundational credibility in the digital space.",
     ],
     ctaText: "Let's go digital",
+    Image: service1, // Added image for visual context
   },
   {
     icon: <FontAwesomeIcon icon={faPalette} />, // Icon for "reaching the right audience"
@@ -53,6 +56,7 @@ const servicesData = [
       "Convert casual visitors into loyal customers.",
     ],
     ctaText: "Let's grow my reach",
+    Image: service2, // Added image for visual context
   },
   {
     icon: <FontAwesomeIcon icon={faRobot} />, // Icon for "scale without burnout"
@@ -67,6 +71,7 @@ const servicesData = [
       "Structure your operations for seamless future scaling.",
     ],
     ctaText: "Let's optimize for Scale", // Slightly adjusted CTA for clarity
+    Image: service3, // Added image for visual context
   },
 ];
 
