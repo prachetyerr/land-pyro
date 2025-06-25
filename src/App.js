@@ -30,12 +30,10 @@ const servicesData = [
     icon: faCode, // Icon for "bring it online"
     title: '"My business is solid. Now I want to bring it online."',
     shortStatement:
-      "Ready to translate your established business success into a powerful digital presence?",
+      "Isn't this the best time to turn your offline hustle into a digital experience?",
     outcome: [ // Changed to an array of strings
-      "Establish a professional, engaging online presence.",
-      "Expand your market reach beyond physical limitations.",
-      "Unlock new avenues for growth and customer interaction.",
-      "Build foundational credibility in the digital space.",
+      "From a simple landing page to a full e-commerce platform,let's help you get started.",
+     
     ],
     ctaText: "Let's go digital",
   },
@@ -44,28 +42,24 @@ const servicesData = [
     title:
       '"I\'m up and running online, but I\'m not reaching the right audience."',
     shortStatement:
-      "Is your digital presence established, yet struggling to connect with valuable customers?",
+      "Your product is great, no doubt.But have you positioned it right?",
     outcome: [ // Changed to an array of strings
-      "Develop a targeted brand voice and messaging.",
-      "Implement data-driven marketing and content strategies.",
-      "Amplify visibility across relevant digital channels.",
-      "Convert casual visitors into loyal customers.",
+      "With smart strategy, targeted content, and thoughtful marketing, let's amplify your market visibility.",
+      
     ],
-    ctaText: "Let's grow my reach",
+    ctaText: "Let's grow",
   },
   {
     icon: faRobot, // Icon for "scale without burnout"
     title:
       '"My company is picking up, and I want to scale without the burnout."',
     shortStatement:
-      "Experiencing growth pains? It's time to build systems that support expansion, not exhaustion.",
+      "You've figured out the fundamentals.How about streamlining your operations?",
     outcome: [ // Changed to an array of strings
-      "Automate repetitive tasks to free up valuable time.",
-      "Integrate AI tools for enhanced efficiency and insights.",
-      "Develop robust workflows for sustainable growth.",
-      "Structure your operations for seamless future scaling.",
+      "We introduce AI tools, automation, and system-level thinking to help you scale efficiency,Let's turn bsuy into better.",
+      
     ],
-    ctaText: "Let's optimize for Scale", // Slightly adjusted CTA for clarity
+    ctaText: "Let's optimize", // Slightly adjusted CTA for clarity
   },
 ];
 
