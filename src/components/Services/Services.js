@@ -65,27 +65,72 @@ const Services = ({
                   </div>
                 </div>
 
-                {/* ========== CORRECTED: Content for Expanded Card ========== */}
+                {/* ========== MODIFIED: Content for Expanded Card with conditional content ========== */}
                 <div className="card-content-expanded">
                   <h2 className="modal-title">{service.title}</h2>
                   
-                  {/* New container for the main 2-column content */}
-                  <div className="modal-main-content">
-                    {/* Left Column (Text) */}
-                    <div className="modal-text-content">
-                      <p className="modal-statement">{service.shortStatement}</p>
-                      <div className="modal-outcome">
-                        {service.outcome.map((point, idx) => (
-                          <p key={idx} className="outcome-point">{point}</p>
-                        ))}
+                  {/* Special layout for first card (index 0) */}
+                  {index === 0 ? (
+                    <div className="modal-main-content first-card-layout">
+                      {/* Left Column (Text) */}
+                      <div className="modal-text-content">
+                        <p className="modal-statement">{service.shortStatement}</p>
+                        <p className="modal-description">
+                          From a simple landing page to a full e-commerce platform, let's help you get started.
+                        </p>
+                      </div>
+
+                      {/* Right Column (Image) */}
+                      <div className="modal-image-container">
+                        <img src={service.Image} alt={service.title} className="modal-image" />
                       </div>
                     </div>
+                  ) : index === 1 ? (
+                    // Special layout for second card (index 1)
+                    <div className="modal-main-content second-card-layout">
+                      {/* Left Column (Text) */}
+                      <div className="modal-text-content">
+                        <p className="modal-statement">Your products is great, no doubt. But have you positioned it right?</p>
+                        <p className="modal-description">
+                          With smart strategy, targeted content, and thoughtful marketing,let's simplify your market visibility.
+                        </p>
+                      </div>
 
-                    {/* Right Column (Image) */}
-                    <div className="modal-image-container">
-                      <img src={service.Image} alt={service.title} className="modal-image" />
+                      {/* Right Column (Image) */}
+                      <div className="modal-image-container">
+                        <img src={service.Image} alt={service.title} className="modal-image" />
+                      </div>
                     </div>
-                  </div>
+                  ) : index === 2 ? (
+                    // Special layout for third card (index 2)
+                    <div className="modal-main-content third-card-layout">
+                      {/* Left Column (Text) */}
+                      <div className="modal-text-content">
+                        <p className="modal-statement">You've figured out the fundamentals. How about streaming your operations?</p>
+                        <p className="modal-description">
+                          We introduce AI tools, automation, and system level thinking to help you scale efficiency. Let's turn busy into better.
+                        </p>
+                      </div>
+
+                      {/* Right Column (Image) */}
+                      <div className="modal-image-container">
+                        <img src={service.Image} alt={service.title} className="modal-image" />
+                      </div>
+                    </div>
+                  ) : (
+                    // Default layout for other cards
+                    <div className="modal-main-content">
+                      {/* Left Column (Text) */}
+                      <div className="modal-text-content">
+                        <p className="modal-statement">{service.shortStatement}</p>
+                      </div>
+
+                      {/* Right Column (Image) */}
+                      <div className="modal-image-container">
+                        <img src={service.Image} alt={service.title} className="modal-image" />
+                      </div>
+                    </div>
+                  )}
 
                   <button
                     className="modal-cta-btn"

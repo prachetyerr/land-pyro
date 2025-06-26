@@ -18,6 +18,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,200..800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
 
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 6px; /* Make scrollbar thinner - default is usually 16px */
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(13, 11, 2, 0.3); /* Dark track to match your theme */
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4); /* Slightly more visible on hover */
+}
+
+/* For Firefox */
+html {
+  scrollbar-width: thin; /* Makes scrollbar thinner */
+  scrollbar-color: rgba(255, 255, 255, 0.2) rgba(13, 11, 2, 0.3); /* thumb color, track color */
+}
+
 #root {
   max-width: 100%;
   margin: 0 auto;

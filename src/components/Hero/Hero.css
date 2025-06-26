@@ -40,15 +40,18 @@
   width: 100%;
   margin-left: auto;
   margin-right: auto;
+  margin-top: -2rem; /* Add negative margin to move the entire marquee up */
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+  padding-top: 0.5rem; /* Keep existing padding */
+  padding-bottom: 1rem; /* Keep existing padding */
   box-sizing: border-box;
 }
 
 .marquee-inner-content-container {
   position: relative;
   width: 100%;
-  max-width: 600px;
+  max-width: 600px; /* Decreased from 800px to make it narrower */
   margin-left: auto;
   margin-right: auto;
   overflow: hidden;
@@ -163,10 +166,10 @@
 }
 
 .client-logo {
-  height: 30px;
+  height: 40px; /* Increased from 30px to make logos bigger */
   width: auto;
-  max-width: 150px;
-  margin: 0.5rem 2.5rem;
+  max-width: 180px; /* Increased from 150px */
+  margin: 0.75rem 2.5rem; /* Increased margins for better spacing */
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
@@ -206,8 +209,16 @@
   .marquee-outer-padding-container {
     padding-left: 2rem;
     padding-right: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1.5rem;
+    margin-top: -3rem; /* More negative margin for desktop to move it up further */
   }
   .marquee-inner-content-container {
-    max-width: 1264px;
+    max-width: 800px; /* Decreased from 1000px to make it narrower on desktop */
+  }
+  .client-logo {
+    height: 45px; /* Keep same size */
+    max-width: 200px; /* Keep same size */
+    margin: 1rem 3rem; /* Keep same spacing */
   }
 }

@@ -39,8 +39,8 @@ const servicesData = [
       "Expand your market reach beyond physical limitations.",
       "Unlock new avenues for growth and customer interaction.",
       "Build foundational credibility in the digital space.",
-    ],
-    ctaText: "Let's go digital",
+    ],  
+    ctaText: "Let's go ",
     Image: service1, // Added image for visual context
   },
   {
@@ -55,7 +55,7 @@ const servicesData = [
       "Amplify visibility across relevant digital channels.",
       "Convert casual visitors into loyal customers.",
     ],
-    ctaText: "Let's grow my reach",
+    ctaText: "Let's grow ",
     Image: service2, // Added image for visual context
   },
   {
@@ -70,7 +70,7 @@ const servicesData = [
       "Develop robust workflows for sustainable growth.",
       "Structure your operations for seamless future scaling.",
     ],
-    ctaText: "Let's optimize for Scale", // Slightly adjusted CTA for clarity
+    ctaText: "Let's optimize ", // Slightly adjusted CTA for clarity
     Image: service3, // Added image for visual context
   },
 ];
