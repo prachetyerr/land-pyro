@@ -104,23 +104,24 @@
   
 }
 .modal-title {
-  text-align: center; /* Center title as per design */
+  /* Center title as per design */
   width: 100%;
   font-size: 2rem;
   line-height: 1.2;
   color: #fff;
   margin-bottom: 1.5rem; /* Space between title and image */
+  
 }
 
 .modal-image-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 1.5rem; /* Space between image and text content */
+  margin-bottom: 2.0rem; /* Space between image and text content */
 }
 
 .modal-image {
-  max-width: 250px;
+  max-width: 350px;
   width: 80%;
   height: auto;
   opacity: 0; /* Hidden by default for animation */
@@ -134,20 +135,22 @@
 
 .modal-statement {
   font-family: "Albert Sans", sans-serif;
-  font-size: 1.125rem;
+  font-size: 1.40rem;
+  font-weight: 500;
   line-height: 1.6;
   color: #ccc;
-  text-align: center; /* Centered text */
+   /* Centered text */
   margin-bottom: 1rem;
+  margin-right: 7rem;
 }
+ .modal-description{
+   font-size: 1.40rem;
+  font-weight: 500;
+  color: #ccc;
+  max-width: 650px;
+ }
 
-.modal-outcome {
-  font-family: "Albert Sans", sans-serif;
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #a5a5a5;
-  text-align: center; /* Centered text */
-}
+
 
 /* === States & Close Button (PRESERVED) === */
 .service-card-wrapper.expanded .card-content-initial {
@@ -269,7 +272,7 @@
 /* === Modal CTA Button (MODIFIED FOR POSITIONING) === */
 .modal-cta-btn {
   display: block; /* Make it a block for centering */
-  margin: 1.5rem auto 0 auto; /* auto left/right centers it */
+  margin: 1.5rem 0 0 45rem; /* auto left/right centers it */
   margin-top: auto; /* Pushes to bottom */
   padding: 0.75rem 2rem; /* Adjusted padding */
   font-family: "Space Grotesk", sans-serif;

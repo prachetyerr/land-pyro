@@ -33,13 +33,8 @@ const servicesData = [
     icon: <FontAwesomeIcon icon={faCode} />, // Icon for "bring it online"
     title: '"My business is solid. Now I want to bring it online."',
     shortStatement:
-      "Ready to translate your established business success into a powerful digital presence?",
-    outcome: [ // Changed to an array of strings
-      "Establish a professional, engaging online presence.",
-      "Expand your market reach beyond physical limitations.",
-      "Unlock new avenues for growth and customer interaction.",
-      "Build foundational credibility in the digital space.",
-    ],  
+      "Isn't this the best time to turn your offline hustle into a digital experience?",
+     
     ctaText: "Let's go ",
     Image: service1, // Added image for visual context
   },
@@ -48,13 +43,8 @@ const servicesData = [
     title:
       '"I\'m up and running online, but I\'m not reaching the right audience."',
     shortStatement:
-      "Is your digital presence established, yet struggling to connect with valuable customers?",
-    outcome: [ // Changed to an array of strings
-      "Develop a targeted brand voice and messaging.",
-      "Implement data-driven marketing and content strategies.",
-      "Amplify visibility across relevant digital channels.",
-      "Convert casual visitors into loyal customers.",
-    ],
+      "Your products is great, no doubt. But have you positioned it right?",
+   
     ctaText: "Let's grow ",
     Image: service2, // Added image for visual context
   },
@@ -63,13 +53,8 @@ const servicesData = [
     title:
       '"My company is picking up, and I want to scale without the burnout."',
     shortStatement:
-      "Experiencing growth pains? It's time to build systems that support expansion, not exhaustion.",
-    outcome: [ // Changed to an array of strings
-      "Automate repetitive tasks to free up valuable time.",
-      "Integrate AI tools for enhanced efficiency and insights.",
-      "Develop robust workflows for sustainable growth.",
-      "Structure your operations for seamless future scaling.",
-    ],
+      "You've figured out the fundamentals. How about streaming your operations?",
+    
     ctaText: "Let's optimize ", // Slightly adjusted CTA for clarity
     Image: service3, // Added image for visual context
   },
