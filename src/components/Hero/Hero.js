@@ -54,7 +54,7 @@ const Hero = ({ highlightedWords, highlightedIndex, clientLogos, openCalendarPop
         </div>
         <div className="marquee-outer-padding-container py-8">
           <div className="marquee-inner-content-container hero-marquee">
-            <Marquee speed={40} pauseOnHover gradient={false}>
+            <Marquee speed={100} pauseOnHover gradient={false}>
               {clientLogos.map((logo, idx) => (
                 <img
                   key={idx}

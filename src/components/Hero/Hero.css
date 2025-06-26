@@ -40,11 +40,11 @@
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: -2rem; /* Add negative margin to move the entire marquee up */
+  margin-top: 2rem; /* Changed from -2rem to positive 2rem to move marquee way down */
   padding-left: 1.5rem;
   padding-right: 1.5rem;
-  padding-top: 0.5rem; /* Keep existing padding */
-  padding-bottom: 1rem; /* Keep existing padding */
+  padding-top: 0.5rem;
+  padding-bottom: 1rem;
   box-sizing: border-box;
 }
 
@@ -59,28 +59,13 @@
 
 .marquee-inner-content-container::before,
 .marquee-inner-content-container::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  z-index: 2;
-  width: 100px;
-  pointer-events: none;
-}
-
-.marquee-inner-content-container::before {
-  left: 0;
-  background: linear-gradient(to right, #0d0b02 20%, rgba(13, 11, 2, 0));
-}
-
-.marquee-inner-content-container::after {
-  right: 0;
-  background: linear-gradient(to left, #0d0b02 20%, rgba(13, 11, 2, 0));
+  display: none; /* Completely hide the fade effects */
 }
 
 /* --- Typography & Text Styles --- */
 .hero-heading {
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem; /* Keep this unchanged */
+  margin-top: 1rem; /* Changed from 0rem to 1rem to move heading down even more */
   font-family: "Albert Sans", sans-serif;
   font-size: 48px;
   font-weight: 400;
@@ -122,7 +107,7 @@
 .hero-desc {
   width: 95%;
   max-width: 700px;
-  margin: 2rem auto;
+  margin: 0.5rem auto; /* Reduced from 1rem to bring content closer */
   padding: 2px;
   font-family: "Albert Sans", sans-serif;
   font-size: 18px;
@@ -143,7 +128,7 @@
 
 .hero-button {
   display: block;
-  margin: 2.5rem auto;
+  margin: 1rem auto; /* Reduced from 1.5rem to bring button closer */
   padding: 0.75rem 1.5rem;
   font-family: "Space Grotesk", sans-serif;
   font-size: 20px;
@@ -206,19 +191,23 @@
 }
 
 @media (min-width: 1024px) {
+  .hero-heading {
+    margin-top: 0rem; /* Changed from -1rem to 0rem to move heading down even more on desktop */
+  }
+  
   .marquee-outer-padding-container {
     padding-left: 2rem;
     padding-right: 2rem;
     padding-top: 1rem;
     padding-bottom: 1.5rem;
-    margin-top: -3rem; /* More negative margin for desktop to move it up further */
+    margin-top: 3rem; /* Keep this unchanged */
   }
   .marquee-inner-content-container {
-    max-width: 800px; /* Decreased from 1000px to make it narrower on desktop */
+    max-width: 800px;
   }
   .client-logo {
-    height: 45px; /* Keep same size */
-    max-width: 200px; /* Keep same size */
-    margin: 1rem 3rem; /* Keep same spacing */
+    height: 45px;
+    max-width: 200px;
+    margin: 1rem 3rem;
   }
 }
