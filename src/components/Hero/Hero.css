@@ -1,0 +1,213 @@
+/* --- Hero, Marquee & Video --- */
+.hero-marquee {
+  width: 100%;
+  height: 100%;
+}
+
+.content-video-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.content-video-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(12px);
+}
+
+.content-video-fade-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(13, 11, 2, 0) 0%, rgba(13, 11, 2, 0) 50%, rgba(13, 11, 2, 0.8) 85%, rgb(13, 11, 2) 98%);
+  pointer-events: none;
+}
+
+.content-on-top {
+  position: relative;
+  z-index: 2;
+}
+
+.marquee-outer-padding-container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2rem; /* Changed from -2rem to positive 2rem to move marquee way down */
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 1rem;
+  box-sizing: border-box;
+}
+
+.marquee-inner-content-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px; /* Decreased from 800px to make it narrower */
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+}
+
+.marquee-inner-content-container::before,
+.marquee-inner-content-container::after {
+  display: none; /* Completely hide the fade effects */
+}
+
+/* --- Typography & Text Styles --- */
+.hero-heading {
+  margin-bottom: 0.5rem; /* Keep this unchanged */
+  margin-top: 1rem; /* Changed from 0rem to 1rem to move heading down even more */
+  font-family: "Albert Sans", sans-serif;
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -2px;
+  color: #fff;
+  text-align: center;
+}
+
+.highlighted-container {
+  display: block;
+  position: relative;
+  height: 1.2em;
+  overflow: hidden;
+}
+
+.highlighted {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-size: inherit;
+  font-weight: 500;
+  background: linear-gradient(90deg, #d904ff 42.35%, #003cff 56.08%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  opacity: 0;
+  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.highlighted.active {
+  top: 0;
+  opacity: 1;
+}
+
+.hero-desc {
+  width: 95%;
+  max-width: 700px;
+  margin: 0.5rem auto; /* Reduced from 1rem to bring content closer */
+  padding: 2px;
+  font-family: "Albert Sans", sans-serif;
+  font-size: 18px;
+  line-height: 1.5;
+  letter-spacing: -0.5px;
+  color: #ccc;
+  text-align: center;
+}
+
+.hero-desc .desc-highlight {
+  font-weight: 500;
+}
+
+.hero-desc .desc-italic {
+  font-style: italic;
+  font-weight: 500;
+}
+
+.hero-button {
+  display: block;
+  margin: 1rem auto; /* Reduced from 1.5rem to bring button closer */
+  padding: 0.75rem 1.5rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+  background: linear-gradient(90deg, #0046ff 0, #002a99 100%);
+  border: 1px solid #3d72ff;
+  border-radius: 31px;
+  cursor: pointer;
+}
+
+.hero-button:hover {
+  background: linear-gradient(90deg, #002a99 0, #001a66 100%);
+}
+
+.hero-button .free-highlight {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.client-logo {
+  height: 40px; /* Increased from 30px to make logos bigger */
+  width: auto;
+  max-width: 180px; /* Increased from 150px */
+  margin: 0.75rem 2.5rem; /* Increased margins for better spacing */
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+@media (max-width: 767px) {
+  .hero-heading {
+    font-size: 2.5rem;
+    letter-spacing: -1.5px;
+  }
+  .highlighted-container {
+    height: 1.2em;
+  }
+  .hero-desc {
+    max-width: 100%;
+    margin: 1.5rem auto;
+    padding: 0 1rem;
+    font-size: 1rem;
+  }
+  .hero-button {
+    font-size: 15px;
+  }
+  .hero-button .free-highlight {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-heading {
+    font-size: 4.375rem;
+    letter-spacing: -2.4px;
+  }
+  .hero-desc {
+    font-size: 1.375rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-heading {
+    margin-top: 0rem; /* Changed from -1rem to 0rem to move heading down even more on desktop */
+  }
+  
+  .marquee-outer-padding-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1.5rem;
+    margin-top: 3rem; /* Keep this unchanged */
+  }
+  .marquee-inner-content-container {
+    max-width: 800px;
+  }
+  .client-logo {
+    height: 45px;
+    max-width: 200px;
+    margin: 1rem 3rem;
+  }
+}

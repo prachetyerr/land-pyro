@@ -1,93 +1,69 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import "./App.css";
 
+// Component imports
+import Header from "./components/Header/Header";
+import Hero from "./components/Hero/Hero";
+import Services from "./components/Services/Services";
+import Contact from "./components/Contact/Contact";
+import Footer from "./components/Footer/Footer";
+
 // Third-party Libraries
-import Marquee from "react-fast-marquee";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCode,
   faPalette,
   faRobot,
-  faTimes,
-  faChevronLeft,
-  faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 
 // Asset Imports
-import grids from "./assets/Frame 41.png";
 import logo1 from "./assets/viali.png";
-import logo2 from "./assets/tanvi.png";
 import logo3 from "./assets/mih.png";
-import logo4 from "./assets/grind time rides.png";
 import logo5 from "./assets/riMLand.png";
-import logo6 from "./assets/yourbest.png";
 import logo7 from "./assets/gro vnr.png";
 import logo8 from "./assets/nasa.png";
 import logo9 from "./assets/innogeeks.png";
 import logo10 from "./assets/acm.png";
-import bgvideo from "./assets/bgvideo.mp4";
-
-// --- Data for Services Section ---
+import service1 from './assets/Thinking face-rafiki.svg';
+import service3 from './assets/13107135_5143310.svg';
+import service2 from './assets/Kids Studying from Home-rafiki.svg'
+// --- UPDATED Data for Services Section (Based on sketches) ---
 const servicesData = [
   {
-    icon: faRobot,
-    title: "AI-Powered Automation",
-    shortDesc:
-      "Streamline workflows, reduce manual tasks, and unlock peak efficiency with custom-trained AI models.",
-    details: {
-      heading: "Bespoke AI for Your Business",
-      points: [
-        "Custom AI model training and seamless integration.",
-        "Intelligent process automation for repetitive tasks.",
-        "Advanced data analysis and predictive insights.",
-      ],
-    },
+    icon: <FontAwesomeIcon icon={faCode} />, // Icon for "bring it online"
+    title: '"My business is solid. Now I want to bring it online."',
+    shortStatement:
+      "Isn't this the best time to turn your offline hustle into a digital experience?",
+     
+    ctaText: "Let's go ",
+    Image: service1, // Added image for visual context
   },
   {
-    icon: faCode,
-    title: "Web & App Development",
-    shortDesc:
-      "From elegant landing pages to complex web applications, we build fast, secure, and beautiful digital experiences.",
-    details: {
-      heading: "Digital Experiences that Perform",
-      points: [
-        "Responsive, high-performance website development.",
-        "Scalable full-stack web application architecture.",
-        "Secure APIs and robust database integration.",
-      ],
-    },
+    icon: <FontAwesomeIcon icon={faPalette} />, // Icon for "reaching the right audience"
+    title:
+      '"I\'m up and running online, but I\'m not reaching the right audience."',
+    shortStatement:
+      "Your products is great, no doubt. But have you positioned it right?",
+   
+    ctaText: "Let's grow ",
+    Image: service2, // Added image for visual context
   },
   {
-    icon: faPalette,
-    title: "Brand & UI/UX Design",
-    shortDesc:
-      "We craft stunning brand identities and intuitive user interfaces that captivate your audience and drive engagement.",
-    details: {
-      heading: "Design that Drives Connection",
-      points: [
-        "Comprehensive brand identity and strategy.",
-        "User-centric UI/UX research and design.",
-        "Creation of cohesive and memorable visual systems.",
-      ],
-    },
+    icon: <FontAwesomeIcon icon={faRobot} />, // Icon for "scale without burnout"
+    title:
+      '"My company is picking up, and I want to scale without the burnout."',
+    shortStatement:
+      "You've figured out the fundamentals. How about streaming your operations?",
+    
+    ctaText: "Let's optimize ", // Slightly adjusted CTA for clarity
+    Image: service3, // Added image for visual context
   },
 ];
 
 // Data for the animated hero heading
 const highlightedWords = ["AI-ready.", "future-proof.", "omnichannel."];
 
-const clientLogos = [
-  logo1,
-  logo2,
-  logo3,
-  logo4,
-  logo5,
-  logo6,
-  logo7,
-  logo8,
-  logo9,
-  logo10,
-];
+const clientLogos = [logo1, logo3, logo5, logo7, logo8, logo9, logo10];
 
 const openCalendarPopup = () => {
   const calendarUrl =
@@ -104,10 +80,13 @@ function App() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [formStatus, setFormStatus] = useState("");
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedService, setSelectedService] = useState(null);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
+
+  // --- STATE FOR INTERACTIVE SERVICES SECTION ---
+  const [expandedCardIndex, setExpandedCardIndex] = useState(null);
+  // New state to track which card is closing instantly
+  const [closingCardIndex, setClosingCardIndex] = useState(null);
+  const closeTimerRef = useRef(null); // To manage the timeout
 
   // Effect to cycle through the highlighted words
   useEffect(() => {
@@ -115,33 +94,72 @@ function App() {
       setHighlightedIndex(
         (prevIndex) => (prevIndex + 1) % highlightedWords.length
       );
-    }, 2500); // Change word every 2.5 seconds
+    }, 2500);
     return () => clearInterval(interval);
   }, []);
 
-  // Modal Handlers
-  const handleOpenModal = (service) => {
-    setSelectedService(service);
-    setIsModalOpen(true);
-    document.body.style.overflow = "hidden";
+  // --- EVENT HANDLERS FOR INTERACTIVE SERVICES ---
+  const handleCardClick = (index) => {
+     // Clear any pending instant-close state if a new card is clicked
+    if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current);
+        closeTimerRef.current = null;
+    }
+    if (closingCardIndex !== null) {
+        setClosingCardIndex(null); // Explicitly turn off the instant-close state for the previous card
+    }
+
+    if (expandedCardIndex !== index) {
+      setExpandedCardIndex(index);
+    }
+    // If clicking the already expanded card, the click is on the wrapper behind the modal,
+    // which should probably just keep the modal open. The close button handles closing.
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedService(null);
-    document.body.style.overflow = "auto";
-  };
+  // Wrap handleCloseCard in useCallback to maintain reference stability
+  const handleCloseCard = useCallback((e) => {
+    if (e) e.stopPropagation(); // Prevents the click from bubbling up to the card's onClick
 
-  // Carousel Handlers
-  const handleNextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % servicesData.length);
-  };
-  const handlePrevSlide = () => {
-    setCurrentSlide(
-      (prev) => (prev - 1 + servicesData.length) % servicesData.length
-    );
-  };
+    // Only trigger close if a card is actually expanded
+    if (expandedCardIndex !== null) {
+        // Clear any existing timeout before starting a new one
+        if (closeTimerRef.current) {
+            clearTimeout(closeTimerRef.current);
+        }
 
+        // Set the currently expanded card as the one that should close instantly
+        setClosingCardIndex(expandedCardIndex);
+        setExpandedCardIndex(null); // This will remove the 'expanded' class from the card
+
+        // Set a timeout to remove the 'closing-instant' class after a minimal delay
+        // The delay needs to be just enough for React to render the state change
+        closeTimerRef.current = setTimeout(() => {
+            setClosingCardIndex(null); // Remove the closing-instant class
+            closeTimerRef.current = null; // Clean up the ref
+        }, 50); // 50ms should be sufficient for the browser to register the change
+    }
+  }, [expandedCardIndex]); // Add expandedCardIndex as a dependency
+  
+  // ======================================================================
+  // ========== NEW: EFFECT TO HANDLE BODY SCROLL ON MOBILE MODAL =========
+  // ======================================================================
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    // Lock body scroll when a card is expanded on mobile
+    if (expandedCardIndex !== null && isMobile) {
+      document.body.style.overflow = "hidden";
+    } else {
+      // Otherwise, ensure it's unlocked
+      document.body.style.overflow = "auto";
+    }
+    // Cleanup function to ensure scroll is always restored on component unmount
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [expandedCardIndex]); // This effect runs whenever a card is expanded or closed
+  // ======================================================================
+
+  // Click handler for mobile nav links
   const handleLinkClick = () => {
     setIsMenuOpen(false);
   };
@@ -197,305 +215,56 @@ function App() {
     }
   }, [formStatus]);
 
+  // Handle escape key to close expanded card
   useEffect(() => {
     const handleEscKey = (event) => {
-      if (event.key === "Escape") handleCloseModal();
+      if (event.key === "Escape") {
+        if (expandedCardIndex !== null) { // Only close if a card is expanded
+             handleCloseCard(event); // Use the modified handler
+        }
+      }
     };
+    // The useEffect now has a stable reference to handleCloseCard
     window.addEventListener("keydown", handleEscKey);
     return () => window.removeEventListener("keydown", handleEscKey);
-  }, []);
+  }, [expandedCardIndex, handleCloseCard]);
 
   return (
     <div>
-      <header className={`top-nav ${isScrolled ? "fixed-header" : ""}`}>
-        <a href="#home" className="brand-logo-text" onClick={handleLinkClick}>
-          PyroSynergy
-        </a>
-        <nav ref={navRef} className="main-navigation">
-          <ul className="nav-links">
-            <li>
-              <a href="#home">Home</a>
-            </li>
-            {/* <li>
-              <a href="#services">Services</a>
-            </li> */}
-            <li>
-              <a href="#contact">Contact</a>
-            </li>
-          </ul>
-          <div className="mobile-nav-wrapper">
-            <button
-              className="hamburger-menu"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-expanded={isMenuOpen}
-            >
-              <div className="bar"></div>
-              <div className="bar"></div>
-              <div className="bar"></div>
-            </button>
-            <ul className={`mobile-nav ${isMenuOpen ? "is-active" : ""}`}>
-              <li>
-                <a href="#home" onClick={handleLinkClick}>
-                  Home
-                </a>
-              </li>
-              {/* <li>
-                <a href="#services" onClick={handleLinkClick}>
-                  Services
-                </a>
-              </li> */}
-              <li>
-                <a href="#contact" onClick={handleLinkClick}>
-                  Contact
-                </a>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </header>
+      <Header 
+        isScrolled={isScrolled}
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen}
+        navRef={navRef}
+        handleLinkClick={handleLinkClick}
+      />
 
-      <section id="home" className="relative flex flex-col">
-        <div className="content-video-wrapper">
-          <video autoPlay loop muted playsInline className="content-video-bg">
-            <source src={bgvideo} type="video/mp4" />
-          </video>
-          <div className="content-video-fade-overlay"></div>
-          <div
-            className="flex flex-col items-center justify-center flex-1 content-on-top"
-            style={{
-              minHeight: "40vh",
-              paddingTop: "130px",
-              paddingBottom: "40px",
-            }}
-          >
-            <h1 className="hero-heading leading-snug">
-              <div>Let's make your business</div>
-              <div className="highlighted-container">
-                {highlightedWords.map((word, index) => (
-                  <span
-                    key={index}
-                    className={`highlighted ${
-                      index === highlightedIndex ? "active" : ""
-                    }`}
-                  >
-                    {word}
-                  </span>
-                ))}
-              </div>
-            </h1>
-            <p className="hero-desc">
-              From strategy to scale, we rebuild and redesign your brand into
-              its most{" "}
-              <span className="desc-highlight">
-                efficient, effective, and elegant
-              </span>{" "}
-              form — empowering you to{" "}
-              <span className="desc-italic">outgrow</span> your competitors in
-              sales and success.
-            </p>
-            <button
-              className="hero-button mx-auto mb-8 md:mb-12"
-              onClick={openCalendarPopup}
-            >
-              schedule a <span className="free-highlight">FREE</span> strategy
-              call
-            </button>
-          </div>
-          <div className="w-full max-w-7xl mx-auto py-8 flex justify-center items-center hero-marquee">
-            <Marquee speed={40} pauseOnHover gradient={false}>
-              {clientLogos.map((logo, idx) => (
-                <img
-                  key={idx}
-                  src={logo}
-                  alt={`client-${idx}`}
-                  className="client-logo"
-                />
-              ))}
-            </Marquee>
-          </div>
-        </div>
-      </section>
+      <Hero 
+        highlightedWords={highlightedWords}
+        highlightedIndex={highlightedIndex}
+        clientLogos={clientLogos}
+        openCalendarPopup={openCalendarPopup}
+      />
 
-      {/* <section id="services" className="services-section">
-        <div className="section-heading">
-          <h2 className="services-title">Our Capabilities</h2>
-          <p className="services-subtitle">
-            We turn ambitious ideas into intelligent, scalable, and beautiful
-            digital solutions.
-          </p>
-        </div>
-        <div className="services-container">
-          <div
-            className="services-track"
-            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-          >
-            {servicesData.map((service, index) => (
-              <div
-                className={`service-card-wrapper ${
-                  index === currentSlide ? "active" : ""
-                }`}
-                key={index}
-              >
-                <div
-                  className="service-card-border-wrap"
-                  onClick={() => handleOpenModal(service)}
-                >
-                  <div className="service-card">
-                    <div className="service-card-icon-wrapper">
-                      <FontAwesomeIcon
-                        icon={service.icon}
-                        className="service-card-icon"
-                      />
-                    </div>
-                    <h3 className="service-card-title">{service.title}</h3>
-                    <p className="service-card-desc">{service.shortDesc}</p>
-                    <span className="know-more-btn">
-                      Know More <span>→</span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="carousel-nav">
-          <button
-            onClick={handlePrevSlide}
-            className="carousel-arrow"
-            aria-label="Previous service"
-          >
-            <FontAwesomeIcon icon={faChevronLeft} />
-          </button>
-          <div className="carousel-dots">
-            {servicesData.map((_, index) => (
-              <span
-                key={index}
-                className={`carousel-dot ${
-                  currentSlide === index ? "active" : ""
-                }`}
-                onClick={() => setCurrentSlide(index)}
-              ></span>
-            ))}
-          </div>
-          <button
-            onClick={handleNextSlide}
-            className="carousel-arrow"
-            aria-label="Next service"
-          >
-            <FontAwesomeIcon icon={faChevronRight} />
-          </button>
-        </div>
-      </section> */}
+      <Services 
+        servicesData={servicesData}
+        expandedCardIndex={expandedCardIndex}
+        closingCardIndex={closingCardIndex}
+        handleCardClick={handleCardClick}
+        handleCloseCard={handleCloseCard}
+        openCalendarPopup={openCalendarPopup}
+      />
 
-      <section id="contact" className="form-section">
-        <div className="form-text-wrapper">
-          <p className="form-intro">
-            Let’s be clear and honest: Your business NEEDS a{" "}
-            <span className="personalized-highlight">personalized</span>{" "}
-            solution.
-          </p>
-          <p className="form-desc">
-            Let’s keep this organic and deliver EXACTLY what you’re looking for.
-            Drop in your email, and let’s discuss this together.
-          </p>
-        </div>
-        <div className="form-container">
-          <form className="form" onSubmit={handleFormSubmit}>
-            <div className="input-wrapper">
-              <textarea
-                name="message"
-                placeholder="Enter your message"
-                rows="4"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-              />
-            </div>
-            <div className="horizontal-group">
-              <div className="input-wrapper email-field">
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <button type="submit" className="form-submit-button">
-                Submit
-              </button>
-            </div>
-          </form>
-          {formStatus && (
-            <p
-              className={`form-status-message ${
-                formStatus.startsWith("❌") ? "error" : "success"
-              }`}
-            >
-              {formStatus}
-            </p>
-          )}
-        </div>
-      </section>
+      <Contact 
+        email={email}
+        setEmail={setEmail}
+        message={message}
+        setMessage={setMessage}
+        formStatus={formStatus}
+        handleFormSubmit={handleFormSubmit}
+      />
 
-      <div className="decorative-grid-container">
-        <img
-          src={grids}
-          alt="Decorative grids"
-          className="decorative-grid-image"
-        />
-      </div>
-
-      <footer className="footer">
-        <div className="footer-names">
-          <span className="brand-logo-text">PyroSynergy</span>
-          <span className="brand-copyright-text">
-            © Copyright 2025 Pyrosynergy AI Labs. All rights reserved.
-          </span>
-        </div>
-        <div className="social-icons">
-          <a
-            href="https://www.instagram.com/pyrosynergy/"
-            aria-label="Instagram"
-          >
-            <img
-              src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg"
-              alt="Instagram"
-            />
-          </a>
-          <a
-            href="https://www.linkedin.com/company/pyrosynergy/"
-            aria-label="LinkedIn"
-          >
-            <img
-              src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg"
-              alt="LinkedIn"
-            />
-          </a>
-        </div>
-      </footer>
-
-      {isModalOpen && selectedService && (
-        <div className="modal-overlay" onClick={handleCloseModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="modal-close-btn"
-              onClick={handleCloseModal}
-              aria-label="Close modal"
-            >
-              <FontAwesomeIcon icon={faTimes} />
-            </button>
-            <h2 className="modal-title">{selectedService.details.heading}</h2>
-            <ul className="modal-points">
-              {selectedService.details.points.map((point, index) => (
-                <li key={index}>{point}</li>
-              ))}
-            </ul>
-            <button className="modal-cta-btn" onClick={openCalendarPopup}>
-              Book a Discovery Call
-            </button>
-          </div>
-        </div>
-      )}
+      <Footer />
     </div>
   );
 }
