@@ -16,7 +16,7 @@ const Hero = ({ highlightedWords, highlightedIndex, clientLogos, openCalendarPop
           style={{
             minHeight: "40vh",
             paddingTop: "130px",
-            paddingBottom: "40px",
+            paddingBottom: "0px",
           }}
         >
           <h1 className="hero-heading leading-snug">
@@ -45,16 +45,16 @@ const Hero = ({ highlightedWords, highlightedIndex, clientLogos, openCalendarPop
             sales and success.
           </p>
           <button
-            className="hero-button mx-auto mb-8 md:mb-12"
+            className="hero-button mx-auto mt-4 mb-8 md:mb-12"
             onClick={openCalendarPopup}
           >
             schedule a <span className="free-highlight">FREE</span> strategy
             call
           </button>
         </div>
-        <div className="marquee-outer-padding-container py-8">
+        <div className="marquee-outer-padding-container ">
           <div className="marquee-inner-content-container hero-marquee">
-            <Marquee speed={100} pauseOnHover gradient={false}>
+            <Marquee speed={100} pauseOnHover={false} gradient={false} pauseOnClick={false}>
               {clientLogos.map((logo, idx) => (
                 <img
                   key={idx}

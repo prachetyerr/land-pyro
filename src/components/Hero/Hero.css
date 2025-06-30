@@ -128,7 +128,7 @@
 
 .hero-button {
   display: block;
-  margin: 1rem auto; /* Reduced from 1.5rem to bring button closer */
+  margin: 2.5rem auto; /* Reduced from 1.5rem to bring button closer */
   padding: 0.75rem 1.5rem;
   font-family: "Space Grotesk", sans-serif;
   font-size: 20px;
@@ -151,11 +151,20 @@
 }
 
 .client-logo {
-  height: 40px; /* Increased from 30px to make logos bigger */
+  height: 33px; /* Increased from 30px to make logos bigger */
   width: auto;
   max-width: 180px; /* Increased from 150px */
-  margin: 0.75rem 2.5rem; /* Increased margins for better spacing */
+  margin: 0rem 2.5rem; /* Increased margins for better spacing */
   transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Marquee hover effect to slow down instead of stopping */
+.hero-marquee:hover .rfm-marquee {
+  animation-duration: 40s !important; /* Slow down from default speed */
+}
+
+.hero-marquee .rfm-marquee {
+  transition: animation-duration 0.3s ease;
 }
 
 @media (max-width: 767px) {

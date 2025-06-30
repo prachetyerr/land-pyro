@@ -22,7 +22,7 @@ import logo3 from "./assets/mih.png";
 import logo5 from "./assets/riMLand.png";
 import logo7 from "./assets/gro vnr.png";
 import logo8 from "./assets/nasa.png";
-import logo9 from "./assets/innogeeks.png";
+import logo9 from "./assets/recens_logo.png";
 import logo10 from "./assets/acm.png";
 import service1 from './assets/Thinking face-rafiki.svg';
 import service3 from './assets/13107135_5143310.svg';

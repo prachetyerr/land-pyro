@@ -287,7 +287,7 @@
     #003cff
   ); /* Gradient from design */
   border: none;
-  border-radius: 31px;
+  border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -304,7 +304,7 @@
 .know-more-btn {
   flex: 1;
   padding: 12px 15px;
-  border-radius: 8px;
+  border-radius: 33px;
   font-size: 0.9rem;
   font-weight: 600;
   text-align: center;
@@ -319,7 +319,7 @@
   color: #ffffff;
   padding: 12px 24px;
   border: none;
-  border-radius: 12px;
+  border-radius: 33px;
   position: relative;
   overflow: hidden;
 }
@@ -339,6 +339,7 @@
   left: 130%;
 }
 .card-cta-initial:hover {
+  transition: all 1s ease;
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(255, 0, 204, 0.4);
 }

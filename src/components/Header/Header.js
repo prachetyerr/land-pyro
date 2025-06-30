@@ -9,7 +9,7 @@ const Header = ({ isScrolled, isMenuOpen, setIsMenuOpen, navRef, handleLinkClick
       </a>
       <nav ref={navRef} className="main-navigation">
         <ul className="nav-links">
-          <li><a href="#home">Home</a></li>
+          <li><a href="">Home</a></li>
           <li><a href="#services">Services</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>

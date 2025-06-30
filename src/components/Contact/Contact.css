@@ -183,6 +183,9 @@
   .form-intro {
     font-size: 1.75rem;
   }
+  .form-submit-button{
+    margin: auto;
+  }
 }
 
 @media (min-width: 1024px) {
