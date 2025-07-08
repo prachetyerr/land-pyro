@@ -138,7 +138,7 @@
   border: 1px solid #3d72ff;
   border-radius: 31px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* Enhanced transition */
   min-width: 280px; /* Ensure consistent width */
   white-space: nowrap; /* Prevent text wrapping */
 }
@@ -162,6 +162,75 @@
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
+  position: relative;
+  min-height: 60px; /* Ensure consistent height to prevent layout shift */
+}
+
+/* Button carousel animations for mobile */
+@media (max-width: 767px) {
+  .hero-buttons-container {
+    min-height: 60px; /* Fixed height to prevent jumping */
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hero-button {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    max-width: 280px;
+  }
+  
+  /* Active button state */
+  .hero-button.button-active {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+    pointer-events: auto;
+    z-index: 2;
+  }
+  
+  /* Inactive button state */
+  .hero-button.button-inactive {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px) scale(0.95);
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  /* Add subtle animation effects */
+  .hero-button.button-active {
+    animation: buttonSlideIn 0.8s ease-out forwards;
+  }
+  
+  .hero-button.button-inactive {
+    animation: buttonSlideOut 0.8s ease-out forwards;
+  }
+}
+
+/* Keyframes for button carousel animations */
+@keyframes buttonSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(30px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+@keyframes buttonSlideOut {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-30px) scale(0.9);
+  }
 }
 
 /* Optional: Different style for questionnaire button */
@@ -227,6 +296,25 @@
     flex-direction: row;
     justify-content: center;
     gap: 2rem;
+  }
+  
+  /* Reset button positioning for desktop */
+  .hero-button {
+    position: static;
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+    width: auto;
+    max-width: none;
+  }
+  
+  .hero-button.button-active,
+  .hero-button.button-inactive {
+    position: static;
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+    animation: none;
   }
 }
 

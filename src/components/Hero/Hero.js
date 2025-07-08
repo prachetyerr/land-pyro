@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Marquee from "react-fast-marquee";
 import './Hero.css';
 import bgvideo from "../../assets/bgvideo.mp4";
 
 const Hero = ({ highlightedWords, highlightedIndex, clientLogos, openCalendarPopup, handleNavigateToQuestionnaire }) => {
+  const [currentButtonIndex, setCurrentButtonIndex] = useState(0);
+
+  // Carousel effect for buttons on mobile
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentButtonIndex((prevIndex) => (prevIndex + 1) % 2);
+    }, 3000); // Change button every 3 seconds
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section id="home" className="relative flex flex-col">
       <div className="content-video-wrapper">
@@ -46,14 +56,18 @@ const Hero = ({ highlightedWords, highlightedIndex, clientLogos, openCalendarPop
           </p>
           <div className="hero-buttons-container">
             <button
-              className="hero-button mx-auto mt-4 mb-8 md:mb-12"
+              className={`hero-button mx-auto mt-4 mb-8 md:mb-12 ${
+                currentButtonIndex === 0 ? 'button-active' : 'button-inactive'
+              }`}
               onClick={openCalendarPopup}
             >
               schedule a <span className="free-highlight">FREE</span> strategy
               call
             </button>
             <button
-              className="hero-button questionnaire-button mx-auto mt-4 mb-8 md:mb-12"
+              className={`hero-button questionnaire-button mx-auto mt-4 mb-8 md:mb-12 ${
+                currentButtonIndex === 1 ? 'button-active' : 'button-inactive'
+              }`}
               onClick={handleNavigateToQuestionnaire}
             >
               take our <span className="free-highlight">QUICK</span> questionnaire
