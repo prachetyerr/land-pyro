@@ -7,6 +7,7 @@ import Hero from "./components/Hero/Hero";
 import Services from "./components/Services/Services";
 import Contact from "./components/Contact/Contact";
 import Footer from "./components/Footer/Footer";
+import Questionnaire from "./components/Questionnaire/Questionnaire"; // Add this import
 
 // Third-party Libraries
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -81,6 +82,7 @@ function App() {
   const [message, setMessage] = useState("");
   const [formStatus, setFormStatus] = useState("");
   const [highlightedIndex, setHighlightedIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState('home'); // Add this state
 
   // --- STATE FOR INTERACTIVE SERVICES SECTION ---
   const [expandedCardIndex, setExpandedCardIndex] = useState(null);
@@ -229,42 +231,67 @@ function App() {
     return () => window.removeEventListener("keydown", handleEscKey);
   }, [expandedCardIndex, handleCloseCard]);
 
+  // Add navigation handler
+  const handleNavigateToQuestionnaire = () => {
+    setCurrentPage('questionnaire');
+  };
+
+  const handleNavigateToHome = () => {
+    setCurrentPage('home');
+  };
+
   return (
     <div>
-      <Header 
-        isScrolled={isScrolled}
-        isMenuOpen={isMenuOpen}
-        setIsMenuOpen={setIsMenuOpen}
-        navRef={navRef}
-        handleLinkClick={handleLinkClick}
-      />
+      {currentPage === 'home' ? (
+        <>
+          <Header 
+            isScrolled={isScrolled}
+            isMenuOpen={isMenuOpen}
+            setIsMenuOpen={setIsMenuOpen}
+            navRef={navRef}
+            handleLinkClick={handleLinkClick}
+          />
 
-      <Hero 
-        highlightedWords={highlightedWords}
-        highlightedIndex={highlightedIndex}
-        clientLogos={clientLogos}
-        openCalendarPopup={openCalendarPopup}
-      />
+          <Hero 
+            highlightedWords={highlightedWords}
+            highlightedIndex={highlightedIndex}
+            clientLogos={clientLogos}
+            openCalendarPopup={openCalendarPopup}
+            handleNavigateToQuestionnaire={handleNavigateToQuestionnaire} // Add this prop
+          />
 
-      <Services 
-        servicesData={servicesData}
-        expandedCardIndex={expandedCardIndex}
-        closingCardIndex={closingCardIndex}
-        handleCardClick={handleCardClick}
-        handleCloseCard={handleCloseCard}
-        openCalendarPopup={openCalendarPopup}
-      />
+          <Services 
+            servicesData={servicesData}
+            expandedCardIndex={expandedCardIndex}
+            closingCardIndex={closingCardIndex}
+            handleCardClick={handleCardClick}
+            handleCloseCard={handleCloseCard}
+            openCalendarPopup={openCalendarPopup}
+          />
 
-      <Contact 
-        email={email}
-        setEmail={setEmail}
-        message={message}
-        setMessage={setMessage}
-        formStatus={formStatus}
-        handleFormSubmit={handleFormSubmit}
-      />
+          <Contact 
+            email={email}
+            setEmail={setEmail}
+            message={message}
+            setMessage={setMessage}
+            formStatus={formStatus}
+            handleFormSubmit={handleFormSubmit}
+          />
 
-      <Footer />
+          <Footer />
+        </>
+      ) : (
+        <>
+          <Header 
+            isScrolled={isScrolled}
+            isMenuOpen={isMenuOpen}
+            setIsMenuOpen={setIsMenuOpen}
+            navRef={navRef}
+            handleLinkClick={handleNavigateToHome}
+          />
+          <Questionnaire />
+        </>
+      )}
     </div>
   );
 }

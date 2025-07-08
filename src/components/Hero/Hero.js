@@ -3,7 +3,7 @@ import Marquee from "react-fast-marquee";
 import './Hero.css';
 import bgvideo from "../../assets/bgvideo.mp4";
 
-const Hero = ({ highlightedWords, highlightedIndex, clientLogos, openCalendarPopup }) => {
+const Hero = ({ highlightedWords, highlightedIndex, clientLogos, openCalendarPopup, handleNavigateToQuestionnaire }) => {
   return (
     <section id="home" className="relative flex flex-col">
       <div className="content-video-wrapper">
@@ -44,13 +44,21 @@ const Hero = ({ highlightedWords, highlightedIndex, clientLogos, openCalendarPop
             <span className="desc-italic">outgrow</span> your competitors in
             sales and success.
           </p>
-          <button
-            className="hero-button mx-auto mt-4 mb-8 md:mb-12"
-            onClick={openCalendarPopup}
-          >
-            schedule a <span className="free-highlight">FREE</span> strategy
-            call
-          </button>
+          <div className="hero-buttons-container">
+            <button
+              className="hero-button mx-auto mt-4 mb-8 md:mb-12"
+              onClick={openCalendarPopup}
+            >
+              schedule a <span className="free-highlight">FREE</span> strategy
+              call
+            </button>
+            <button
+              className="hero-button questionnaire-button mx-auto mt-4 mb-8 md:mb-12"
+              onClick={handleNavigateToQuestionnaire}
+            >
+              take our <span className="free-highlight">QUICK</span> questionnaire
+            </button>
+          </div>
         </div>
         <div className="marquee-outer-padding-container ">
           <div className="marquee-inner-content-container hero-marquee">

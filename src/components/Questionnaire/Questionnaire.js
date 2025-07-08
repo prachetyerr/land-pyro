@@ -1,0 +1,316 @@
+import React, { useState } from 'react';
+import './Questionnaire.css';
+
+const Questionnaire = () => {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [formData, setFormData] = useState({
+    businessStage: '',
+    businessChallenge: '',
+    revenueSatisfaction: '',
+    successVision: '',
+    hiringConcern: '',
+    visionAlignment: '',
+    fixOneThing: '',
+    advisorComfort: '',
+    onepartnerAppeal: '',
+    improvementTimeline: '',
+    email: ''
+  });
+
+  const questions = [
+    {
+      id: 'businessStage',
+      type: 'select',
+      question: 'What stage best describes your business?',
+      required: true,
+      options: [
+        { value: '', label: 'Select your business stage' },
+        { value: 'just-starting', label: 'Just starting out (0-6 months)' },
+        { value: 'established-offline', label: 'Established offline, exploring online' },
+        { value: 'online-struggling', label: 'Online but struggling with growth' },
+        { value: 'growing-well', label: 'Growing well, seeking optimization' },
+        { value: 'other', label: 'Other' }
+      ]
+    },
+    {
+      id: 'businessChallenge',
+      type: 'text',
+      question: 'What\'s your #1 business challenge right now?',
+      placeholder: 'e.g., \'Not enough customers\', \'Too many manual processes\'',
+      required: true
+    },
+    {
+      id: 'revenueSatisfaction',
+      type: 'scale',
+      question: 'How satisfied are you with your current monthly revenue?',
+      required: true,
+      scaleLabels: {
+        1: 'Very unsatisfied',
+        5: 'Very satisfied'
+      }
+    },
+    {
+      id: 'successVision',
+      type: 'text',
+      question: 'What would a successful next 12 months look like for you?',
+      placeholder: 'e.g., \'Double my customer base\', \'Streamline operations\'',
+      required: true
+    },
+    {
+      id: 'hiringConcern',
+      type: 'select',
+      question: 'What\'s your biggest concern about hiring outside help?',
+      required: true,
+      options: [
+        { value: '', label: 'Select your biggest concern' },
+        { value: 'cost-budget', label: 'Cost/budget constraints' },
+        { value: 'not-sure-needs', label: 'Not sure what I actually need' },
+        { value: 'quality-results', label: 'Worried about quality/results' },
+        { value: 'trust-communication', label: 'Trust and communication issues' },
+        { value: 'no-concerns', label: 'No major concerns' }
+      ]
+    },
+    {
+      id: 'visionAlignment',
+      type: 'select',
+      question: 'Does your current business operations match your original vision?',
+      required: true,
+      options: [
+        { value: '', label: 'Select alignment level' },
+        { value: 'mostly-aligned', label: 'Yes, mostly aligned' },
+        { value: 'somewhat-aligned', label: 'Somewhat aligned' },
+        { value: 'not-really', label: 'Not really aligned' },
+        { value: 'completely-different', label: 'Completely different from vision' }
+      ]
+    },
+    {
+      id: 'fixOneThing',
+      type: 'text',
+      question: 'If you could fix ONE thing in your business tomorrow, what would it be?',
+      placeholder: 'e.g., \'Better customer management\', \'Faster payment processing\'',
+      required: true
+    },
+    {
+      id: 'advisorComfort',
+      type: 'scale',
+      question: 'How comfortable are you sharing business challenges with advisors?',
+      required: true,
+      scaleLabels: {
+        1: 'Very uncomfortable',
+        5: 'Very comfortable'
+      }
+    },
+    {
+      id: 'onepartnerAppeal',
+      type: 'select',
+      question: 'How appealing is having one partner handle multiple business needs?',
+      required: true,
+      options: [
+        { value: '', label: 'Select your preference' },
+        { value: 'very-appealing', label: 'Very appealing - I prefer one-stop solutions' },
+        { value: 'somewhat-appealing', label: 'Somewhat appealing - depends on the needs' },
+        { value: 'not-appealing', label: 'Not appealing - I prefer specialists' },
+        { value: 'unsure', label: 'Unsure' }
+      ]
+    },
+    {
+      id: 'improvementTimeline',
+      type: 'select',
+      question: 'When do you want to start making improvements?',
+      required: true,
+      options: [
+        { value: '', label: 'Select your timeline' },
+        { value: 'right-away', label: 'Right away (within 1 month)' },
+        { value: 'soon', label: 'Soon (1-3 months)' },
+        { value: 'later-this-year', label: 'Later this year (3-6 months)' },
+        { value: 'next-year', label: 'Next year or later' },
+        { value: 'just-exploring', label: 'Just exploring options' }
+      ]
+    },
+    {
+      id: 'email',
+      type: 'email',
+      question: 'What\'s the best email to send your personalized business insights?',
+      placeholder: 'Enter your email address',
+      required: true
+    }
+  ];
+
+  const currentQuestion = questions[currentStep];
+  const isLastStep = currentStep === questions.length - 1;
+
+  const handleInputChange = (value) => {
+    setFormData(prev => ({
+      ...prev,
+      [currentQuestion.id]: value
+    }));
+  };
+
+  const handleNext = (e) => {
+    e.preventDefault();
+    
+    // Validate current question
+    if (currentQuestion.required && !formData[currentQuestion.id]) {
+      alert('Please answer this question before proceeding.');
+      return;
+    }
+
+    if (isLastStep) {
+      // Submit form
+      console.log('Form submitted:', formData);
+      alert('Thank you! Your questionnaire has been submitted. We\'ll get back to you soon.');
+      // Reset form
+      setFormData({
+        businessStage: '',
+        businessChallenge: '',
+        revenueSatisfaction: '',
+        successVision: '',
+        hiringConcern: '',
+        visionAlignment: '',
+        fixOneThing: '',
+        advisorComfort: '',
+        onepartnerAppeal: '',
+        improvementTimeline: '',
+        email: ''
+      });
+      setCurrentStep(0);
+    } else {
+      // Go to next question
+      setCurrentStep(prev => prev + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentStep > 0) {
+      setCurrentStep(prev => prev - 1);
+    }
+  };
+
+  const renderInput = () => {
+    const value = formData[currentQuestion.id] || '';
+
+    switch (currentQuestion.type) {
+      case 'text':
+        return (
+          <input
+            type="text"
+            value={value}
+            onChange={(e) => handleInputChange(e.target.value)}
+            placeholder={currentQuestion.placeholder}
+            className="question-input"
+            autoFocus
+          />
+        );
+      
+      case 'email':
+        return (
+          <input
+            type="email"
+            value={value}
+            onChange={(e) => handleInputChange(e.target.value)}
+            placeholder={currentQuestion.placeholder}
+            className="question-input"
+            autoFocus
+          />
+        );
+      
+      case 'select':
+        return (
+          <select
+            value={value}
+            onChange={(e) => handleInputChange(e.target.value)}
+            className="question-select"
+            autoFocus
+          >
+            {currentQuestion.options.map((option, index) => (
+              <option key={index} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        );
+      
+      case 'scale':
+        return (
+          <div className="scale-container">
+            <div className="scale-labels">
+              <span className="scale-label-left">{currentQuestion.scaleLabels[1]}</span>
+              <span className="scale-label-right">{currentQuestion.scaleLabels[5]}</span>
+            </div>
+            <div className="scale-options">
+              {[1, 2, 3, 4, 5].map((scaleValue) => (
+                <label key={scaleValue} className="scale-option">
+                  <input
+                    type="radio"
+                    name={currentQuestion.id}
+                    value={scaleValue}
+                    checked={value == scaleValue}
+                    onChange={(e) => handleInputChange(e.target.value)}
+                  />
+                  <span className="scale-number">{scaleValue}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        );
+      
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <section id="questionnaire" className="questionnaire-section">
+      <div className="questionnaire-container">
+        {/* Progress Bar */}
+        <div className="progress-container">
+          <div className="progress-bar">
+            <div 
+              className="progress-fill" 
+              style={{ width: `${((currentStep + 1) / questions.length) * 100}%` }}
+            ></div>
+          </div>
+          <span className="progress-text">
+            Question {currentStep + 1} of {questions.length}
+          </span>
+        </div>
+
+        {/* Question Header */}
+        <div className="questionnaire-header">
+          <h1 className="questionnaire-title">
+            {currentQuestion.question}
+          </h1>
+        </div>
+
+        {/* Question Form */}
+        <form className="questionnaire-form" onSubmit={handleNext}>
+          <div className="question-container">
+            {renderInput()}
+          </div>
+
+          {/* Navigation Buttons */}
+          <div className="navigation-buttons">
+            {currentStep > 0 && (
+              <button
+                type="button"
+                onClick={handlePrevious}
+                className="nav-button prev-button"
+              >
+                ← Previous
+              </button>
+            )}
+            
+            <button
+              type="submit"
+              className="nav-button next-button"
+            >
+              {isLastStep ? 'Submit' : 'Next →'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+  );
+};
+
+export default Questionnaire;
