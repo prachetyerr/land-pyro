@@ -5,10 +5,12 @@ const Questionnaire = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     businessStage: '',
+    businessStageOther: '', // Add field for "other" text
     businessChallenge: '',
     revenueSatisfaction: '',
     successVision: '',
     hiringConcern: '',
+    hiringConcernOther: '', // Add field for "other" text
     visionAlignment: '',
     fixOneThing: '',
     advisorComfort: '',
@@ -20,11 +22,10 @@ const Questionnaire = () => {
   const questions = [
     {
       id: 'businessStage',
-      type: 'select',
+      type: 'button-select', // Changed from 'select' to 'button-select'
       question: 'What stage best describes your business?',
       required: true,
       options: [
-        { value: '', label: 'Select your business stage' },
         { value: 'just-starting', label: 'Just starting out (0-6 months)' },
         { value: 'established-offline', label: 'Established offline, exploring online' },
         { value: 'online-struggling', label: 'Online but struggling with growth' },
@@ -58,25 +59,24 @@ const Questionnaire = () => {
     },
     {
       id: 'hiringConcern',
-      type: 'select',
+      type: 'button-select', // Changed from 'select' to 'button-select'
       question: 'What\'s your biggest concern about hiring outside help?',
       required: true,
       options: [
-        { value: '', label: 'Select your biggest concern' },
         { value: 'cost-budget', label: 'Cost/budget constraints' },
         { value: 'not-sure-needs', label: 'Not sure what I actually need' },
         { value: 'quality-results', label: 'Worried about quality/results' },
         { value: 'trust-communication', label: 'Trust and communication issues' },
-        { value: 'no-concerns', label: 'No major concerns' }
+        { value: 'no-concerns', label: 'No major concerns' },
+        { value: 'other', label: 'Other' }
       ]
     },
     {
       id: 'visionAlignment',
-      type: 'select',
+      type: 'button-select', // Changed from 'select' to 'button-select'
       question: 'Does your current business operations match your original vision?',
       required: true,
       options: [
-        { value: '', label: 'Select alignment level' },
         { value: 'mostly-aligned', label: 'Yes, mostly aligned' },
         { value: 'somewhat-aligned', label: 'Somewhat aligned' },
         { value: 'not-really', label: 'Not really aligned' },
@@ -102,11 +102,10 @@ const Questionnaire = () => {
     },
     {
       id: 'onepartnerAppeal',
-      type: 'select',
+      type: 'button-select', // Changed from 'select' to 'button-select'
       question: 'How appealing is having one partner handle multiple business needs?',
       required: true,
       options: [
-        { value: '', label: 'Select your preference' },
         { value: 'very-appealing', label: 'Very appealing - I prefer one-stop solutions' },
         { value: 'somewhat-appealing', label: 'Somewhat appealing - depends on the needs' },
         { value: 'not-appealing', label: 'Not appealing - I prefer specialists' },
@@ -115,11 +114,10 @@ const Questionnaire = () => {
     },
     {
       id: 'improvementTimeline',
-      type: 'select',
+      type: 'button-select', // Changed from 'select' to 'button-select'
       question: 'When do you want to start making improvements?',
       required: true,
       options: [
-        { value: '', label: 'Select your timeline' },
         { value: 'right-away', label: 'Right away (within 1 month)' },
         { value: 'soon', label: 'Soon (1-3 months)' },
         { value: 'later-this-year', label: 'Later this year (3-6 months)' },
@@ -146,13 +144,32 @@ const Questionnaire = () => {
     }));
   };
 
+  const handleOtherTextChange = (value) => {
+    const otherFieldId = currentQuestion.id + 'Other';
+    setFormData(prev => ({
+      ...prev,
+      [otherFieldId]: value
+    }));
+  };
+
   const handleNext = (e) => {
     e.preventDefault();
     
     // Validate current question
-    if (currentQuestion.required && !formData[currentQuestion.id]) {
+    const currentValue = formData[currentQuestion.id];
+    if (currentQuestion.required && !currentValue) {
       alert('Please answer this question before proceeding.');
       return;
+    }
+
+    // Additional validation for "other" selections
+    if (currentValue === 'other') {
+      const otherFieldId = currentQuestion.id + 'Other';
+      const otherValue = formData[otherFieldId];
+      if (!otherValue || otherValue.trim() === '') {
+        alert('Please specify your answer for "Other".');
+        return;
+      }
     }
 
     if (isLastStep) {
@@ -162,10 +179,12 @@ const Questionnaire = () => {
       // Reset form
       setFormData({
         businessStage: '',
+        businessStageOther: '',
         businessChallenge: '',
         revenueSatisfaction: '',
         successVision: '',
         hiringConcern: '',
+        hiringConcernOther: '',
         visionAlignment: '',
         fixOneThing: '',
         advisorComfort: '',
@@ -228,6 +247,41 @@ const Questionnaire = () => {
               </option>
             ))}
           </select>
+        );
+
+      case 'button-select':
+        const hasOtherOption = currentQuestion.options.some(option => option.value === 'other');
+        const showOtherInput = hasOtherOption && value === 'other';
+        const otherFieldId = currentQuestion.id + 'Other';
+        
+        return (
+          <div className="button-select-container">
+            <div className="button-options">
+              {currentQuestion.options.map((option, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => handleInputChange(option.value)}
+                  className={`option-button ${value === option.value ? 'selected' : ''}`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+            
+            {showOtherInput && (
+              <div className="other-input-container">
+                <input
+                  type="text"
+                  value={formData[otherFieldId] || ''}
+                  onChange={(e) => handleOtherTextChange(e.target.value)}
+                  placeholder="Please specify..."
+                  className="other-input"
+                  autoFocus
+                />
+              </div>
+            )}
+          </div>
         );
       
       case 'scale':
