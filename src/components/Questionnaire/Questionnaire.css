@@ -334,7 +334,7 @@
   position: relative;
   overflow: hidden;
   min-width: 140px;
-  text-transform: uppercase;
+  text-transform: lowercase; /* Changed from uppercase to lowercase */
   letter-spacing: 0.5px;
 }
 
@@ -797,7 +797,7 @@ background: linear-gradient(90deg, #ff00ff, #8a2be2, #4169e1);
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  text-transform: uppercase;
+  text-transform: lowercase;
   letter-spacing: 0.5px;
   background: linear-gradient(135deg, #0046ff 0%, #002a99 100%);
   color: #fff;

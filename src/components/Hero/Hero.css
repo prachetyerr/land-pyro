@@ -40,7 +40,7 @@
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 2rem; /* Changed from -2rem to positive 2rem to move marquee way down */
+  margin-top: 12rem; /* Increased from 10rem to 12rem for more space */
   padding-left: 1.5rem;
   padding-right: 1.5rem;
   padding-top: 0.5rem;
@@ -142,9 +142,9 @@
 .strategy-button {
   background: rgba(255, 255, 255, 0.1);
   border: 2px solid rgba(255, 255, 255, 0.3);
-  min-width: 200px; /* Reduced from 250px */
-  padding: 0.6rem 1rem;
-  font-size: 14px;
+  min-width: 280px; /* Increased from 200px */
+  padding: 1rem 2rem; /* Increased padding */
+  font-size: 18px; /* Increased from 16px */
 }
 
 .strategy-button:hover {
@@ -154,7 +154,7 @@
 
 .strategy-button .free-highlight {
   font-family: "Space Grotesk", sans-serif;
-  font-size: 16px;
+  font-size: 20px; /* Increased from 18px */
   font-weight: 700;
 }
 
@@ -163,9 +163,9 @@
   background: linear-gradient(135deg, #0046ff 0%, #002a99 100%);
   border: 2px solid #3d72ff;
   box-shadow: 0 4px 15px rgba(0, 70, 255, 0.3);
-  min-width: 320px; /* Reduced from 380px */
-  padding: 0.9rem 1.5rem;
-  font-size: 14px;
+  min-width: 380px; /* Increased from 320px */
+  padding: 1.2rem 2.5rem; /* Increased padding significantly */
+  font-size: 18px; /* Increased from 16px */
 }
 
 .questionnaire-button:hover {
@@ -175,7 +175,7 @@
 
 .questionnaire-button .free-highlight {
   font-family: "Space Grotesk", sans-serif;
-  font-size: 16px; /* Reduced to match strategy button highlight */
+  font-size: 20px; /* Increased from 18px */
   font-weight: 700;
 }
 
@@ -187,7 +187,7 @@
   align-items: center;
   width: 100%;
   max-width: 600px;
-  margin: 0 auto;
+  margin: 1.5rem auto 0 auto; /* Added 1.5rem top margin */
   position: relative;
   min-height: 80px;
 }
@@ -236,21 +236,21 @@
   .strategy-button {
     min-width: 300px; /* Increased to match questionnaire button */
     padding: 0.8rem 1.2rem; /* Increased to match questionnaire button */
-    font-size: 14px; /* Increased to match questionnaire button */
+    font-size: 16px; /* Increased from 14px */
   }
   
   .questionnaire-button {
     min-width: 300px; /* Keep same size */
     padding: 0.8rem 1.2rem; /* Keep same size */
-    font-size: 14px; /* Keep same size */
+    font-size: 16px; /* Increased from 14px */
   }
   
   .strategy-button .free-highlight {
-    font-size: 16px; /* Increased to match questionnaire button */
+    font-size: 18px; /* Increased from 16px */
   }
   
   .questionnaire-button .free-highlight {
-    font-size: 16px; /* Keep same size */
+    font-size: 18px; /* Increased from 16px */
   }
 }
 
@@ -308,21 +308,21 @@
   .strategy-button {
     min-width: 320px; /* Reduced from 400px */
     padding: 0.9rem 1.5rem;
-    font-size: 14px;
+    font-size: 16px; /* Increased from 14px */
   }
   
   .questionnaire-button {
     min-width: 320px; /* Reduced from 400px */
     padding: 0.9rem 1.5rem;
-    font-size: 14px;
+    font-size: 16px; /* Increased from 14px */
   }
   
   .strategy-button .free-highlight {
-    font-size: 16px;
+    font-size: 18px; /* Increased from 16px */
   }
   
   .questionnaire-button .free-highlight {
-    font-size: 16px;
+    font-size: 18px; /* Increased from 16px */
   }
 }
 
@@ -359,7 +359,7 @@
     padding-right: 2rem;
     padding-top: 1rem;
     padding-bottom: 1.5rem;
-    margin-top: 3rem;
+    margin-top: 6rem; /* Increased from 3rem to 5rem */
   }
   .marquee-inner-content-container {
     max-width: 800px;
