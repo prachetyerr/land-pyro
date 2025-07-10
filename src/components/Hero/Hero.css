@@ -128,28 +128,54 @@
 
 .hero-button {
   display: block;
-  margin: 0; /* Reset margin since we're using flexbox gap */
-  padding: 0.75rem 1.2rem; /* Slightly reduced horizontal padding */
+  margin: 0;
   font-family: "Space Grotesk", sans-serif;
-  font-size: 16px; /* Reduced from 20px to 16px */
   color: #fff;
   text-align: center;
-  background: linear-gradient(90deg, #0046ff 0, #002a99 100%);
-  border: 1px solid #3d72ff;
   border-radius: 31px;
   cursor: pointer;
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* Enhanced transition */
-  min-width: 280px; /* Ensure consistent width */
-  white-space: nowrap; /* Prevent text wrapping */
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
 }
 
-.hero-button:hover {
-  background: linear-gradient(90deg, #002a99 0, #001a66 100%);
+/* Strategy button - smaller and dull */
+.strategy-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  min-width: 200px; /* Reduced from 250px */
+  padding: 0.6rem 1rem;
+  font-size: 14px;
 }
 
-.hero-button .free-highlight {
+.strategy-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.strategy-button .free-highlight {
   font-family: "Space Grotesk", sans-serif;
-  font-size: 20px; /* Reduced from 24px to 20px */
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* Questionnaire button - active and prominent */
+.questionnaire-button {
+  background: linear-gradient(135deg, #0046ff 0%, #002a99 100%);
+  border: 2px solid #3d72ff;
+  box-shadow: 0 4px 15px rgba(0, 70, 255, 0.3);
+  min-width: 320px; /* Reduced from 380px */
+  padding: 0.9rem 1.5rem;
+  font-size: 14px;
+}
+
+.questionnaire-button:hover {
+  background: linear-gradient(135deg, #002a99 0%, #001a66 100%);
+  box-shadow: 0 8px 25px rgba(0, 70, 255, 0.5);
+}
+
+.questionnaire-button .free-highlight {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 16px; /* Reduced to match strategy button highlight */
   font-weight: 700;
 }
 
@@ -163,13 +189,13 @@
   max-width: 600px;
   margin: 0 auto;
   position: relative;
-  min-height: 60px; /* Ensure consistent height to prevent layout shift */
+  min-height: 80px;
 }
 
 /* Button carousel animations for mobile */
 @media (max-width: 767px) {
   .hero-buttons-container {
-    min-height: 60px; /* Fixed height to prevent jumping */
+    min-height: 80px;
     position: relative;
     overflow: hidden;
   }
@@ -184,7 +210,6 @@
     max-width: 280px;
   }
   
-  /* Active button state */
   .hero-button.button-active {
     opacity: 1;
     transform: translateX(-50%) translateY(0) scale(1);
@@ -192,7 +217,6 @@
     z-index: 2;
   }
   
-  /* Inactive button state */
   .hero-button.button-inactive {
     opacity: 0;
     transform: translateX(-50%) translateY(20px) scale(0.95);
@@ -200,13 +224,33 @@
     z-index: 1;
   }
   
-  /* Add subtle animation effects */
   .hero-button.button-active {
     animation: buttonSlideIn 0.8s ease-out forwards;
   }
   
   .hero-button.button-inactive {
     animation: buttonSlideOut 0.8s ease-out forwards;
+  }
+  
+  /* Mobile specific button sizes - SAME SIZE FOR BOTH */
+  .strategy-button {
+    min-width: 300px; /* Increased to match questionnaire button */
+    padding: 0.8rem 1.2rem; /* Increased to match questionnaire button */
+    font-size: 14px; /* Increased to match questionnaire button */
+  }
+  
+  .questionnaire-button {
+    min-width: 300px; /* Keep same size */
+    padding: 0.8rem 1.2rem; /* Keep same size */
+    font-size: 14px; /* Keep same size */
+  }
+  
+  .strategy-button .free-highlight {
+    font-size: 16px; /* Increased to match questionnaire button */
+  }
+  
+  .questionnaire-button .free-highlight {
+    font-size: 16px; /* Keep same size */
   }
 }
 
@@ -233,69 +277,12 @@
   }
 }
 
-/* Optional: Different style for questionnaire button */
-.questionnaire-button {
-  background: linear-gradient(90deg, #d904ff 0, #003cff 100%);
-  border: 1px solid #d904ff;
-}
-
-.questionnaire-button:hover {
-  background: linear-gradient(90deg, #b003d9 0, #002a99 100%);
-}
-
-.client-logo {
-  height: 33px; /* Increased from 30px to make logos bigger */
-  width: auto;
-  max-width: 180px; /* Increased from 150px */
-  margin: 0rem 2.5rem; /* Increased margins for better spacing */
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-/* Marquee hover effect to slow down instead of stopping */
-.hero-marquee:hover .rfm-marquee {
-  animation-duration: 40s !important; /* Slow down from default speed */
-}
-
-.hero-marquee .rfm-marquee {
-  transition: animation-duration 0.3s ease;
-}
-
-@media (max-width: 767px) {
-  .hero-heading {
-    font-size: 2.5rem;
-    letter-spacing: -1.5px;
-  }
-  .highlighted-container {
-    height: 1.2em;
-  }
-  .hero-desc {
-    max-width: 100%;
-    margin: 1.5rem auto;
-    padding: 0 1rem;
-    font-size: 1rem;
-  }
-  .hero-button {
-    font-size: 14px; /* Reduced from 15px to 14px for mobile */
-    min-width: 250px;
-    padding: 0.7rem 1rem; /* Slightly reduced padding for mobile */
-  }
-  .hero-button .free-highlight {
-    font-size: 16px; /* Reduced from 18px to 16px for mobile */
-  }
-}
-
 @media (min-width: 768px) {
-  .hero-heading {
-    font-size: 4.375rem;
-    letter-spacing: -2.4px;
-  }
-  .hero-desc {
-    font-size: 1.375rem;
-  }
   .hero-buttons-container {
     flex-direction: row;
     justify-content: center;
     gap: 2rem;
+    min-height: auto;
   }
   
   /* Reset button positioning for desktop */
@@ -316,11 +303,55 @@
     pointer-events: auto;
     animation: none;
   }
+  
+  /* Desktop button sizes - SAME SIZE FOR BOTH BUT SMALLER */
+  .strategy-button {
+    min-width: 320px; /* Reduced from 400px */
+    padding: 0.9rem 1.5rem;
+    font-size: 14px;
+  }
+  
+  .questionnaire-button {
+    min-width: 320px; /* Reduced from 400px */
+    padding: 0.9rem 1.5rem;
+    font-size: 14px;
+  }
+  
+  .strategy-button .free-highlight {
+    font-size: 16px;
+  }
+  
+  .questionnaire-button .free-highlight {
+    font-size: 16px;
+  }
+}
+
+.client-logo {
+  height: 33px; /* Increased from 30px to make logos bigger */
+  width: auto;
+  max-width: 180px; /* Increased from 150px */
+  margin: 0rem 2.5rem; /* Increased margins for better spacing */
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Marquee hover effect to slow down instead of stopping */
+.hero-marquee:hover .rfm-marquee {
+  animation-duration: 40s !important; /* Slow down from default speed */
+}
+
+.hero-marquee .rfm-marquee {
+  transition: animation-duration 0.3s ease;
 }
 
 @media (min-width: 1024px) {
   .hero-heading {
-    margin-top: 0rem; /* Changed from -1rem to 0rem to move heading down even more on desktop */
+    font-size: 4.375rem;
+    letter-spacing: -2.4px;
+    margin-top: 0rem;
+  }
+  
+  .hero-desc {
+    font-size: 1.375rem;
   }
   
   .marquee-outer-padding-container {
@@ -328,7 +359,7 @@
     padding-right: 2rem;
     padding-top: 1rem;
     padding-bottom: 1.5rem;
-    margin-top: 3rem; /* Keep this unchanged */
+    margin-top: 3rem;
   }
   .marquee-inner-content-container {
     max-width: 800px;
@@ -337,5 +368,15 @@
     height: 45px;
     max-width: 200px;
     margin: 1rem 3rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-heading {
+    font-size: 4.375rem;
+    letter-spacing: -2.4px;
+  }
+  .hero-desc {
+    font-size: 1.375rem;
   }
 }

@@ -1,18 +1,60 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Marquee from "react-fast-marquee";
 import './Hero.css';
 import bgvideo from "../../assets/bgvideo.mp4";
 
 const Hero = ({ highlightedWords, highlightedIndex, clientLogos, openCalendarPopup, handleNavigateToQuestionnaire }) => {
   const [currentButtonIndex, setCurrentButtonIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const timeoutRef = useRef(null);
+  const lastChangeTime = useRef(Date.now());
 
   // Carousel effect for buttons on mobile
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentButtonIndex((prevIndex) => (prevIndex + 1) % 2);
-    }, 3000); // Change button every 3 seconds
-    return () => clearInterval(interval);
-  }, []);
+    const scheduleNext = () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      
+      const normalDelay = 3000;
+      const hoveredDelay = 6000;
+      const timeSinceLastChange = Date.now() - lastChangeTime.current;
+      
+      // Calculate remaining time based on current state
+      let delay;
+      if (isHovered) {
+        // If currently hovered, use longer delay
+        delay = hoveredDelay - (timeSinceLastChange % hoveredDelay);
+        if (delay <= 0) delay = hoveredDelay;
+      } else {
+        // If not hovered, use normal delay
+        delay = normalDelay - (timeSinceLastChange % normalDelay);
+        if (delay <= 0) delay = normalDelay;
+      }
+      
+      timeoutRef.current = setTimeout(() => {
+        setCurrentButtonIndex((prevIndex) => (prevIndex + 1) % 2);
+        lastChangeTime.current = Date.now();
+        scheduleNext(); // Schedule the next change
+      }, delay);
+    };
+
+    scheduleNext();
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [isHovered]);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
 
   return (
     <section id="home" className="relative flex flex-col">
@@ -54,9 +96,13 @@ const Hero = ({ highlightedWords, highlightedIndex, clientLogos, openCalendarPop
             <span className="desc-italic">outgrow</span> your competitors in
             sales and success.
           </p>
-          <div className="hero-buttons-container">
+          <div 
+            className="hero-buttons-container"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
             <button
-              className={`hero-button mx-auto mt-4 mb-8 md:mb-12 ${
+              className={`hero-button strategy-button mx-auto mt-4 mb-8 md:mb-12 ${
                 currentButtonIndex === 0 ? 'button-active' : 'button-inactive'
               }`}
               onClick={openCalendarPopup}
@@ -70,7 +116,7 @@ const Hero = ({ highlightedWords, highlightedIndex, clientLogos, openCalendarPop
               }`}
               onClick={handleNavigateToQuestionnaire}
             >
-              take our <span className="free-highlight">QUICK</span> questionnaire
+              take the <span className="free-highlight">3-minute</span> PyroReality Check
             </button>
           </div>
         </div>
