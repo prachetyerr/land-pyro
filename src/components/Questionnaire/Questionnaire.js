@@ -1,16 +1,34 @@
 import React, { useState } from 'react';
 import './Questionnaire.css';
 
+// ThemeAlert component is unchanged
+const ThemeAlert = ({ message, onClose }) => {
+  return (
+    <div className="alert-overlay">
+      <div className="alert-box">
+        <p className="alert-message">{message}</p>
+        <button onClick={onClose} className="alert-close-button">
+          OK
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const Questionnaire = () => {
-  const [currentStep, setCurrentStep] = useState(0);
+  // MODIFIED: Start at step -1 to show the welcome screen first.
+  const [currentStep, setCurrentStep] = useState(-1);
+  
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const [formData, setFormData] = useState({
     businessStage: '',
-    businessStageOther: '', // Add field for "other" text
+    businessStageOther: '',
     businessChallenge: '',
     revenueSatisfaction: '',
     successVision: '',
     hiringConcern: '',
-    hiringConcernOther: '', // Add field for "other" text
+    hiringConcernOther: '',
     visionAlignment: '',
     fixOneThing: '',
     advisorComfort: '',
@@ -22,7 +40,7 @@ const Questionnaire = () => {
   const questions = [
     {
       id: 'businessStage',
-      type: 'button-select', // Changed from 'select' to 'button-select'
+      type: 'button-select',
       question: 'What stage best describes your business?',
       required: true,
       options: [
@@ -59,8 +77,8 @@ const Questionnaire = () => {
     },
     {
       id: 'hiringConcern',
-      type: 'button-select', // Changed from 'select' to 'button-select'
-      question: 'What\'s your biggest concern about hiring outside help?',
+      type: 'button-select',
+      question: 'What\'s your biggest concern about seeking outside help?',
       required: true,
       options: [
         { value: 'cost-budget', label: 'Cost/budget constraints' },
@@ -73,7 +91,7 @@ const Questionnaire = () => {
     },
     {
       id: 'visionAlignment',
-      type: 'button-select', // Changed from 'select' to 'button-select'
+      type: 'button-select',
       question: 'Does your current business operations match your original vision?',
       required: true,
       options: [
@@ -102,7 +120,7 @@ const Questionnaire = () => {
     },
     {
       id: 'onepartnerAppeal',
-      type: 'button-select', // Changed from 'select' to 'button-select'
+      type: 'button-select',
       question: 'How appealing is having one partner handle multiple business needs?',
       required: true,
       options: [
@@ -114,7 +132,7 @@ const Questionnaire = () => {
     },
     {
       id: 'improvementTimeline',
-      type: 'button-select', // Changed from 'select' to 'button-select'
+      type: 'button-select',
       question: 'When do you want to start making improvements?',
       required: true,
       options: [
@@ -155,27 +173,28 @@ const Questionnaire = () => {
   const handleNext = (e) => {
     e.preventDefault();
     
-    // Validate current question
     const currentValue = formData[currentQuestion.id];
+    
     if (currentQuestion.required && !currentValue) {
-      alert('Please answer this question before proceeding.');
+      setAlertMessage("Please answer this question. It's mandatory.");
+      setIsAlertVisible(true);
       return;
     }
 
-    // Additional validation for "other" selections
     if (currentValue === 'other') {
       const otherFieldId = currentQuestion.id + 'Other';
       const otherValue = formData[otherFieldId];
       if (!otherValue || otherValue.trim() === '') {
-        alert('Please specify your answer for "Other".');
+        setAlertMessage('Please specify your answer for "Other".');
+        setIsAlertVisible(true);
         return;
       }
     }
 
     if (isLastStep) {
-      // Submit form
       console.log('Form submitted:', formData);
-      alert('Thank you! Your questionnaire has been submitted. We\'ll get back to you soon.');
+      setAlertMessage("Thank you! Your questionnaire has been submitted. We'll get back to you soon.");
+      setIsAlertVisible(true);
       // Reset form
       setFormData({
         businessStage: '',
@@ -192,9 +211,9 @@ const Questionnaire = () => {
         improvementTimeline: '',
         email: ''
       });
-      setCurrentStep(0);
+      // MODIFIED: Return to welcome screen after submission
+      setCurrentStep(-1);
     } else {
-      // Go to next question
       setCurrentStep(prev => prev + 1);
     }
   };
@@ -205,6 +224,7 @@ const Questionnaire = () => {
     }
   };
 
+  // THIS FUNCTION'S FORMATTING IS NOW PRESERVED
   const renderInput = () => {
     const value = formData[currentQuestion.id] || '';
 
@@ -315,53 +335,70 @@ const Questionnaire = () => {
 
   return (
     <section id="questionnaire" className="questionnaire-section">
+      {isAlertVisible && <ThemeAlert message={alertMessage} onClose={() => setIsAlertVisible(false)} />}
+      
       <div className="questionnaire-container">
-        {/* Progress Bar */}
-        <div className="progress-container">
-          <div className="progress-bar">
-            <div 
-              className="progress-fill" 
-              style={{ width: `${((currentStep + 1) / questions.length) * 100}%` }}
-            ></div>
-          </div>
-          <span className="progress-text">
-            Question {currentStep + 1} of {questions.length}
-          </span>
-        </div>
-
-        {/* Question Header */}
-        <div className="questionnaire-header">
-          <h1 className="questionnaire-title">
-            {currentQuestion.question}
-          </h1>
-        </div>
-
-        {/* Question Form */}
-        <form className="questionnaire-form" onSubmit={handleNext}>
-          <div className="question-container">
-            {renderInput()}
-          </div>
-
-          {/* Navigation Buttons */}
-          <div className="navigation-buttons">
-            {currentStep > 0 && (
-              <button
-                type="button"
-                onClick={handlePrevious}
-                className="nav-button prev-button"
-              >
-                ← Previous
-              </button>
-            )}
-            
+        {/* ADDED: Conditional logic for welcome screen */}
+        {currentStep === -1 ? (
+          <div className="welcome-container">
+            <h1 className="welcome-title">Welcome to the PyroReality Check!</h1>
+            <p className="welcome-description">
+              This quick 3-minute check-up helps us understand your business. Be honest—your answers provide the insights we need to tailor the perfect growth strategy for you.
+            </p>
             <button
-              type="submit"
-              className="nav-button next-button"
+              onClick={() => setCurrentStep(0)}
+              className="start-button"
             >
-              {isLastStep ? 'Submit' : 'Next →'}
+              Let's Begin
             </button>
           </div>
-        </form>
+        ) : (
+          // The existing content is wrapped in a React Fragment
+          <>
+            <div className="progress-container">
+              <div className="progress-bar">
+                <div 
+                  className="progress-fill" 
+                  style={{ width: `${((currentStep + 1) / questions.length) * 100}%` }}
+                ></div>
+              </div>
+              <span className="progress-text">
+                Question {currentStep + 1} of {questions.length}
+              </span>
+            </div>
+
+            <div className="questionnaire-header">
+              <h1 className="questionnaire-title">
+                {currentQuestion.question}
+              </h1>
+            </div>
+
+            <form className="questionnaire-form" onSubmit={handleNext}>
+              <div className="question-container">
+                {renderInput()}
+              </div>
+
+              <div className="navigation-buttons">
+                {currentStep > 0 && (
+                  <button
+                    type="button"
+                    onClick={handlePrevious}
+                    className="nav-button prev-button"
+                  >
+                    ← Previous
+                  </button>
+                )}
+                
+                <button
+                  type="submit"
+                  className="nav-button next-button"
+                >
+                  {isLastStep ? 'Submit' : 'Next →'}
+                </button>
+              </div>
+            </form>
+          </>
+        )}
       </div>
     </section>
   );
