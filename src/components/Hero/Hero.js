@@ -116,7 +116,7 @@ const Hero = ({ highlightedWords, highlightedIndex, clientLogos, openCalendarPop
               }`}
               onClick={handleNavigateToQuestionnaire}
             >
-              take the <span className="free-highlight">3-minute</span> PyroReality Check
+              take <span className="free-highlight">3-minute</span> PyroReality Check
             </button>
           </div>
         </div>
