@@ -9,13 +9,6 @@ import Contact from "./components/Contact/Contact";
 import Footer from "./components/Footer/Footer";
 import Questionnaire from "./components/Questionnaire/Questionnaire"; // Add this import
 
-// Third-party Libraries
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCode,
-  faPalette,
-  faRobot,
-} from "@fortawesome/free-solid-svg-icons";
 
 // Asset Imports
 import logo1 from "./assets/viali.png";
@@ -31,7 +24,6 @@ import service2 from './assets/Kids Studying from Home-rafiki.svg'
 // --- UPDATED Data for Services Section (Based on sketches) ---
 const servicesData = [
   {
-    icon: <FontAwesomeIcon icon={faCode} />, // Icon for "bring it online"
     title: '"My business is solid. Now I want to bring it online."',
     shortStatement:
       "Isn't this the best time to turn your offline hustle into a digital experience?",
@@ -40,7 +32,6 @@ const servicesData = [
     Image: service1, // Added image for visual context
   },
   {
-    icon: <FontAwesomeIcon icon={faPalette} />, // Icon for "reaching the right audience"
     title:
       '"I\'m up and running online, but I\'m not reaching the right audience."',
     shortStatement:
@@ -50,12 +41,10 @@ const servicesData = [
     Image: service2, // Added image for visual context
   },
   {
-    icon: <FontAwesomeIcon icon={faRobot} />, // Icon for "scale without burnout"
     title:
       '"My company is picking up, and I want to scale without the burnout."',
     shortStatement:
       "You've figured out the fundamentals. How about streaming your operations?",
-    
     ctaText: "Let's optimize ", // Slightly adjusted CTA for clarity
     Image: service3, // Added image for visual context
   },

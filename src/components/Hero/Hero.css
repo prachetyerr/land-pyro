@@ -335,14 +335,14 @@
 }
 
 /* Marquee hover effect to slow down instead of stopping */
-.hero-marquee:hover .rfm-marquee {
-  animation-duration: 40s !important; /* Slow down from default speed */
+/* .hero-marquee:hover .rfm-marquee {
+  animation-duration: 40s !important;
 }
 
 .hero-marquee .rfm-marquee {
   transition: animation-duration 0.3s ease;
 }
-
+  */
 @media (min-width: 1024px) {
   .hero-heading {
     font-size: 4.375rem;
