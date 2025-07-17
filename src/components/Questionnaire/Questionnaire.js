@@ -101,23 +101,7 @@ const Questionnaire = () => {
         { value: 'completely-different', label: 'Completely different from vision' }
       ]
     },
-    {
-      id: 'fixOneThing',
-      type: 'text',
-      question: 'If you could fix ONE thing in your business tomorrow, what would it be?',
-      placeholder: 'e.g., \'Better customer management\', \'Faster payment processing\'',
-      required: true
-    },
-    {
-      id: 'advisorComfort',
-      type: 'scale',
-      question: 'How comfortable are you sharing business challenges with advisors?',
-      required: true,
-      scaleLabels: {
-        1: 'Very uncomfortable',
-        5: 'Very comfortable'
-      }
-    },
+    
     {
       id: 'onepartnerAppeal',
       type: 'button-select',
@@ -176,7 +160,7 @@ const Questionnaire = () => {
     const currentValue = formData[currentQuestion.id];
     
     if (currentQuestion.required && !currentValue) {
-      setAlertMessage("Please answer this question. It's mandatory.");
+      setAlertMessage("Please answer this question.");
       setIsAlertVisible(true);
       return;
     }
@@ -356,15 +340,18 @@ const Questionnaire = () => {
           // The existing content is wrapped in a React Fragment
           <>
             <div className="progress-container">
-              <div className="progress-bar">
+              
                 <div 
                   className="progress-fill" 
                   style={{ width: `${((currentStep + 1) / questions.length) * 100}%` }}
                 ></div>
-              </div>
-              <span className="progress-text">
-                Question {currentStep + 1} of {questions.length}
-              </span>
+              
+              {/* Only show progress text if it's not the last step */}
+              {!isLastStep && (
+                <span className="progress-text">
+                  Question {currentStep + 1} of {questions.length - 1}
+                </span>
+              )}
             </div>
 
             <div className="questionnaire-header">
