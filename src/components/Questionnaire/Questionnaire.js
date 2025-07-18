@@ -1,7 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Questionnaire.css';
 
-// ThemeAlert component is unchanged
+// Add this function at the top after imports
+const submitToBackend = async (formData) => {
+  try {
+    const response = await fetch('http://localhost:5000/api/questionnaire/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData)
+    });
+
+    const result = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(result.message || 'Failed to submit questionnaire');
+    }
+
+    return result;
+  } catch (error) {
+    console.error('Error submitting questionnaire:', error);
+    throw error;
+  }
+};
+
+// ThemeAlert component
 const ThemeAlert = ({ message, onClose }) => {
   return (
     <div className="alert-overlay">
@@ -15,10 +39,10 @@ const ThemeAlert = ({ message, onClose }) => {
   );
 };
 
+// Main questionnaire component
 const Questionnaire = () => {
-  // MODIFIED: Start at step -1 to show the welcome screen first.
+  // FIXED: Clean state declarations
   const [currentStep, setCurrentStep] = useState(-1);
-  
   const [isAlertVisible, setIsAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [formData, setFormData] = useState({
@@ -30,12 +54,11 @@ const Questionnaire = () => {
     hiringConcern: '',
     hiringConcernOther: '',
     visionAlignment: '',
-    fixOneThing: '',
-    advisorComfort: '',
     onepartnerAppeal: '',
     improvementTimeline: '',
     email: ''
   });
+  const [showAnalytics, setShowAnalytics] = useState(false);
 
   const questions = [
     {
@@ -43,6 +66,16 @@ const Questionnaire = () => {
       type: 'button-select',
       question: 'What stage best describes your business?',
       required: true,
+      scoring: {
+        maxPoints: 8,
+        weights: {
+          'just-starting': 2,
+          'established-offline': 8,
+          'online-struggling': 6,
+          'growing-well': 8,
+          'other': 4
+        }
+      },
       options: [
         { value: 'just-starting', label: 'Just starting out (0-6 months)' },
         { value: 'established-offline', label: 'Established offline, exploring online' },
@@ -53,16 +86,38 @@ const Questionnaire = () => {
     },
     {
       id: 'businessChallenge',
-      type: 'text',
+      type: 'tag-select',
       question: 'What\'s your #1 business challenge right now?',
-      placeholder: 'e.g., \'Not enough customers\', \'Too many manual processes\'',
-      required: true
+      placeholder: 'Select challenges that apply to you or add your own',
+      required: true,
+      scoring: {
+        maxPoints: 3,
+        // Scoring logic will be handled in calculateDescriptiveScore function
+      },
+      predefinedTags: [
+        'Not enough customers',
+        'Cash flow issues',
+        'Too many manual processes',
+        'Marketing not working',
+        'Competition pressure',
+        'Team management'
+      ]
     },
     {
       id: 'revenueSatisfaction',
       type: 'scale',
       question: 'How satisfied are you with your current monthly revenue?',
       required: true,
+      scoring: {
+        maxPoints: 12,
+        weights: {
+          '1': 0,
+          '2': 3,
+          '3': 6,
+          '4': 9,
+          '5': 12
+        }
+      },
       scaleLabels: {
         1: 'Very unsatisfied',
         5: 'Very satisfied'
@@ -70,16 +125,39 @@ const Questionnaire = () => {
     },
     {
       id: 'successVision',
-      type: 'text',
+      type: 'tag-select',
       question: 'What would a successful next 12 months look like for you?',
-      placeholder: 'e.g., \'Double my customer base\', \'Streamline operations\'',
-      required: true
+      placeholder: 'Select goals that resonate or add your own vision',
+      required: true,
+      scoring: {
+        maxPoints: 3,
+        // Scoring logic will be handled in calculateDescriptiveScore function
+      },
+      predefinedTags: [
+        'Double customer base',
+        'Streamline operations',
+        'Increase revenue by 50%',
+        'Build strong team',
+        'Expand to new markets',
+        'Achieve work-life balance'
+      ]
     },
     {
       id: 'hiringConcern',
       type: 'button-select',
       question: 'What\'s your biggest concern about seeking outside help?',
       required: true,
+      scoring: {
+        maxPoints: 8,
+        weights: {
+          'cost-budget': 4,
+          'not-sure-needs': 6,
+          'quality-results': 8,
+          'trust-communication': 6,
+          'no-concerns': 8,
+          'other': 4
+        }
+      },
       options: [
         { value: 'cost-budget', label: 'Cost/budget constraints' },
         { value: 'not-sure-needs', label: 'Not sure what I actually need' },
@@ -94,6 +172,15 @@ const Questionnaire = () => {
       type: 'button-select',
       question: 'Does your current business operations match your original vision?',
       required: true,
+      scoring: {
+        maxPoints: 8,
+        weights: {
+          'mostly-aligned': 8,
+          'somewhat-aligned': 6,
+          'not-really': 4,
+          'completely-different': 2
+        }
+      },
       options: [
         { value: 'mostly-aligned', label: 'Yes, mostly aligned' },
         { value: 'somewhat-aligned', label: 'Somewhat aligned' },
@@ -101,12 +188,20 @@ const Questionnaire = () => {
         { value: 'completely-different', label: 'Completely different from vision' }
       ]
     },
-    
     {
       id: 'onepartnerAppeal',
       type: 'button-select',
       question: 'How appealing is having one partner handle multiple business needs?',
       required: true,
+      scoring: {
+        maxPoints: 10,
+        weights: {
+          'very-appealing': 10,
+          'somewhat-appealing': 7,
+          'not-appealing': 3,
+          'unsure': 5
+        }
+      },
       options: [
         { value: 'very-appealing', label: 'Very appealing - I prefer one-stop solutions' },
         { value: 'somewhat-appealing', label: 'Somewhat appealing - depends on the needs' },
@@ -119,6 +214,16 @@ const Questionnaire = () => {
       type: 'button-select',
       question: 'When do you want to start making improvements?',
       required: true,
+      scoring: {
+        maxPoints: 10,
+        weights: {
+          'right-away': 10,
+          'soon': 8,
+          'later-this-year': 6,
+          'next-year': 3,
+          'just-exploring': 2
+        }
+      },
       options: [
         { value: 'right-away', label: 'Right away (within 1 month)' },
         { value: 'soon', label: 'Soon (1-3 months)' },
@@ -137,7 +242,7 @@ const Questionnaire = () => {
   ];
 
   const currentQuestion = questions[currentStep];
-  const isLastStep = currentStep === questions.length - 1;
+  const isLastQuestion = currentStep === questions.length - 1;
 
   const handleInputChange = (value) => {
     setFormData(prev => ({
@@ -154,17 +259,15 @@ const Questionnaire = () => {
     }));
   };
 
-  const handleNext = (e) => {
+  const handleNext = async (e) => {
     e.preventDefault();
-    
     const currentValue = formData[currentQuestion.id];
-    
     if (currentQuestion.required && !currentValue) {
       setAlertMessage("Please answer this question.");
       setIsAlertVisible(true);
       return;
     }
-
+    // Check for "other" field validation
     if (currentValue === 'other') {
       const otherFieldId = currentQuestion.id + 'Other';
       const otherValue = formData[otherFieldId];
@@ -174,32 +277,69 @@ const Questionnaire = () => {
         return;
       }
     }
+    // If we just finished question 8 (improvementTimeline), show analytics
+    if (currentQuestion.id === 'improvementTimeline') {
+      setShowAnalytics(true);
+      return;
+    }
+    // If we're on the last question (email), submit the form
+    if (isLastQuestion) {
+      try {
+        const totalScoreData = calculateTotalScore(formData);
+        const scoreBand = getScoreBand(totalScoreData.totalPercentage);
+        
+        const submissionData = {
+          ...formData,
+          // Total scores
+          totalScore: totalScoreData.totalScore,
+          totalMaxScore: totalScoreData.totalMaxScore,
+          totalPercentage: totalScoreData.totalPercentage,
+          // MCQ scores
+          mcqScore: totalScoreData.mcqScore.score,
+          mcqMaxScore: totalScoreData.mcqScore.maxScore,
+          mcqPercentage: totalScoreData.mcqScore.percentage,
+          // Descriptive scores
+          descriptiveScore: totalScoreData.descriptiveScore.score,
+          descriptiveMaxScore: totalScoreData.descriptiveScore.maxScore,
+          descriptivePercentage: totalScoreData.descriptiveScore.percentage,
+          // Score band
+          scoreBand: scoreBand.zone,
+          scoreLabel: scoreBand.label
+        };
 
-    if (isLastStep) {
-      console.log('Form submitted:', formData);
-      setAlertMessage("Thank you! Your questionnaire has been submitted. We'll get back to you soon.");
-      setIsAlertVisible(true);
-      // Reset form
-      setFormData({
-        businessStage: '',
-        businessStageOther: '',
-        businessChallenge: '',
-        revenueSatisfaction: '',
-        successVision: '',
-        hiringConcern: '',
-        hiringConcernOther: '',
-        visionAlignment: '',
-        fixOneThing: '',
-        advisorComfort: '',
-        onepartnerAppeal: '',
-        improvementTimeline: '',
-        email: ''
-      });
-      // MODIFIED: Return to welcome screen after submission
-      setCurrentStep(-1);
+        await submitToBackend(submissionData);
+        setAlertMessage(`Thank you! Your personalized business insights are on their way to ${formData.email}!`);
+        setIsAlertVisible(true);
+        
+        // Reset form and return to welcome
+        setFormData({
+          businessStage: '',
+          businessStageOther: '',
+          businessChallenge: '',
+          revenueSatisfaction: '',
+          successVision: '',
+          hiringConcern: '',
+          hiringConcernOther: '',
+          visionAlignment: '',
+          onepartnerAppeal: '',
+          improvementTimeline: '',
+          email: ''
+        });
+        setCurrentStep(-1);
+        setShowAnalytics(false);
+      } catch (error) {
+        setAlertMessage("Sorry, there was an error. Please try again.");
+        setIsAlertVisible(true);
+      }
     } else {
       setCurrentStep(prev => prev + 1);
     }
+  };
+
+  // Function to continue from analytics to email
+  const handleContinueFromAnalytics = () => {
+    setShowAnalytics(false);
+    setCurrentStep(questions.length - 1); // Go to email question
   };
 
   const handlePrevious = () => {
@@ -211,7 +351,6 @@ const Questionnaire = () => {
   // THIS FUNCTION'S FORMATTING IS NOW PRESERVED
   const renderInput = () => {
     const value = formData[currentQuestion.id] || '';
-
     switch (currentQuestion.type) {
       case 'text':
         return (
@@ -224,7 +363,6 @@ const Questionnaire = () => {
             autoFocus
           />
         );
-      
       case 'email':
         return (
           <input
@@ -236,7 +374,6 @@ const Questionnaire = () => {
             autoFocus
           />
         );
-      
       case 'select':
         return (
           <select
@@ -252,12 +389,10 @@ const Questionnaire = () => {
             ))}
           </select>
         );
-
       case 'button-select':
         const hasOtherOption = currentQuestion.options.some(option => option.value === 'other');
         const showOtherInput = hasOtherOption && value === 'other';
         const otherFieldId = currentQuestion.id + 'Other';
-        
         return (
           <div className="button-select-container">
             <div className="button-options">
@@ -272,7 +407,6 @@ const Questionnaire = () => {
                 </button>
               ))}
             </div>
-            
             {showOtherInput && (
               <div className="other-input-container">
                 <input
@@ -287,7 +421,6 @@ const Questionnaire = () => {
             )}
           </div>
         );
-      
       case 'scale':
         return (
           <div className="scale-container">
@@ -311,18 +444,362 @@ const Questionnaire = () => {
             </div>
           </div>
         );
-      
+      case 'tag-select':
+        const selectedTags = value ? value.split(',').filter(tag => tag.trim()) : [];
+        return (
+          <div className="tag-select-container">
+            <div className="predefined-tags">
+              {currentQuestion.predefinedTags.map((tag, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => handleTagToggle(tag)}
+                  className={`tag-button ${selectedTags.includes(tag) ? 'selected' : ''}`}
+                >
+                  {tag}
+                  {selectedTags.includes(tag) && (
+                    <span className="tag-remove">×</span>
+                  )}
+                </button>
+              ))}
+            </div>
+            <div className="selected-tags">
+              {selectedTags.map((tag, index) => (
+                !currentQuestion.predefinedTags.includes(tag) && (
+                  <div key={index} className="custom-tag">
+                    {tag}
+                    <button
+                      type="button"
+                      onClick={() => handleTagRemove(tag)}
+                      className="tag-remove-btn"
+                    >
+                      ×
+                    </button>
+                  </div>
+                )
+              ))}
+            </div>
+            <input
+              type="text"
+              placeholder={currentQuestion.placeholder}
+              className="tag-input"
+              onKeyPress={(e) => handleTagInput(e)}
+              autoFocus
+            />
+          </div>
+        );
       default:
         return null;
     }
   };
 
+  const handleTagToggle = (tag) => {
+    const currentValue = formData[currentQuestion.id] || '';
+    const selectedTags = currentValue ? currentValue.split(',').filter(t => t.trim()) : [];
+    if (selectedTags.includes(tag)) {
+      // Remove tag
+      const newTags = selectedTags.filter(t => t !== tag);
+      setFormData(prev => ({
+        ...prev,
+        [currentQuestion.id]: newTags.join(',')
+      }));
+    } else {
+      // Add tag
+      const newTags = [...selectedTags, tag];
+      setFormData(prev => ({
+        ...prev,
+        [currentQuestion.id]: newTags.join(',')
+      }));
+    }
+  };
+
+  const handleTagRemove = (tagToRemove) => {
+    const currentValue = formData[currentQuestion.id] || '';
+    const selectedTags = currentValue ? currentValue.split(',').filter(t => t.trim()) : [];
+    const newTags = selectedTags.filter(tag => tag !== tagToRemove);
+    setFormData(prev => ({
+      ...prev,
+      [currentQuestion.id]: newTags.join(',')
+    }));
+  };
+
+  const handleTagInput = (e) => {
+    if (e.key === 'Enter' && e.target.value.trim()) {
+      e.preventDefault();
+      const newTag = e.target.value.trim();
+      const currentValue = formData[currentQuestion.id] || '';
+      const selectedTags = currentValue ? currentValue.split(',').filter(t => t.trim()) : [];
+      if (!selectedTags.includes(newTag)) {
+        const newTags = [...selectedTags, newTag];
+        setFormData(prev => ({
+          ...prev,
+          [currentQuestion.id]: newTags.join(',')
+        }));
+      }
+      e.target.value = '';
+    }
+  };
+
+  // Update the existing calculateMCQScore function
+  const calculateMCQScore = (formData) => {
+    let totalScore = 0;
+    let maxPossibleScore = 0;
+
+    questions.forEach(question => {
+      // Only calculate MCQ scores (exclude tag-select questions)
+      if (question.scoring && question.type !== 'tag-select' && formData[question.id]) {
+        const userAnswer = formData[question.id];
+        const questionScore = question.scoring.weights[userAnswer] || 0;
+        
+        totalScore += questionScore;
+        maxPossibleScore += question.scoring.maxPoints;
+      }
+    });
+
+    return {
+      score: totalScore,
+      maxScore: maxPossibleScore,
+      percentage: maxPossibleScore > 0 ? Math.round((totalScore / maxPossibleScore) * 100) : 0
+    };
+  };
+
+  // Add new function to calculate total combined score
+  const calculateTotalScore = (formData) => {
+    const mcqScore = calculateMCQScore(formData);
+    const descriptiveScore = calculateDescriptiveScore(formData);
+    
+    const totalScore = mcqScore.score + descriptiveScore.score;
+    const totalMaxScore = mcqScore.maxScore + descriptiveScore.maxScore;
+    const totalPercentage = totalMaxScore > 0 ? Math.round((totalScore / totalMaxScore) * 100) : 0;
+    
+    return {
+      totalScore,
+      totalMaxScore,
+      totalPercentage,
+      mcqScore,
+      descriptiveScore
+    };
+  };
+
+  // Add this new function after calculateMCQScore
+  const calculateDescriptiveScore = (formData) => {
+    let totalScore = 0;
+    let maxPossibleScore = 0;
+
+    const descriptiveQuestions = ['businessChallenge', 'successVision'];
+    
+    descriptiveQuestions.forEach(questionId => {
+      const userAnswer = formData[questionId] || '';
+      const selectedTags = userAnswer ? userAnswer.split(',').filter(tag => tag.trim()) : [];
+      
+      // Find the question definition to get predefined tags
+      const questionDef = questions.find(q => q.id === questionId);
+      if (!questionDef || !questionDef.predefinedTags) return;
+      
+      let questionScore = 0;
+      const maxQuestionScore = 3;
+      
+      // Check for predefined tags (1 point)
+      const hasPredefinedTag = selectedTags.some(tag => 
+        questionDef.predefinedTags.includes(tag)
+      );
+      
+      // Check for custom descriptions (2 points)
+      const hasCustomDescription = selectedTags.some(tag => 
+        !questionDef.predefinedTags.includes(tag) && tag.trim().length > 0
+      );
+      
+      // Calculate score based on combination
+      if (hasPredefinedTag && hasCustomDescription) {
+        questionScore = 3; // Both predefined tag + custom description
+      } else if (hasCustomDescription) {
+        questionScore = 2; // Only custom description
+      } else if (hasPredefinedTag) {
+        questionScore = 1; // Only predefined tag
+      } else {
+        questionScore = 0; // No meaningful input
+      }
+      
+      totalScore += questionScore;
+      maxPossibleScore += maxQuestionScore;
+    });
+
+    return {
+      score: totalScore,
+      maxScore: maxPossibleScore,
+      percentage: maxPossibleScore > 0 ? Math.round((totalScore / maxPossibleScore) * 100) : 0
+    };
+  };
+
+  const getScoreBand = (percentage) => {
+    if (percentage >= 70) {
+      return {
+        zone: 'green',
+        label: 'Strong Foundation',
+        description: 'Ready to optimize and scale',
+        color: '#10B981'
+      };
+    } else if (percentage >= 40) {
+      return {
+        zone: 'yellow',
+        label: 'Room for Improvement',
+        description: 'Good potential with focused effort',
+        color: '#F59E0B'
+      };
+    } else {
+      return {
+        zone: 'red',
+        label: 'Needs Immediate Attention',
+        description: 'Significant opportunities for growth',
+        color: '#EF4444'
+      };
+    }
+  };
+
+  const AnalyticsSection = ({ formData, onContinue }) => {
+    const totalScoreData = calculateTotalScore(formData);
+    const scoreBand = getScoreBand(totalScoreData.totalPercentage);
+    
+    return (
+      <div className="analytics-container">
+        <div className="analytics-header">
+          <h2 className="analytics-title">Your Business Readiness Analysis</h2>
+          <p className="analytics-subtitle">
+            Based on your responses, here's what we discovered about your business
+          </p>
+        </div>
+
+        {/* Main content grid for side-by-side layout */}
+        <div className="analytics-main-content">
+          {/* Score Display Section - SIMPLIFIED */}
+          <div className="score-display">
+            <div className="score-circle-container">
+              <div className={`score-circle ${scoreBand.zone}`}>
+                <div className="score-percentage">
+                  {totalScoreData.totalPercentage}%
+                </div>
+                <div className="score-label">
+                  Business Readiness
+                </div>
+              </div>
+            </div>
+            
+            <div className="score-details">
+              <div className={`score-band ${scoreBand.zone}`}>
+                <h3 className="band-label">{scoreBand.label}</h3>
+                <p className="band-description">{scoreBand.description}</p>
+              </div>
+              
+              {/* REMOVED: Score breakdown section */}
+              {/* 
+              <div className="score-breakdown">
+                <div className="breakdown-item">
+                  <span className="breakdown-label">Assessment Questions:</span>
+                  <span className="breakdown-score">{totalScoreData.mcqScore.score}/{totalScoreData.mcqScore.maxScore}</span>
+                </div>
+                <div className="breakdown-item">
+                  <span className="breakdown-label">Challenges & Vision:</span>
+                  <span className="breakdown-score">{totalScoreData.descriptiveScore.score}/{totalScoreData.descriptiveScore.maxScore}</span>
+                </div>
+                <div className="breakdown-item total">
+                  <span className="breakdown-label">Total Score:</span>
+                  <span className="breakdown-score">{totalScoreData.totalScore}/{totalScoreData.totalMaxScore}</span>
+                </div>
+              </div>
+              */}
+            </div>
+          </div>
+
+          {/* Insights Section */}
+          <div className="insights-section">
+            <h3 className="insights-title">Key Insights & Recommendations</h3>
+            <div className="insights-content">
+              {scoreBand.zone === 'green' && (
+                <div className="insight-item">
+                  <div className="insight-icon">🚀</div>
+                  <div className="insight-text">
+                    <h4>Ready for Growth</h4>
+                    <p>Your business shows strong fundamentals. You're positioned well for scaling and optimization initiatives.</p>
+                  </div>
+                </div>
+              )}
+              
+              {scoreBand.zone === 'yellow' && (
+                <div className="insight-item">
+                  <div className="insight-icon">⚡</div>
+                  <div className="insight-text">
+                    <h4>Growth Potential Identified</h4>
+                    <p>You have solid foundations with specific areas for improvement. Focused strategies could unlock significant growth.</p>
+                  </div>
+                </div>
+              )}
+              
+              {scoreBand.zone === 'red' && (
+                <div className="insight-item">
+                  <div className="insight-icon">🎯</div>
+                  <div className="insight-text">
+                    <h4>High-Impact Opportunities</h4>
+                    <p>Your business has tremendous potential for transformation. Strategic changes could yield dramatic improvements.</p>
+                  </div>
+                </div>
+              )}
+              
+              <div className="insight-item">
+                <div className="insight-icon">📊</div>
+                <div className="insight-text">
+                  <h4>Personalized Action Plan</h4>
+                  <p>We'll send you a detailed analysis with specific, actionable recommendations tailored to your responses.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Continue Button - spans both columns */}
+          <div className="analytics-actions">
+            <button
+              onClick={onContinue}
+              className="continue-analysis-btn"
+            >
+              Get My Detailed Report
+              <span className="btn-arrow">→</span>
+            </button>
+            <p className="privacy-note">
+              We'll send your personalized insights to your email - no spam, just value.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const handleStart = () => {
+    setCurrentStep(0);
+  };
+
+  const closeAlert = () => {
+    setIsAlertVisible(false);
+  };
+
+  // Show analytics section
+  if (showAnalytics) {
+    return (
+      <section id="questionnaire" className="questionnaire-section">
+        <div className="questionnaire-container">
+          <AnalyticsSection
+            formData={formData}
+            onContinue={handleContinueFromAnalytics}
+          />
+        </div>
+      </section>
+    );
+  }
+
+  // Main questionnaire section
   return (
     <section id="questionnaire" className="questionnaire-section">
       {isAlertVisible && <ThemeAlert message={alertMessage} onClose={() => setIsAlertVisible(false)} />}
-      
       <div className="questionnaire-container">
-        {/* ADDED: Conditional logic for welcome screen */}
+        {/* Welcome screen logic */}
         {currentStep === -1 ? (
           <div className="welcome-container">
             <h1 className="welcome-title">Welcome to the PyroReality Check!</h1>
@@ -337,17 +814,16 @@ const Questionnaire = () => {
             </button>
           </div>
         ) : (
-          // The existing content is wrapped in a React Fragment
           <>
             <div className="progress-container">
-              
+              <div className="progress-bar">
                 <div 
-                  className="progress-fill" 
+                  className="progress-fill"
                   style={{ width: `${((currentStep + 1) / questions.length) * 100}%` }}
                 ></div>
-              
+              </div>
               {/* Only show progress text if it's not the last step */}
-              {!isLastStep && (
+              {!isLastQuestion && (
                 <span className="progress-text">
                   Question {currentStep + 1} of {questions.length - 1}
                 </span>
@@ -359,12 +835,10 @@ const Questionnaire = () => {
                 {currentQuestion.question}
               </h1>
             </div>
-
             <form className="questionnaire-form" onSubmit={handleNext}>
               <div className="question-container">
                 {renderInput()}
               </div>
-
               <div className="navigation-buttons">
                 {currentStep > 0 && (
                   <button
@@ -375,12 +849,11 @@ const Questionnaire = () => {
                     ← Previous
                   </button>
                 )}
-                
                 <button
                   type="submit"
                   className="nav-button next-button"
                 >
-                  {isLastStep ? 'Submit' : 'Next →'}
+                  {isLastQuestion ? 'Submit' : 'Next →'}
                 </button>
               </div>
             </form>

@@ -829,3 +829,530 @@ transform: translateY(-2px);
     font-size: 1rem;
   }
 }
+
+.tag-select-container {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center; /* Center the entire container */
+}
+
+.predefined-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  justify-content: center; /* Center the tags */
+  align-items: center;
+  width: 100%;
+}
+
+.selected-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  justify-content: center; /* Center custom tags */
+  align-items: center;
+  width: 100%;
+}
+
+.tag-button {
+  padding: 0.75rem 1.25rem;
+  font-family: "Albert Sans", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center content within each tag */
+  gap: 0.5rem;
+  position: relative;
+  white-space: nowrap; /* Prevent text wrapping */
+  min-height: 44px; /* Ensure consistent height */
+  text-align: center;
+}
+
+.tag-button:hover {
+  border-color: #3d72ff;
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(61, 114, 255, 0.2);
+}
+
+.tag-button.selected {
+  border-color: #8a2be2;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 255, 0.3),
+    rgba(138, 43, 226, 0.3),
+    rgba(65, 105, 225, 0.3)
+  );
+  box-shadow: 0 0 20px rgba(61, 114, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.tag-remove {
+  margin-left: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  opacity: 0.8;
+  line-height: 1; /* Ensure proper vertical alignment */
+}
+
+.custom-tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(61, 114, 255, 0.2);
+  border: 1px solid #3d72ff;
+  border-radius: 20px;
+  color: #fff;
+  font-family: "Albert Sans", sans-serif;
+  font-size: 0.9rem;
+  min-height: 36px; /* Consistent height for custom tags */
+  white-space: nowrap;
+}
+
+.tag-remove-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tag-remove-btn:hover {
+  opacity: 1;
+}
+
+.tag-input {
+  width: 100%;
+  padding: 1.5rem 2rem;
+  font-family: "Albert Sans", sans-serif;
+  font-size: 1.125rem;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  outline: none;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center; /* Center the placeholder text */
+  box-sizing: border-box;
+}
+
+.tag-input:focus {
+  border-color: #3d72ff;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 0 25px rgba(61, 114, 255, 0.4),
+    0 8px 32px rgba(0, 0, 0, 0.2);
+  text-align: left; /* Left align when typing */
+}
+
+.tag-input::placeholder {
+  color: #8a8a8a;
+  font-style: italic;
+  text-align: center;
+}
+
+/* Enhanced mobile responsiveness */
+@media (max-width: 767px) {
+  .tag-select-container {
+    gap: 1rem;
+  }
+  
+  .predefined-tags {
+    gap: 0.5rem;
+    justify-content: center;
+  }
+  
+  .tag-button {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    min-height: 40px; /* Slightly smaller on mobile */
+  }
+  
+  .tag-input {
+    padding: 1.25rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .selected-tags {
+    gap: 0.4rem;
+    justify-content: center;
+  }
+  
+  .custom-tag {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+    min-height: 32px;
+  }
+}
+
+/* Enhanced tablet responsiveness */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .predefined-tags {
+    gap: 0.875rem;
+    max-width: 90%;
+    margin: 0 auto 1rem auto;
+  }
+  
+  .tag-button {
+    padding: 0.8rem 1.2rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* Large screen optimization */
+@media (min-width: 1025px) {
+  .predefined-tags {
+    gap: 1rem;
+    max-width: 85%;
+    margin: 0 auto 1rem auto;
+  }
+  
+  .tag-button {
+    padding: 0.85rem 1.4rem;
+    font-size: 1rem;
+  }
+}
+
+/* Animation for tag selection */
+@keyframes tagPulse {
+  0% { 
+    box-shadow: 0 0 0 0 rgba(138, 43, 226, 0.4); 
+  }
+  70% { 
+    box-shadow: 0 0 0 10px rgba(138, 43, 226, 0); 
+  }
+  100% { 
+    box-shadow: 0 0 0 0 rgba(138, 43, 226, 0); 
+  }
+}
+
+.tag-button.selected {
+  animation: tagPulse 1s ease-out;
+}
+
+/* Analytics Section Styles */
+.analytics-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.analytics-header {
+  margin-bottom: 3rem;
+}
+
+.analytics-title {
+  font-family: "Albert Sans", sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #3d72ff 0%, #8a2be2 50%, #ff6b6b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.analytics-subtitle {
+  font-family: "Albert Sans", sans-serif;
+  font-size: 1.2rem;
+  color: #c0c0d0;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.score-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  margin: 3rem 0;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.score-circle-container {
+  position: relative;
+}
+
+/* FIXED: Ensure score circle displays properly */
+.score-circle {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.score-circle.green {
+  border: 4px solid #10B981;
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+}
+
+.score-circle.yellow {
+  border: 4px solid #F59E0B;
+  box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
+}
+
+.score-circle.red {
+  border: 4px solid #EF4444;
+  box-shadow: 0 0 30px rgba(239, 68, 68, 0.4);
+}
+
+/* FIXED: Ensure percentage text is visible */
+.score-percentage {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.score-label {
+  font-family: "Albert Sans", sans-serif;
+  font-size: 0.9rem;
+  color: #c0c0d0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.score-details {
+  text-align: left;
+  max-width: 300px;
+}
+
+.score-band {
+  margin-bottom: 1.5rem;
+}
+
+.band-label {
+  font-family: "Albert Sans", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.score-band.green .band-label {
+  color: #10B981;
+}
+
+.score-band.yellow .band-label {
+  color: #F59E0B;
+}
+
+.score-band.red .band-label {
+  color: #EF4444;
+}
+
+.band-description {
+  font-family: "Albert Sans", sans-serif;
+  color: #c0c0d0;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Mobile responsiveness for analytics */
+@media (max-width: 767px) {
+  .score-display {
+    flex-direction: column;
+    gap: 2rem;
+    text-align: center;
+  }
+  
+  .score-circle {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .score-percentage {
+    font-size: 2.5rem;
+  }
+  
+  .score-details {
+    text-align: center;
+    max-width: none;
+  }
+  
+  .insights-section {
+    text-align: center;
+  }
+  
+  .insight-item {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.insights-section {
+  margin: 3rem 0;
+  text-align: left;
+}
+
+.insights-title {
+  font-family: "Albert Sans", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.insights-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.insight-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.insight-icon {
+  font-size: 2rem;
+  min-width: 3rem;
+  text-align: center;
+}
+
+.insight-text h4 {
+  font-family: "Albert Sans", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.insight-text p {
+  font-family: "Albert Sans", sans-serif;
+  color: #c0c0d0;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.analytics-actions {
+  margin-top: 3rem;
+}
+
+.continue-analysis-btn {
+  padding: 1.2rem 3rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, #3d72ff 0%, #8a2be2 100%);
+  color: #fff;
+  border: 2px solid #3d72ff;
+  box-shadow: 0 8px 25px rgba(61, 114, 255, 0.4);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.continue-analysis-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(61, 114, 255, 0.6);
+}
+
+.btn-arrow {
+  transition: transform 0.3s ease;
+}
+
+.continue-analysis-btn:hover .btn-arrow {
+  transform: translateX(5px);
+}
+
+.privacy-note {
+  font-family: "Albert Sans", sans-serif;
+  font-size: 0.9rem;
+  color: #8a8a8a;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+.score-breakdown {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.breakdown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  font-family: "Albert Sans", sans-serif;
+  font-size: 0.9rem;
+  color: #c0c0d0;
+}
+
+.breakdown-item.total {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.breakdown-label {
+  flex: 1;
+}
+
+.breakdown-score {
+  font-weight: 600;
+  color: #3d72ff;
+}
+
+.breakdown-item.total .breakdown-score {
+  color: #10B981;
+  font-size: 1rem;
+}
