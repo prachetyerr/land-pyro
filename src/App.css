@@ -99,3 +99,22 @@ html {
 @media (min-width: 768px) {
   .md\:mb-12 { margin-bottom: 3rem; }
 }
+
+/* Add these styles at the end of the file */
+
+/* Main content visibility control */
+.main-content-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.main-content-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.8s ease-in-out;
+}
+
+/* Prevent scrolling during loading */
+body.loading {
+  overflow: hidden;
+}

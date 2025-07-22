@@ -13,10 +13,6 @@ const questionnaireSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  revenueSatisfaction: {
-    type: String,
-    required: true
-  },
   successVision: {
     type: String,
     required: true
@@ -60,7 +56,6 @@ const questionnaireSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  
   // MCQ scoring fields
   mcqScore: {
     type: Number,
@@ -74,7 +69,6 @@ const questionnaireSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  
   // Descriptive scoring fields
   descriptiveScore: {
     type: Number,
@@ -88,7 +82,6 @@ const questionnaireSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  
   scoreBand: {
     type: String,
     enum: ['red', 'yellow', 'green'],

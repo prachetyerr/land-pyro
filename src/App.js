@@ -7,7 +7,8 @@ import Hero from "./components/Hero/Hero";
 import Services from "./components/Services/Services";
 import Contact from "./components/Contact/Contact";
 import Footer from "./components/Footer/Footer";
-import Questionnaire from "./components/Questionnaire/Questionnaire"; // Add this import
+import Questionnaire from "./components/Questionnaire/Questionnaire";
+import Loading from "./components/Loading/Loading"; // Add this import
 
 
 // Asset Imports
@@ -72,6 +73,7 @@ function App() {
   const [formStatus, setFormStatus] = useState("");
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const [currentPage, setCurrentPage] = useState('home'); // Add this state
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
 
   // --- STATE FOR INTERACTIVE SERVICES SECTION ---
   const [expandedCardIndex, setExpandedCardIndex] = useState(null);
@@ -87,6 +89,17 @@ function App() {
       );
     }, 2500);
     return () => clearInterval(interval);
+  }, []);
+
+  // Add loading effect
+  useEffect(() => {
+    // Simulate loading time - adjust as needed
+    const loadingTimer = setTimeout(() => {
+      setIsLoading(false);
+    }, 4000); // 4 seconds to see the full animation
+
+    // Cleanup
+    return () => clearTimeout(loadingTimer);
   }, []);
 
   // --- EVENT HANDLERS FOR INTERACTIVE SERVICES ---
@@ -136,8 +149,8 @@ function App() {
   // ======================================================================
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
-    // Lock body scroll when a card is expanded on mobile
-    if (expandedCardIndex !== null && isMobile) {
+    // Lock body scroll when loading or when a card is expanded on mobile
+    if (isLoading || (expandedCardIndex !== null && isMobile)) {
       document.body.style.overflow = "hidden";
     } else {
       // Otherwise, ensure it's unlocked
@@ -147,7 +160,7 @@ function App() {
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [expandedCardIndex]); // This effect runs whenever a card is expanded or closed
+  }, [expandedCardIndex, isLoading]); // Add isLoading to dependencies
   // ======================================================================
 
   // Click handler for mobile nav links
@@ -230,57 +243,51 @@ function App() {
   };
 
   return (
-    <div>
-      {currentPage === 'home' ? (
-        <>
-          <Header 
-            isScrolled={isScrolled}
-            isMenuOpen={isMenuOpen}
-            setIsMenuOpen={setIsMenuOpen}
-            navRef={navRef}
-            handleLinkClick={handleLinkClick}
-          />
-
-          <Hero 
-            highlightedWords={highlightedWords}
-            highlightedIndex={highlightedIndex}
-            clientLogos={clientLogos}
-            openCalendarPopup={openCalendarPopup}
-            handleNavigateToQuestionnaire={handleNavigateToQuestionnaire} // Add this prop
-          />
-
-          <Services 
-            servicesData={servicesData}
-            expandedCardIndex={expandedCardIndex}
-            closingCardIndex={closingCardIndex}
-            handleCardClick={handleCardClick}
-            handleCloseCard={handleCloseCard}
-            openCalendarPopup={openCalendarPopup}
-          />
-
-          <Contact 
-            email={email}
-            setEmail={setEmail}
-            message={message}
-            setMessage={setMessage}
-            formStatus={formStatus}
-            handleFormSubmit={handleFormSubmit}
-          />
-
-          <Footer />
-        </>
-      ) : (
-        <>
-          <Header 
-            isScrolled={isScrolled}
-            isMenuOpen={isMenuOpen}
-            setIsMenuOpen={setIsMenuOpen}
-            navRef={navRef}
-            handleLinkClick={handleNavigateToHome}
-          />
+    <div className="App">
+      {/* Loading Screen */}
+      {isLoading && <Loading />}
+      
+      {/* Main Content */}
+      <div className={isLoading ? 'main-content-hidden' : 'main-content-visible'}>
+        <Header 
+          isScrolled={isScrolled}
+          isMenuOpen={isMenuOpen}
+          setIsMenuOpen={setIsMenuOpen}
+          navRef={navRef}
+          handleLinkClick={handleLinkClick}
+        />
+        {currentPage === 'questionnaire' ? (
           <Questionnaire />
-        </>
-      )}
+        ) : (
+          <>
+            <Hero 
+              highlightedWords={highlightedWords}
+              highlightedIndex={highlightedIndex}
+              clientLogos={clientLogos}
+              openCalendarPopup={openCalendarPopup}
+              handleNavigateToQuestionnaire={handleNavigateToQuestionnaire} // Add this prop
+            />
+
+            <Services 
+              servicesData={servicesData}
+              expandedCardIndex={expandedCardIndex}
+              setExpandedCardIndex={setExpandedCardIndex}
+              openCalendarPopup={openCalendarPopup}
+            />
+
+            <Contact 
+              email={email}
+              setEmail={setEmail}
+              message={message}
+              setMessage={setMessage}
+              formStatus={formStatus}
+              handleFormSubmit={handleFormSubmit}
+            />
+
+            <Footer />
+          </>
+        )}
+      </div>
     </div>
   );
 }

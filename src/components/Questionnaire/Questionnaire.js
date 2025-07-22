@@ -39,6 +39,38 @@ const ThemeAlert = ({ message, onClose }) => {
   );
 };
 
+// Loading component
+const LoadingScreen = ({ progress }) => {
+  return (
+    <div className="loading-container">
+      <div className="loading-particles">
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+      </div>
+      
+      <div className="loading-visual">
+        <div className="loading-ring"></div>
+        <div className="loading-inner">
+          <div className="loading-percentage">{progress}%</div>
+        </div>
+      </div>
+      
+      <h2 className="loading-title">Calculating Your Score</h2>
+      <p className="loading-subtitle">
+        Analyzing your responses and generating personalized insights...
+      </p>
+      
+      <div className="loading-dots">
+        <div className="loading-dot"></div>
+        <div className="loading-dot"></div>
+        <div className="loading-dot"></div>
+      </div>
+    </div>
+  );
+};
+
 // Main questionnaire component
 const Questionnaire = () => {
   // FIXED: Clean state declarations
@@ -59,6 +91,8 @@ const Questionnaire = () => {
     email: ''
   });
   const [showAnalytics, setShowAnalytics] = useState(false);
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
 
   const questions = [
     {
@@ -261,27 +295,54 @@ const Questionnaire = () => {
 
   const handleNext = async (e) => {
     e.preventDefault();
-    const currentValue = formData[currentQuestion.id];
-    if (currentQuestion.required && !currentValue) {
-      setAlertMessage("Please answer this question.");
+    const value = formData[currentQuestion.id] || '';
+    
+    if (currentQuestion.required && (!value || value.trim() === '')) {
+      setAlertMessage('This question is required. Please provide an answer.');
       setIsAlertVisible(true);
       return;
     }
-    // Check for "other" field validation
-    if (currentValue === 'other') {
-      const otherFieldId = currentQuestion.id + 'Other';
-      const otherValue = formData[otherFieldId];
+    
+    if (currentQuestion.type === 'button-select' && value === 'other') {
+      const otherValue = formData[currentQuestion.id + 'Other'] || '';
       if (!otherValue || otherValue.trim() === '') {
         setAlertMessage('Please specify your answer for "Other".');
         setIsAlertVisible(true);
         return;
       }
     }
-    // If we just finished question 8 (improvementTimeline), show analytics
+    
+    // If we just finished question 8 (improvementTimeline), show loading then analytics
     if (currentQuestion.id === 'improvementTimeline') {
-      setShowAnalytics(true);
+      setIsCalculating(true);
+      
+      // Animate the progress from 0 to 100
+      const animateProgress = () => {
+        let progress = 0;
+        const interval = setInterval(() => {
+          progress += Math.random() * 15 + 5; // Random increment between 5-20
+          if (progress >= 100) {
+            progress = 100;
+            setLoadingProgress(progress);
+            clearInterval(interval);
+            
+            // Wait a moment at 100% then show analytics
+            setTimeout(() => {
+              setIsCalculating(false);
+              setLoadingProgress(0);
+              setShowAnalytics(true);
+            }, 800);
+          } else {
+            setLoadingProgress(Math.floor(progress));
+          }
+        }, 200); // Update every 200ms
+      };
+      
+      // Start the animation after a brief delay
+      setTimeout(animateProgress, 300);
       return;
     }
+    
     // If we're on the last question (email), submit the form
     if (isLastQuestion) {
       try {
@@ -779,6 +840,17 @@ const Questionnaire = () => {
   const closeAlert = () => {
     setIsAlertVisible(false);
   };
+
+  // Show loading screen
+  if (isCalculating) {
+    return (
+      <section id="questionnaire" className="questionnaire-section">
+        <div className="questionnaire-container">
+          <LoadingScreen progress={loadingProgress} />
+        </div>
+      </section>
+    );
+  }
 
   // Show analytics section
   if (showAnalytics) {

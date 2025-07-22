@@ -343,7 +343,7 @@
   transition: animation-duration 0.3s ease;
 }
   */
-@media (min-width: 1024px) {
+@media (min-width: 1024px) {  
   .hero-heading {
     font-size: 4.375rem;
     letter-spacing: -2.4px;

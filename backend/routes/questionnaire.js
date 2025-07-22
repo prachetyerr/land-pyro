@@ -19,9 +19,19 @@ router.post('/submit', async (req, res) => {
       onepartnerAppeal,
       improvementTimeline,
       email,
+      // Total scores
+      totalScore,
+      totalMaxScore,
+      totalPercentage,
+      // MCQ scores
       mcqScore,
       mcqMaxScore,
       mcqPercentage,
+      // Descriptive scores
+      descriptiveScore,
+      descriptiveMaxScore,
+      descriptivePercentage,
+      // Score band
       scoreBand,
       scoreLabel
     } = req.body;
@@ -48,7 +58,7 @@ router.post('/submit', async (req, res) => {
     // Get client IP
     const ipAddress = req.ip || req.connection.remoteAddress || req.socket.remoteAddress;
 
-    // Create new questionnaire response with scoring data
+    // Create new questionnaire response with ALL scoring data
     const questionnaireResponse = new Questionnaire({
       businessStage,
       businessStageOther,
@@ -61,9 +71,19 @@ router.post('/submit', async (req, res) => {
       onepartnerAppeal,
       improvementTimeline,
       email,
+      // Total scores
+      totalScore: totalScore || 0,
+      totalMaxScore: totalMaxScore || 0,
+      totalPercentage: totalPercentage || 0,
+      // MCQ scores
       mcqScore: mcqScore || 0,
       mcqMaxScore: mcqMaxScore || 0,
       mcqPercentage: mcqPercentage || 0,
+      // Descriptive scores
+      descriptiveScore: descriptiveScore || 0,
+      descriptiveMaxScore: descriptiveMaxScore || 0,
+      descriptivePercentage: descriptivePercentage || 0,
+      // Score band
       scoreBand: scoreBand || 'red',
       scoreLabel: scoreLabel || '',
       ipAddress
@@ -79,8 +99,12 @@ router.post('/submit', async (req, res) => {
         id: questionnaireResponse._id,
         submittedAt: questionnaireResponse.submittedAt,
         score: {
+          totalScore: questionnaireResponse.totalScore,
+          totalPercentage: questionnaireResponse.totalPercentage,
           mcqScore: questionnaireResponse.mcqScore,
           mcqPercentage: questionnaireResponse.mcqPercentage,
+          descriptiveScore: questionnaireResponse.descriptiveScore,
+          descriptivePercentage: questionnaireResponse.descriptivePercentage,
           scoreBand: questionnaireResponse.scoreBand,
           scoreLabel: questionnaireResponse.scoreLabel
         }
