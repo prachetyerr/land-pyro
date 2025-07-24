@@ -78,6 +78,7 @@ const Questionnaire = () => {
   const [isAlertVisible, setIsAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [formData, setFormData] = useState({
+    name: '', // Add name field
     businessStage: '',
     businessStageOther: '',
     businessChallenge: '',
@@ -292,6 +293,14 @@ const Questionnaire = () => {
       [otherFieldId]: value
     }));
   };
+  const handleStartWithName = () => {
+    if (!formData.name || formData.name.trim() === '') {
+      setAlertMessage('Please enter your name to continue.');
+      setIsAlertVisible(true);
+      return;
+    }
+    setCurrentStep(0);
+  };
 
   const handleNext = async (e) => {
     e.preventDefault();
@@ -374,6 +383,7 @@ const Questionnaire = () => {
         
         // Reset form and return to welcome
         setFormData({
+          name: '', // Add name to reset
           businessStage: '',
           businessStageOther: '',
           businessChallenge: '',
@@ -871,21 +881,37 @@ const Questionnaire = () => {
     <section id="questionnaire" className="questionnaire-section">
       {isAlertVisible && <ThemeAlert message={alertMessage} onClose={() => setIsAlertVisible(false)} />}
       <div className="questionnaire-container">
-        {/* Welcome screen logic */}
+        {/* Welcome screen logic */} 
         {currentStep === -1 ? (
           <div className="welcome-container">
             <h1 className="welcome-title">Welcome to the PyroReality Check!</h1>
             <p className="welcome-description">
               This quick 3-minute check-up helps us understand your business. Be honest—your answers provide the insights we need to tailor the perfect growth strategy for you.
             </p>
+            
+            {/* Add name input field */}
+            <div className="name-input-container">
+              
+              <input
+                id="welcomeName"
+                type="text"
+                value={formData.name}
+                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                placeholder="What can we call you"
+                className="tag-input"
+                autoFocus
+              />
+            </div>
+            
             <button
-              onClick={() => setCurrentStep(0)}
-              className="start-button"
+              onClick={handleStartWithName}
+              className={`start-button ${!formData.name.trim() ? 'disabled' : ''}`}
+              disabled={!formData.name.trim()}
             >
               Let's Begin
             </button>
           </div>
-        ) : (
+        ): (
           <>
             <div className="progress-container">
               <div className="progress-bar">

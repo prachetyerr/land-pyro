@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const questionnaireSchema = new mongoose.Schema({
+  name:{
+    type: String,
+    required: true,
+    trim: true
+  },
   businessStage: {
     type: String,
     required: true

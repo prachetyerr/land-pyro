@@ -8,6 +8,7 @@ const Questionnaire = require('../models/Questionnaire');
 router.post('/submit', async (req, res) => {
   try {
     const {
+      name,
       businessStage,
       businessStageOther,
       businessChallenge,
@@ -37,7 +38,7 @@ router.post('/submit', async (req, res) => {
     } = req.body;
 
     // Basic validation
-    if (!businessStage || !businessChallenge || !revenueSatisfaction || 
+    if (!name||!businessStage || !businessChallenge || !revenueSatisfaction || 
         !successVision || !hiringConcern || !visionAlignment || 
         !onepartnerAppeal || !improvementTimeline || !email) {
       return res.status(400).json({
@@ -60,6 +61,7 @@ router.post('/submit', async (req, res) => {
 
     // Create new questionnaire response with ALL scoring data
     const questionnaireResponse = new Questionnaire({
+      name,
       businessStage,
       businessStageOther,
       businessChallenge,
