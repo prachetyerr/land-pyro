@@ -96,7 +96,7 @@ function App() {
     // Simulate loading time - adjust as needed
     const loadingTimer = setTimeout(() => {
       setIsLoading(false);
-    }, 4000); // 4 seconds to see the full animation
+    }, 1800); // Reduced from probably 3000-5000ms to 1000ms (1 second)
 
     // Cleanup
     return () => clearTimeout(loadingTimer);
@@ -255,6 +255,8 @@ function App() {
           setIsMenuOpen={setIsMenuOpen}
           navRef={navRef}
           handleLinkClick={handleLinkClick}
+          currentPage={currentPage} // Add this line
+          handleNavigateToHome={handleNavigateToHome} // Add this line
         />
         {currentPage === 'questionnaire' ? (
           <Questionnaire />
@@ -265,13 +267,15 @@ function App() {
               highlightedIndex={highlightedIndex}
               clientLogos={clientLogos}
               openCalendarPopup={openCalendarPopup}
-              handleNavigateToQuestionnaire={handleNavigateToQuestionnaire} // Add this prop
+              handleNavigateToQuestionnaire={handleNavigateToQuestionnaire}
             />
 
             <Services 
               servicesData={servicesData}
               expandedCardIndex={expandedCardIndex}
-              setExpandedCardIndex={setExpandedCardIndex}
+              closingCardIndex={closingCardIndex} // Add this line
+              handleCardClick={handleCardClick} // Add this line
+              handleCloseCard={handleCloseCard} // Add this line
               openCalendarPopup={openCalendarPopup}
             />
 

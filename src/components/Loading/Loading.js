@@ -2,17 +2,24 @@ import React from 'react';
 import './Loading.css';
 
 const Loading = () => {
-  const text = "PyroSynergy";
-  
   return (
     <div id="loading">
-      <h3>
-        {text.split('').map((char, index) => (
-          <span key={index} style={{ '--i': index + 1 }}>
-            {char}
-          </span>
-        ))}
-      </h3>
+      <div className="logo-container">
+        <img 
+          src="/Mainlogo3.png" 
+          alt="PyroSynergy Logo" 
+          className="loading-logo"
+        />
+        <div className="logo-glow"></div>
+      </div>
+      <div className="loading-text">
+        <span className="company-name">PyroSynergy</span>
+        <span className="loading-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </div>
     </div>
   );
 };
