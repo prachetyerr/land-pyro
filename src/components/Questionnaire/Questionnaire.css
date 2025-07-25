@@ -801,7 +801,6 @@ transform: translateY(-2px);
 
 .start-button {
   padding: 1rem 3rem;
-  margin-top: 1rem;
   font-family: "Space Grotesk", sans-serif;
   font-size: 16px;
   font-weight: 600;
@@ -822,17 +821,6 @@ transform: translateY(-2px);
   box-shadow: 0 15px 35px rgba(0, 70, 255, 0.5);
 }
 
-.start-button.disabled {
-  background-color: #d1d5db;
-  color: #9ca3af;
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.start-button.disabled:hover {
-  background-color: #d1d5db;
-  transform: none;
-}
 @media (max-width: 767px) {
   .welcome-title {
     font-size: 1.8rem;
@@ -1231,10 +1219,6 @@ transform: translateY(-2px);
     flex-direction: column;
     text-align: center;
   }
-  .insight-icon{
-    align-items: center;
-    display: block;
-  }
 }
 
 .insights-section {
@@ -1272,7 +1256,6 @@ transform: translateY(-2px);
   font-size: 2rem;
   min-width: 3rem;
   text-align: center;
-  padding: auto;
 }
 
 .insight-text h4 {
@@ -1281,7 +1264,7 @@ transform: translateY(-2px);
   font-weight: 600;
   color: #fff;
   margin-bottom: 0.5rem;
-  margin-top: 0rem;
+  margin-top: 0;
 }
 
 .insight-text p {
@@ -1628,12 +1611,6 @@ transform: translateY(-2px);
   
   .loading-subtitle {
     font-size: 1rem;
-  }
-  .insight-icon{
-    align-items: center;
-  }
-  .score-label{
-    font-size: 0.7rem;
   }
 }
 

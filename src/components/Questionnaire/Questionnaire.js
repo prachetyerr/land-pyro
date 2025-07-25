@@ -77,6 +77,7 @@ const Questionnaire = () => {
   const [currentStep, setCurrentStep] = useState(-1);
   const [isAlertVisible, setIsAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
+  const [cameFromAnalytics, setCameFromAnalytics] = useState(false); // Add this new state
   const [formData, setFormData] = useState({
     name: '', // Add name field
     businessStage: '',
@@ -410,10 +411,18 @@ const Questionnaire = () => {
   // Function to continue from analytics to email
   const handleContinueFromAnalytics = () => {
     setShowAnalytics(false);
+    setCameFromAnalytics(true); // Mark that we came from analytics
     setCurrentStep(questions.length - 1); // Go to email question
   };
 
   const handlePrevious = () => {
+    // If we're on the email question and came from analytics, go back to analytics
+    if (isLastQuestion && cameFromAnalytics) {
+      setCameFromAnalytics(false);
+      setShowAnalytics(true);
+      return;
+    }
+    
     if (currentStep > 0) {
       setCurrentStep(prev => prev - 1);
     }
