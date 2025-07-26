@@ -900,16 +900,18 @@ const Questionnaire = () => {
             
             {/* Add name input field */}
             <div className="name-input-container">
-              
-              <input
-                id="welcomeName"
-                type="text"
-                value={formData.name}
-                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="What can we call you"
-                className="tag-input"
-                autoFocus
-              />
+              <label htmlFor="welcomeName" className="name-label">First, what can we call you?</label>
+              <div className="input-wrapper">
+                <input
+                  id="welcomeName"
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                  placeholder="Enter your name"
+                  className="welcome-name-input"
+                  autoFocus
+                />
+              </div>
             </div>
             
             <button

@@ -99,10 +99,6 @@
   flex-direction: column;
   text-align: left;
 }
-.modal-main-content {
-  display: flex;
-  
-}
 .modal-title {
   /* Center title as per design */
   width: 100%;
