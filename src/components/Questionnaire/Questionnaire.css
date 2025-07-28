@@ -1115,7 +1115,7 @@ transform: translateY(-2px);
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  animation: fadeIn 0.8s ease-in-out;
+  /* animation: fadeIn 0.8s ease-in-out; */
 }
 
 .analytics-header {
@@ -1228,7 +1228,7 @@ transform: translateY(-2px);
 
 .score-label {
   font-family: "Albert Sans", sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: #c0c0d0;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -1269,7 +1269,7 @@ transform: translateY(-2px);
   line-height: 1.5;
   margin: 0;
 }
-/* 
+
 @keyframes wavePulse {
   0% {
     transform: scale(0.95);
@@ -1283,7 +1283,7 @@ transform: translateY(-2px);
     transform: scale(1.15);
     opacity: 0;
   }
-} */
+}
 
 /* Mobile responsiveness for analytics */
 @media (max-width: 767px) {
@@ -1707,6 +1707,9 @@ transform: translateY(-2px);
   
   .loading-subtitle {
     font-size: 1rem;
+  }
+  .insight-icon{
+    padding-left: 40%;
   }
 }
 
