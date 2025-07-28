@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import "./App.css";
 
 // Component imports
 import Header from "./components/Header/Header";
 import Hero from "./components/Hero/Hero";
 import Services from "./components/Services/Services";
+// import About from "./components/About/About"; // Add this import
 import Contact from "./components/Contact/Contact";
 import Footer from "./components/Footer/Footer";
 import Questionnaire from "./components/Questionnaire/Questionnaire";
@@ -20,7 +22,7 @@ import logo8 from "./assets/nasa.png";
 import logo9 from "./assets/recens_logo.png";
 import logo10 from "./assets/acm.png";
 import service1 from './assets/Thinking face-rafiki.svg';
-import service3 from './assets/13107135_5143310.svg';
+import service3 from "./assets/Frame 41.png";
 import service2 from './assets/Kids Studying from Home-rafiki.svg'
 // --- UPDATED Data for Services Section (Based on sketches) ---
 const servicesData = [
@@ -64,22 +66,21 @@ const openCalendarPopup = () => {
 };
 
 function App() {
-  // State Management
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Add this line
+  const [expandedCardIndex, setExpandedCardIndex] = useState(null); // Add this line
   const navRef = useRef(null);
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [formStatus, setFormStatus] = useState("");
   const [highlightedIndex, setHighlightedIndex] = useState(0);
-  const [currentPage, setCurrentPage] = useState('home'); // Add this state
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
-
-  // --- STATE FOR INTERACTIVE SERVICES SECTION ---
-  const [expandedCardIndex, setExpandedCardIndex] = useState(null);
-  // New state to track which card is closing instantly
   const [closingCardIndex, setClosingCardIndex] = useState(null);
   const closeTimerRef = useRef(null); // To manage the timeout
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentPage = location.pathname === '/realitycheck' ? 'questionnaire' : 'home';
 
   // Effect to cycle through the highlighted words
   useEffect(() => {
@@ -235,18 +236,18 @@ function App() {
 
   // Add navigation handler
   const handleNavigateToQuestionnaire = () => {
-    setCurrentPage('questionnaire');
+    navigate('/realitycheck');
   };
 
   const handleNavigateToHome = () => {
-    setCurrentPage('home');
+    navigate('/');
   };
 
   return (
     <div className="App">
       {/* Loading Screen */}
       {isLoading && <Loading />}
-      
+
       {/* Main Content */}
       <div className={isLoading ? 'main-content-hidden' : 'main-content-visible'}>
         <Header 
@@ -258,39 +259,36 @@ function App() {
           currentPage={currentPage} // Add this line
           handleNavigateToHome={handleNavigateToHome} // Add this line
         />
-        {currentPage === 'questionnaire' ? (
-          <Questionnaire />
-        ) : (
-          <>
-            <Hero 
-              highlightedWords={highlightedWords}
-              highlightedIndex={highlightedIndex}
-              clientLogos={clientLogos}
-              openCalendarPopup={openCalendarPopup}
-              handleNavigateToQuestionnaire={handleNavigateToQuestionnaire}
-            />
-
-            <Services 
-              servicesData={servicesData}
-              expandedCardIndex={expandedCardIndex}
-              closingCardIndex={closingCardIndex} // Add this line
-              handleCardClick={handleCardClick} // Add this line
-              handleCloseCard={handleCloseCard} // Add this line
-              openCalendarPopup={openCalendarPopup}
-            />
-
-            <Contact 
-              email={email}
-              setEmail={setEmail}
-              message={message}
-              setMessage={setMessage}
-              formStatus={formStatus}
-              handleFormSubmit={handleFormSubmit}
-            />
-
-            <Footer />
-          </>
-        )}
+        <Routes>
+          <Route path="/realitycheck" element={<Questionnaire />} />
+          <Route path="/" element={
+            <>
+              <Hero 
+                highlightedWords={highlightedWords}
+                highlightedIndex={highlightedIndex}
+                clientLogos={clientLogos}
+                openCalendarPopup={openCalendarPopup}
+                handleNavigateToQuestionnaire={handleNavigateToQuestionnaire}
+              />
+  
+              <Services 
+                servicesData={servicesData}
+                expandedCardIndex={expandedCardIndex}
+                closingCardIndex={closingCardIndex} // Add this line
+                handleCardClick={handleCardClick}
+                handleCloseCard={handleCloseCard} // Add this line
+              />
+  
+              
+  
+              <Contact 
+                formStatus={formStatus}
+                setFormStatus={setFormStatus}
+              />
+            </>
+          } />
+        </Routes>
+        <Footer />
       </div>
     </div>
   );
