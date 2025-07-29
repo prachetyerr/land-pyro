@@ -288,7 +288,7 @@ function App() {
             </>
           } />
         </Routes>
-        <Footer />
+        {location.pathname !== '/realitycheck' && <Footer />}
       </div>
     </div>
   );
