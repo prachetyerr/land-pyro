@@ -22,7 +22,7 @@ import logo8 from "./assets/nasa.png";
 import logo9 from "./assets/recens_logo.png";
 import logo10 from "./assets/acm.png";
 import service1 from './assets/Thinking face-rafiki.svg';
-import service3 from "./assets/Frame 41.png";
+import service3 from "./assets/13107135_5143310.svg";
 import service2 from './assets/Kids Studying from Home-rafiki.svg'
 // --- UPDATED Data for Services Section (Based on sketches) ---
 const servicesData = [
