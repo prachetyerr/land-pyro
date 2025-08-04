@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './Questionnaire.css';
 
+// Utility function to detect mobile devices
+const isMobileDevice = () => {
+  return (
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+    window.innerWidth <= 768
+  );
+};
+
 // Add this function at the top after imports
 const submitToBackend = async (formData) => {
   try {
@@ -440,7 +448,7 @@ const Questionnaire = () => {
             onChange={(e) => handleInputChange(e.target.value)}
             placeholder={currentQuestion.placeholder}
             className="question-input"
-            autoFocus
+            autoFocus={!isMobileDevice()}
           />
         );
       case 'email':
@@ -451,7 +459,7 @@ const Questionnaire = () => {
             onChange={(e) => handleInputChange(e.target.value)}
             placeholder={currentQuestion.placeholder}
             className="question-input"
-            autoFocus
+            autoFocus={!isMobileDevice()}
           />
         );
       case 'select':
@@ -460,7 +468,7 @@ const Questionnaire = () => {
             value={value}
             onChange={(e) => handleInputChange(e.target.value)}
             className="question-select"
-            autoFocus
+            autoFocus={!isMobileDevice()}
           >
             {currentQuestion.options.map((option, index) => (
               <option key={index} value={option.value}>
@@ -495,7 +503,7 @@ const Questionnaire = () => {
                   onChange={(e) => handleOtherTextChange(e.target.value)}
                   placeholder="Please specify..."
                   className="other-input"
-                  autoFocus
+                  autoFocus={!isMobileDevice()}
                 />
               </div>
             )}
@@ -564,7 +572,7 @@ const Questionnaire = () => {
               placeholder={currentQuestion.placeholder}
               className="tag-input"
               onKeyPress={(e) => handleTagInput(e)}
-              autoFocus
+              autoFocus={!isMobileDevice()}
             />
           </div>
         );
@@ -909,7 +917,7 @@ const Questionnaire = () => {
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                   placeholder="Enter your name"
                   className="welcome-name-input"
-                  autoFocus
+                  autoFocus={!isMobileDevice()}
                 />
               </div>
             </div>
