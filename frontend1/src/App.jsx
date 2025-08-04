@@ -59,10 +59,22 @@ const highlightedWords = ["AI-ready.", "future-proof.", "omnichannel."];
 const clientLogos = [logo1, logo3, logo5, logo7, logo8, logo9, logo10];
 
 const openCalendarPopup = () => {
+  console.log('Opening calendar popup'); // Add for debugging
   const calendarUrl =
     "https://calendar.google.com/calendar/appointments/schedules/AcZssZ0iZ6GBUpEp6xEXcYQ0wZLryUc6bprkId2iHVJjJF88E3JTJGM917FiwtH6mwtuwUuyOVr2Whwm?gv=true";
-  const popupFeatures = "width=1000,height=700,scrollbars=yes,resizable=yes";
-  window.open(calendarUrl, "googleCalendarPopup", popupFeatures);
+  const popupFeatures = "width=1000,height=700,scrollbars=yes,resizable=yes,location=yes,menubar=no,toolbar=no,status=no";
+  
+  // Check if popup is blocked
+  const popup = window.open(calendarUrl, "googleCalendarPopup", popupFeatures);
+  
+  if (!popup || popup.closed || typeof popup.closed == 'undefined') {
+    // Popup was blocked, show alternative
+    alert('Popup blocked! Please allow popups for this site or visit: ' + calendarUrl);
+    // Alternative: open in same tab
+    // window.location.href = calendarUrl;
+  } else {
+    popup.focus();
+  }
 };
 
 function App() {
@@ -277,6 +289,7 @@ function App() {
                 closingCardIndex={closingCardIndex} // Add this line
                 handleCardClick={handleCardClick}
                 handleCloseCard={handleCloseCard} // Add this line
+                openCalendarPopup={openCalendarPopup} // Make sure this is passed
               />
   
               

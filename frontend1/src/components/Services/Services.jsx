@@ -13,6 +13,8 @@ const Services = ({
 }) => {
   const handleCalendarButtonClick = (e) => {
     e.stopPropagation();
+    e.preventDefault(); // Add this to prevent any default behavior
+    console.log('Calendar button clicked'); // Add for debugging
     openCalendarPopup();
   };
 
@@ -41,7 +43,7 @@ const Services = ({
           >
             <div className="service-card-interactive" onClick={(e) => { if (expandedCardIndex === index) e.stopPropagation() }}>
               <div className="service-card-interactive-content">
-                {/* ========== Content for Collapsed Card (Unchanged) ========== */}
+                {/* Content for Collapsed Card */}
                 <div className="card-content-initial">
                   <div className="card-image-initial">
                     <img src={service.Image} alt="" />
@@ -53,19 +55,21 @@ const Services = ({
                     <button
                       className="card-cta-initial"
                       onClick={handleCalendarButtonClick}
+                      type="button" // Add explicit type
                     >
                       {service.ctaText}
                     </button>
                     <button
                       className="know-more-btn"
                       onClick={(e) => { e.stopPropagation(); handleCardClick(index); }}
+                      type="button" // Add explicit type
                     >
                       Know More
                     </button>
                   </div>
                 </div>
 
-                {/* ========== MODIFIED: Content for Expanded Card with conditional content ========== */}
+                {/* Content for Expanded Card */}
                 <div className="card-content-expanded">
                   <h2 className="modal-title">{service.title}</h2>
                   
@@ -134,7 +138,8 @@ const Services = ({
 
                   <button
                     className="modal-cta-btn"
-                    onClick={openCalendarPopup}
+                    onClick={handleCalendarButtonClick}
+                    type="button" // Add explicit type
                   >
                     {service.ctaText}
                   </button>
@@ -145,6 +150,7 @@ const Services = ({
                 className="card-close-btn"
                 onClick={handleCloseCard}
                 aria-label="Close details"
+                type="button" // Add explicit type
               >
                 <FontAwesomeIcon icon={faTimes} />
               </button>
