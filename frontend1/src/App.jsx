@@ -3,14 +3,14 @@ import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import "./App.css";
 
 // Component imports
-import Header from "./components/Header/Header";
-import Hero from "./components/Hero/Hero";
-import Services from "./components/Services/Services";
+import Header from "./components/Header/Header.jsx";
+import Hero from "./components/Hero/Hero.jsx";
+import Services from "./components/Services/Services.jsx";
 // import About from "./components/About/About"; // Add this import
-import Contact from "./components/Contact/Contact";
-import Footer from "./components/Footer/Footer";
-import Questionnaire from "./components/Questionnaire/Questionnaire";
-import Loading from "./components/Loading/Loading"; // Add this import
+import Contact from "./components/Contact/Contact.jsx";
+import Footer from "./components/Footer/Footer.jsx";
+import Questionnaire from "./components/Questionnaire/Questionnaire.jsx";
+import Loading from "./components/Loading/Loading.jsx"; // Add this import
 
 
 // Asset Imports
