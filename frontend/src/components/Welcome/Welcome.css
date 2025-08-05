@@ -1,0 +1,309 @@
+/* Welcome Component Styles */
+.welcome-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f3460 50%, #533483 75%, #7209b7 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  font-family: 'Albert Sans', sans-serif;
+}
+
+.welcome-content {
+  max-width: 450px;
+  width: 100%;
+  text-align: center;
+}
+
+.profile-section {
+  margin-bottom: 3rem;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 2rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.logo-image {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.98);
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.logo-placeholder {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.98);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  letter-spacing: 2px;
+}
+
+.profile-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  letter-spacing: -0.5px;
+}
+
+.profile-subtitle {
+  font-size: 1.1rem;
+  color: #e8e8e8;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.profile-description {
+  font-size: 1rem;
+  color: #c0c0c0;
+  line-height: 1.6;
+  max-width: 400px;
+  margin: 0 auto;
+  opacity: 0.8;
+}
+
+/* Links Section */
+.links-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.link-button {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.link-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.link-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.link-button:hover::before {
+  opacity: 1;
+}
+
+.link-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.link-icon {
+  font-size: 1.4rem;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  flex-shrink: 0;
+  backdrop-filter: blur(10px);
+}
+
+.link-text {
+  flex: 1;
+}
+
+.link-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 0.3rem 0;
+  letter-spacing: -0.2px;
+}
+
+.link-description {
+  font-size: 0.9rem;
+  color: #b8b8b8;
+  margin: 0;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+
+.link-arrow {
+  font-size: 1.2rem;
+  color: #ffffff;
+  opacity: 0.6;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 1;
+}
+
+.link-button:hover .link-arrow {
+  opacity: 1;
+  transform: translateX(4px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .welcome-container {
+    padding: 1.5rem;
+  }
+  
+  .welcome-content {
+    max-width: 380px;
+  }
+  
+  .profile-name {
+    font-size: 2.4rem;
+  }
+  
+  .profile-subtitle {
+    font-size: 1rem;
+  }
+  
+  .profile-description {
+    font-size: 0.95rem;
+  }
+  
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .logo-image {
+    width: 92px;
+    height: 92px;
+    padding: 14px;
+  }
+  
+  .logo-placeholder {
+    width: 92px;
+    height: 92px;
+    font-size: 1.8rem;
+  }
+  
+  .link-button {
+    padding: 1.125rem 1.25rem;
+  }
+  
+  .link-title {
+    font-size: 1.05rem;
+  }
+  
+  .link-description {
+    font-size: 0.85rem;
+  }
+  
+  .link-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-container {
+    padding: 1rem;
+  }
+  
+  .welcome-content {
+    max-width: 340px;
+  }
+  
+  .profile-section {
+    margin-bottom: 2.5rem;
+  }
+  
+  .profile-name {
+    font-size: 2.1rem;
+  }
+  
+  .profile-subtitle {
+    font-size: 0.95rem;
+  }
+  
+  .profile-description {
+    font-size: 0.9rem;
+  }
+  
+  .profile-avatar {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .logo-image {
+    width: 82px;
+    height: 82px;
+    padding: 12px;
+  }
+  
+  .logo-placeholder {
+    width: 82px;
+    height: 82px;
+    font-size: 1.6rem;
+  }
+  
+  .link-button {
+    padding: 1rem 1.125rem;
+  }
+  
+  .link-title {
+    font-size: 1rem;
+  }
+  
+  .link-description {
+    font-size: 0.8rem;
+  }
+  
+  .link-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+}
