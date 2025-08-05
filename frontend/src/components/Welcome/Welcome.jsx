@@ -53,47 +53,47 @@ const Welcome = () => {
   };
 
   return (
-    <div className="welcome-container">
-      <div className="welcome-content">
+    <div className="pyro-landing-wrapper">
+      <div className="pyro-landing-main">
         {/* Profile Section */}
-        <div className="profile-section">
-          <div className="profile-avatar">
+        <div className="pyro-company-info">
+          <div className="pyro-logo-container">
             <img 
               src="/Mainlogo3.png" 
               alt="PyroSynergy Logo" 
-              className="logo-image"
+              className="pyro-logo-img"
               onError={(e) => {
                 e.target.style.display = 'none';
                 e.target.nextSibling.style.display = 'flex';
               }}
             />
-            <div className="logo-placeholder" style={{display: 'none'}}>PS</div>
+            <div className="pyro-logo-fallback" style={{display: 'none'}}>PS</div>
           </div>
-          <h1 className="profile-name">PyroSynergy</h1>
-          <p className="profile-subtitle">
+          <h1 className="pyro-company-title">PyroSynergy</h1>
+          <p className="pyro-company-tagline">
             Business Growth • Digital Transformation • Strategy Consulting
           </p>
-          <p className="profile-description">
+          <p className="pyro-company-description">
             Empowering businesses to scale and transform in the digital era
           </p>
         </div>
 
         {/* Links Section */}
-        <div className="links-section">
+        <div className="pyro-navigation-menu">
           {links.map((link, index) => (
             <button
               key={index}
-              className="link-button"
+              className="pyro-nav-item"
               onClick={() => handleLinkClick(link)}
             >
-              <div className="link-content">
-                <div className="link-icon">{link.icon}</div>
-                <div className="link-text">
-                  <h3 className="link-title">{link.title}</h3>
-                  <p className="link-description">{link.description}</p>
+              <div className="pyro-nav-content">
+                <div className="pyro-nav-icon">{link.icon}</div>
+                <div className="pyro-nav-text">
+                  <h3 className="pyro-nav-title">{link.title}</h3>
+                  <p className="pyro-nav-subtitle">{link.description}</p>
                 </div>
               </div>
-              <div className="link-arrow">→</div>
+              <div className="pyro-nav-arrow">→</div>
             </button>
           ))}
         </div>

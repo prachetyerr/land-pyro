@@ -1,5 +1,5 @@
 /* Welcome Component Styles */
-.welcome-container {
+.pyro-landing-wrapper {
   min-height: 100vh;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f3460 50%, #533483 75%, #7209b7 100%);
   display: flex;
@@ -9,17 +9,17 @@
   font-family: 'Albert Sans', sans-serif;
 }
 
-.welcome-content {
+.pyro-landing-main {
   max-width: 450px;
   width: 100%;
   text-align: center;
 }
 
-.profile-section {
+.pyro-company-info {
   margin-bottom: 3rem;
 }
 
-.profile-avatar {
+.pyro-logo-container {
   width: 120px;
   height: 120px;
   margin: 0 auto 2rem;
@@ -33,7 +33,7 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-.logo-image {
+.pyro-logo-img {
   width: 112px;
   height: 112px;
   border-radius: 50%;
@@ -43,7 +43,7 @@
   box-sizing: border-box;
 }
 
-.logo-placeholder {
+.pyro-logo-fallback {
   width: 112px;
   height: 112px;
   border-radius: 50%;
@@ -58,7 +58,7 @@
   letter-spacing: 2px;
 }
 
-.profile-name {
+.pyro-company-title {
   font-family: 'Bricolage Grotesque', sans-serif;
   font-size: 2.8rem;
   font-weight: 700;
@@ -68,7 +68,7 @@
   letter-spacing: -0.5px;
 }
 
-.profile-subtitle {
+.pyro-company-tagline {
   font-size: 1.1rem;
   color: #e8e8e8;
   margin-bottom: 0.75rem;
@@ -77,7 +77,7 @@
   opacity: 0.9;
 }
 
-.profile-description {
+.pyro-company-description {
   font-size: 1rem;
   color: #c0c0c0;
   line-height: 1.6;
@@ -87,13 +87,13 @@
 }
 
 /* Links Section */
-.links-section {
+.pyro-navigation-menu {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.link-button {
+.pyro-nav-item {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 16px;
@@ -108,14 +108,14 @@
   overflow: hidden;
 }
 
-.link-button:hover {
+.pyro-nav-item:hover {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.25);
   transform: translateY(-2px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
-.link-button::before {
+.pyro-nav-item::before {
   content: '';
   position: absolute;
   top: 0;
@@ -127,11 +127,11 @@
   transition: opacity 0.3s ease;
 }
 
-.link-button:hover::before {
+.pyro-nav-item:hover::before {
   opacity: 1;
 }
 
-.link-content {
+.pyro-nav-content {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -140,7 +140,7 @@
   z-index: 1;
 }
 
-.link-icon {
+.pyro-nav-icon {
   font-size: 1.4rem;
   width: 44px;
   height: 44px;
@@ -153,11 +153,11 @@
   backdrop-filter: blur(10px);
 }
 
-.link-text {
+.pyro-nav-text {
   flex: 1;
 }
 
-.link-title {
+.pyro-nav-title {
   font-family: 'Bricolage Grotesque', sans-serif;
   font-size: 1.15rem;
   font-weight: 600;
@@ -166,7 +166,7 @@
   letter-spacing: -0.2px;
 }
 
-.link-description {
+.pyro-nav-subtitle {
   font-size: 0.9rem;
   color: #b8b8b8;
   margin: 0;
@@ -174,7 +174,7 @@
   opacity: 0.85;
 }
 
-.link-arrow {
+.pyro-nav-arrow {
   font-size: 1.2rem;
   color: #ffffff;
   opacity: 0.6;
@@ -183,64 +183,64 @@
   z-index: 1;
 }
 
-.link-button:hover .link-arrow {
+.pyro-nav-item:hover .pyro-nav-arrow {
   opacity: 1;
   transform: translateX(4px);
 }
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
-  .welcome-container {
+  .pyro-landing-wrapper {
     padding: 1.5rem;
   }
   
-  .welcome-content {
+  .pyro-landing-main {
     max-width: 380px;
   }
   
-  .profile-name {
+  .pyro-company-title {
     font-size: 2.4rem;
   }
   
-  .profile-subtitle {
+  .pyro-company-tagline {
     font-size: 1rem;
   }
   
-  .profile-description {
+  .pyro-company-description {
     font-size: 0.95rem;
   }
   
-  .profile-avatar {
+  .pyro-logo-container {
     width: 100px;
     height: 100px;
     margin-bottom: 1.5rem;
   }
   
-  .logo-image {
+  .pyro-logo-img {
     width: 92px;
     height: 92px;
     padding: 14px;
   }
   
-  .logo-placeholder {
+  .pyro-logo-fallback {
     width: 92px;
     height: 92px;
     font-size: 1.8rem;
   }
   
-  .link-button {
+  .pyro-nav-item {
     padding: 1.125rem 1.25rem;
   }
   
-  .link-title {
+  .pyro-nav-title {
     font-size: 1.05rem;
   }
   
-  .link-description {
+  .pyro-nav-subtitle {
     font-size: 0.85rem;
   }
   
-  .link-icon {
+  .pyro-nav-icon {
     width: 40px;
     height: 40px;
     font-size: 1.25rem;
@@ -248,60 +248,60 @@
 }
 
 @media (max-width: 480px) {
-  .welcome-container {
+  .pyro-landing-wrapper {
     padding: 1rem;
   }
   
-  .welcome-content {
+  .pyro-landing-main {
     max-width: 340px;
   }
   
-  .profile-section {
+  .pyro-company-info {
     margin-bottom: 2.5rem;
   }
   
-  .profile-name {
+  .pyro-company-title {
     font-size: 2.1rem;
   }
   
-  .profile-subtitle {
+  .pyro-company-tagline {
     font-size: 0.95rem;
   }
   
-  .profile-description {
+  .pyro-company-description {
     font-size: 0.9rem;
   }
   
-  .profile-avatar {
+  .pyro-logo-container {
     width: 90px;
     height: 90px;
   }
   
-  .logo-image {
+  .pyro-logo-img {
     width: 82px;
     height: 82px;
     padding: 12px;
   }
   
-  .logo-placeholder {
+  .pyro-logo-fallback {
     width: 82px;
     height: 82px;
     font-size: 1.6rem;
   }
   
-  .link-button {
+  .pyro-nav-item {
     padding: 1rem 1.125rem;
   }
   
-  .link-title {
+  .pyro-nav-title {
     font-size: 1rem;
   }
   
-  .link-description {
+  .pyro-nav-subtitle {
     font-size: 0.8rem;
   }
   
-  .link-icon {
+  .pyro-nav-icon {
     width: 36px;
     height: 36px;
     font-size: 1.1rem;
