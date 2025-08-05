@@ -11,7 +11,7 @@ import Contact from "./components/Contact/Contact.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import Questionnaire from "./components/Questionnaire/Questionnaire.jsx";
 import Loading from "./components/Loading/Loading.jsx"; // Add this import
-
+import Welcome from "./components/Welcome/Welcome.jsx"; // Add this import
 
 // Asset Imports
 import logo1 from "./assets/viali.png";
@@ -273,6 +273,7 @@ function App() {
         />
         <Routes>
           <Route path="/realitycheck" element={<Questionnaire />} />
+          <Route path="/welcome" element={<Welcome />} />
           <Route path="/" element={
             <>
               <Hero 
