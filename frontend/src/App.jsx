@@ -262,15 +262,17 @@ function App() {
 
       {/* Main Content */}
       <div className={isLoading ? 'main-content-hidden' : 'main-content-visible'}>
-        <Header 
-          isScrolled={isScrolled}
-          isMenuOpen={isMenuOpen}
-          setIsMenuOpen={setIsMenuOpen}
-          navRef={navRef}
-          handleLinkClick={handleLinkClick}
-          currentPage={currentPage} // Add this line
-          handleNavigateToHome={handleNavigateToHome} // Add this line
-        />
+        {location.pathname !== '/welcome' && (
+          <Header 
+            isScrolled={isScrolled}
+            isMenuOpen={isMenuOpen}
+            setIsMenuOpen={setIsMenuOpen}
+            navRef={navRef}
+            handleLinkClick={handleLinkClick}
+            currentPage={currentPage} // Add this line
+            handleNavigateToHome={handleNavigateToHome} // Add this line
+          />
+        )}
         <Routes>
           <Route path="/realitycheck" element={<Questionnaire />} />
           <Route path="/welcome" element={<Welcome />} />
@@ -302,7 +304,7 @@ function App() {
             </>
           } />
         </Routes>
-        {location.pathname !== '/realitycheck' && <Footer />}
+        {location.pathname !== '/realitycheck' && location.pathname !== '/welcome' && <Footer />}
       </div>
     </div>
   );

@@ -9,36 +9,36 @@ const Welcome = () => {
     {
       title: 'Website',
       description: 'Visit our main website',
-      icon: '🌐',
-      url: '/',
+      icon: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/googlechrome.svg',
+      url: 'www.pyrosynergy.com',
       isExternal: false
     },
     {
       title: 'Reality Check',
       description: 'Take our business questionnaire',
-      icon: '📋',
+      icon: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/googleforms.svg',
       url: '/realitycheck',
       isExternal: false
     },
     {
       title: 'Book a Call',
       description: 'Schedule a consultation',
-      icon: '📞',
-      url: '#', // Replace with actual calendar link
+      icon: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/googlecalendar.svg',
+      url: 'https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0iZ6GBUpEp6xEXcYQ0wZLryUc6bprkId2iHVJjJF88E3JTJGM917FiwtH6mwtuwUuyOVr2Whwm?gv=true', // Replace with actual calendar link
       isExternal: true
     },
     {
       title: 'Instagram',
       description: 'Follow us on Instagram',
-      icon: '📸',
-      url: '#', // Replace with Instagram link
+      icon: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg',
+      url: 'https://www.instagram.com/pyrosynergy?igsh=MXBmdDU0NXk0eXRyZg==', // Replace with Instagram link
       isExternal: true
     },
     {
       title: 'LinkedIn',
       description: 'Connect with us professionally',
-      icon: '💼',
-      url: '#', // Replace with LinkedIn link
+      icon: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/linkedin.svg',
+      url: 'https://www.linkedin.com/company/pyrosynergy/posts/?feedView=all', // Replace with LinkedIn link
       isExternal: true
     }
   ];
@@ -87,7 +87,17 @@ const Welcome = () => {
               onClick={() => handleLinkClick(link)}
             >
               <div className="pyro-nav-content">
-                <div className="pyro-nav-icon">{link.icon}</div>
+                <div className="pyro-nav-icon">
+                  {link.icon.startsWith('http') ? (
+                    <img 
+                      src={link.icon} 
+                      alt={`${link.title} icon`} 
+                      className="pyro-nav-icon-img"
+                    />
+                  ) : (
+                    link.icon
+                  )}
+                </div>
                 <div className="pyro-nav-text">
                   <h3 className="pyro-nav-title">{link.title}</h3>
                   <p className="pyro-nav-subtitle">{link.description}</p>
