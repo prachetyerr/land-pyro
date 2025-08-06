@@ -10,7 +10,7 @@ const Welcome = () => {
       title: 'Website',
       description: 'Visit our main website',
       icon: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/googlechrome.svg',
-      url: 'www.pyrosynergy.com',
+      url: '/', 
       isExternal: false
     },
     {
