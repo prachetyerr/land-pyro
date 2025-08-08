@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Questionnaire = require('../models/Questionnaire');
+const { sendThankYouMail } = require('../utils/mailer');
 
 // @route   POST /api/questionnaire/submit
 // @desc    Submit questionnaire response
@@ -93,6 +94,9 @@ router.post('/submit', async (req, res) => {
 
     // Save to database
     await questionnaireResponse.save();
+
+    // Send thank you email (don't block response)
+    sendThankYouMail(email, name).catch(console.error);
 
     res.status(201).json({
       success: true,
