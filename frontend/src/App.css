@@ -1,0 +1,120 @@
+/*
+  ========================================
+    STYLESHEET ORGANIZATION
+  ========================================
+  1.  GLOBAL & ROOT STYLES
+  2.  KEYFRAME ANIMATIONS
+  3.  RESPONSIVE MEDIA QUERIES (Global only)
+  ========================================
+  */
+
+/*
+  ========================================
+  1. GLOBAL & ROOT STYLES
+  ========================================
+  */
+
+@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 6px; /* Make scrollbar thinner - default is usually 16px */
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(13, 11, 2, 0.3); /* Dark track to match your theme */
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4); /* Slightly more visible on hover */
+}
+
+/* For Firefox */
+html {
+  scrollbar-width: thin; /* Makes scrollbar thinner */
+  scrollbar-color: rgba(255, 255, 255, 0.2) rgba(13, 11, 2, 0.3); /* thumb color, track color */
+}
+
+#root {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  font-family: "Albert Sans", sans-serif;
+}
+
+body,
+html {
+  background-color: #0d0b02;
+  color: white;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/*
+  ========================================
+  2. KEYFRAME ANIMATIONS
+  ========================================
+  */
+
+@keyframes slideUpFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/*
+  ========================================
+  3. RESPONSIVE MEDIA QUERIES (Global only)
+  ========================================
+  */
+
+/* Utility classes that might be used across components */
+.relative { position: relative; }
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.flex-1 { flex: 1; }
+.leading-snug { line-height: 1.375; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.mb-8 { margin-bottom: 2rem; }
+.py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+
+@media (min-width: 768px) {
+  .md\:mb-12 { margin-bottom: 3rem; }
+}
+
+/* Add these styles at the end of the file */
+
+/* Main content visibility control */
+.main-content-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.main-content-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.8s ease-in-out;
+}
+
+/* Prevent scrolling during loading */
+body.loading {
+  overflow: hidden;
+}
