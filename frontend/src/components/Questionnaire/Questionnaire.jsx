@@ -12,7 +12,7 @@ const isMobileDevice = () => {
 // Add this function at the top after imports
 const submitToBackend = async (formData) => {
   try {
-    const response = await fetch('http://localhost:5000/api/questionnaire/submit', {
+    const response = await fetch('https://land-pyro-backend.vercel.app/api/questionnaire/submit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

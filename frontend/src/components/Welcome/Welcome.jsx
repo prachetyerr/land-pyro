@@ -7,6 +7,13 @@ const Welcome = () => {
   
   const links = [
     {
+      title: 'PyroReality Check',
+      description: 'The 3-minute business debrief',
+      icon: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/googleforms.svg',
+      url: '/realitycheck',
+      isExternal: false
+    },
+    {
       title: 'Website',
       description: 'Visit our main website',
       icon: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/googlechrome.svg',
@@ -14,15 +21,8 @@ const Welcome = () => {
       isExternal: false
     },
     {
-      title: 'Reality Check',
-      description: 'Take our business questionnaire',
-      icon: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/googleforms.svg',
-      url: '/realitycheck',
-      isExternal: false
-    },
-    {
       title: 'Book a Call',
-      description: 'Schedule a consultation',
+      description: 'Schedule a strategy call',
       icon: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/googlecalendar.svg',
       url: 'https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0iZ6GBUpEp6xEXcYQ0wZLryUc6bprkId2iHVJjJF88E3JTJGM917FiwtH6mwtuwUuyOVr2Whwm?gv=true', // Replace with actual calendar link
       isExternal: true
@@ -31,7 +31,7 @@ const Welcome = () => {
       title: 'Instagram',
       description: 'Follow us on Instagram',
       icon: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg',
-      url: 'https://www.instagram.com/pyrosynergy?igsh=MXBmdDU0NXk0eXRyZg==', // Replace with Instagram link
+      url: 'https://www.instagram.com/pyrosynergy', // Replace with Instagram link
       isExternal: true
     },
     {
@@ -71,15 +71,16 @@ const Welcome = () => {
           </div>
           <h1 className="pyro-company-title">PyroSynergy</h1>
           <p className="pyro-company-tagline">
-            Business Growth • Digital Transformation • Strategy Consulting
+            Empathy-first Digital Partner • Business Growth • Strategy Consulting
           </p>
           <p className="pyro-company-description">
-            Empowering businesses to scale and transform in the digital era
+            Are you an early-stage founder, post-MVP and revenue-making, but struggle to align your business to the vision and mission you had? <br/>
           </p>
         </div>
 
         {/* Links Section */}
         <div className="pyro-navigation-menu">
+          Want to get aligned? Take our FREE PyroReality Check!
           {links.map((link, index) => (
             <button
               key={index}
@@ -103,7 +104,7 @@ const Welcome = () => {
                   <p className="pyro-nav-subtitle">{link.description}</p>
                 </div>
               </div>
-              <div className="pyro-nav-arrow">→</div>
+              {/* <div className="pyro-nav-arrow">→</div> */}
             </button>
           ))}
         </div>
