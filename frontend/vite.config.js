@@ -8,5 +8,10 @@ export default defineConfig({
     host: true, // This allows external connections and shows network URL
     port: 3000,
     open: false, // Don't auto-open browser
+    historyApiFallback: true, // Enable client-side routing
+  },
+  preview: {
+    port: 3000,
+    host: true,
   }
 })
