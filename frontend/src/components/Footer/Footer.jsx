@@ -17,7 +17,7 @@ const Footer = () => {
         <div className="footer-names">
           <span className="brand-logo-text">PyroSynergy</span>
           <span className="brand-copyright-text">
-            © Copyright 2025 Pyrosynergy AI Labs. All rights reserved.
+            © Copyright 2025 Pyrosynergy LLP. All rights reserved.
           </span>
         </div>
         <div className="social-icons">
