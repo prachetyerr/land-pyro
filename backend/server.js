@@ -8,11 +8,12 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? 'your-production-domain.com' 
+  origin: process.env.NODE_ENV === 'production'
+    ? 'https://pyrosynergy.com' 
     : ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175', 'http://localhost:5176'],
   credentials: true
 }));
+app.options('*', cors());
 app.use(express.json());
 
 // MongoDB Connection with simplified options
